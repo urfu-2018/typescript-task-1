@@ -5,6 +5,12 @@ export interface IMeasurement {
     temperature: number; // e.g. -14.9
 }
 
+export function measurementToString(measurement: IMeasurement) {
+    return `[${measurement.time}] ${measurement.temperature} C, ${measurement.pressure} P, ${
+        measurement.humidity
+    } U`;
+}
+
 export interface IWeatherState {
     getMeasurements(): IMeasurement[];
     setMeasurements(measurements: IMeasurement[]): void;

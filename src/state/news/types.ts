@@ -4,6 +4,10 @@ export interface IArticle {
     title: string; // e.g. 'Краткое руководство по Redux для начинающих'
 }
 
+export function articleToString(article: IArticle): string {
+    return `[${article.time}] ${article.category} - ${article.title}`;
+}
+
 export interface INewsState {
     getArticles(): IArticle[];
     setArticles(articles: IArticle[]): void;
