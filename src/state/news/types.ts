@@ -10,5 +10,5 @@ export interface INewsState {
 }
 
 export function renderArticle(article: IArticle) {
-    return `[${article.time}] ${article.category} - ${article.title}`;
+    return `[${article.time}] ${article.category} - ${article.title}\n`;
 }

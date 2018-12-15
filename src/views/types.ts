@@ -12,7 +12,7 @@ export class ViewBase implements IView, IObserver {
     protected maxWeatherCount: number = 0;
     protected maxArticleCount: number = 0;
     protected viewName: string = '';
-    protected lastRenderedPage: string = '';
+    protected lastRenderedPage: string | undefined;
 
     public update(observable: IObservable): void {
         if (this.isINewsState(observable)) {
@@ -23,7 +23,7 @@ export class ViewBase implements IView, IObserver {
             throw new TypeError('Only INewsState and IWeatherState are supported!');
         }
         const newPage = this.preRender();
-        if (newPage !== this.lastRenderedPage) {
+        if (this.lastRenderedPage === undefined || this.lastRenderedPage !== newPage) {
             this.lastRenderedPage = newPage;
             this.render();
         }
@@ -42,13 +42,11 @@ export class ViewBase implements IView, IObserver {
     }
 
     private preRender(): string {
-        return (
-            `<div class="${this.viewName}">\n` + this.renderNews() + this.renderWeather() + '</div>'
-        );
+        return `<div class="${this.viewName}">\n${this.renderNews()}${this.renderWeather()}</div>`;
     }
 
     private renderNews(): string {
-        return this.renderItems(this.articles, renderArticle, this.maxWeatherCount);
+        return this.renderItems(this.articles, renderArticle, this.maxArticleCount);
     }
 
     private renderWeather(): string {
@@ -60,11 +58,9 @@ export class ViewBase implements IView, IObserver {
         toString: (obj: any) => string,
         elementsCount: number
     ): string {
-        return (
-            items
-                .slice(items.length - elementsCount)
-                .map(toString)
-                .join('\n') + (items.length > 0 && elementsCount > 0 ? '\n' : '')
-        );
+        return items
+            .slice(items.length - elementsCount)
+            .map(toString)
+            .join('');
     }
 }

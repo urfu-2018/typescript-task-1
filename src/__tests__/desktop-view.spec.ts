@@ -55,10 +55,17 @@ describe('DesktopView', () => {
                 temperature: -16.6,
                 pressure: 771.3,
                 humidity: 79
+            },
+            {
+                time: '18:00',
+                temperature: -16.6,
+                pressure: 771.3,
+                humidity: 79
             }
         ]);
 
-        const markup = '<div class="desktop">\n[08:00] -16.6 C, 771.3 P, 79 U\n</div>';
+        const markup =
+            '<div class="desktop">\n[08:00] -16.6 C, 771.3 P, 79 U\n[18:00] -16.6 C, 771.3 P, 79 U\n</div>';
 
         assert.ok(consoleSpy.calledOnce, 'render был вызван более 1 раза');
         assert.ok(consoleSpy.calledWith(markup), 'Выведена некорректная разметка');
