@@ -4,7 +4,7 @@ import { createResultView } from './helper';
 
 export class MobileView implements IObserver, IView {
     private articleCount: number = 1;
-    private wheterCount: number = 1;
+    private weatherCount: number = 1;
     private htmlClass: string = 'mobile';
     private markup: string = '';
 
@@ -12,14 +12,12 @@ export class MobileView implements IObserver, IView {
         this.markup = createResultView(
             observable,
             this.articleCount,
-            this.wheterCount,
+            this.weatherCount,
             this.htmlClass
         );
         this.render();
     }
     public render() {
-        if (this.markup) {
-            console.log(this.markup);
-        }
+        console.log(this.markup);
     }
 }

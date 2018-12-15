@@ -4,7 +4,7 @@ import { createResultView } from './helper';
 
 export class DesktopView implements IObserver, IView {
     private articleCount: number = 3;
-    private wheterCount: number = 2;
+    private weatherCount: number = 2;
     private htmlClass: string = 'desktop';
     private markup: string = '';
 
@@ -12,15 +12,13 @@ export class DesktopView implements IObserver, IView {
         this.markup = createResultView(
             observable,
             this.articleCount,
-            this.wheterCount,
+            this.weatherCount,
             this.htmlClass
         );
         this.render();
     }
 
     public render() {
-        if (this.markup) {
-            console.log(this.markup);
-        }
+        console.log(this.markup);
     }
 }

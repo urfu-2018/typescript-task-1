@@ -23,12 +23,12 @@ function getInformation(observable: IObservable) {
 export function createResultView(
     observable: IObservable,
     articleCount: number,
-    wheterCount: number,
+    weatherCount: number,
     htmlClass: string
 ): string {
     const { articles, measurements } = getInformation(observable);
     const resultArticles = articles.slice(articles.length - articleCount);
-    const resultMeasurements = measurements.slice(measurements.length - wheterCount);
+    const resultMeasurements = measurements.slice(measurements.length - weatherCount);
 
     return Render.createView(resultArticles, resultMeasurements, htmlClass);
 }

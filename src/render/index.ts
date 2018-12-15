@@ -20,12 +20,13 @@ export class Render {
     }
 
     private static renderArticle(article: IArticle) {
-        return `[${article.time}] ${article.category} - ${article.title}\n`;
+        const { time, category, title } = article;
+        return `[${time}] ${category} - ${title}\n`;
     }
 
     private static renderMeasurment(measurment: IMeasurement) {
-        return `[${measurment.time}] ${measurment.temperature} C, ${measurment.pressure} P, ${
-            measurment.humidity
-        } U\n`;
+        const { time, temperature, pressure, humidity } = measurment;
+
+        return `[${time}] ${temperature} C, ${pressure} P, ${humidity} U\n`;
     }
 }
