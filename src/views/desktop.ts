@@ -1,18 +1,15 @@
 import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
 import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
 import { IMeasurement } from '../state/weather/types';
 import { IArticle } from '../state/news/types';
-import { prepareView } from '../utils/viewFunctions';
+import { prepareView, EffectiveLogView } from '../utils/viewUtils';
 
-export class DesktopView implements IObserver, IView {
+export class DesktopView extends EffectiveLogView implements IObserver {
     private static articlesSize: number = 3;
     private static measurementsSize: number = 2;
     private static htmlClass: string = 'desktop';
 
-    private markup: string = '';
-    private lastMarkup: string | undefined;
     private lastMeasurements: IMeasurement[] = [];
     private lastArticles: IArticle[] = [];
 
@@ -30,16 +27,8 @@ export class DesktopView implements IObserver, IView {
         } else {
             return;
         }
-        this.markup = prepareView(DesktopView.htmlClass, this.lastMeasurements, this.lastArticles);
+        const markup = prepareView(DesktopView.htmlClass, this.lastMeasurements, this.lastArticles);
 
-        if (!this.lastMarkup || this.lastMarkup !== this.markup) {
-            this.render();
-
-            this.lastMarkup = this.markup;
-        }
-    }
-
-    public render() {
-        console.log(this.markup);
+        this.effectiveRender(markup);
     }
 }

@@ -1,5 +1,6 @@
 import { IMeasurement } from '../state/weather/types';
 import { IArticle } from '../state/news/types';
+import { IView } from '../views/types';
 
 export function prepareView(
     htmlClass: string,
@@ -19,4 +20,20 @@ export function prepareView(
     }, result);
 
     return `<div class="${htmlClass}">\n${result}</div>`;
+}
+
+export abstract class EffectiveLogView implements IView {
+    private lastMarkup: string | undefined;
+
+    public effectiveRender(markup: string): void {
+        if (!this.lastMarkup || this.lastMarkup !== markup) {
+            this.lastMarkup = markup;
+
+            this.render();
+        }
+    }
+
+    public render(): void {
+        console.log(this.lastMarkup);
+    }
 }
