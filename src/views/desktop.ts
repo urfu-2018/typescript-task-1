@@ -7,7 +7,8 @@ export class DesktopView implements IObserver, IView {
     private dates: Set<IObservable> = new Set();
 
     public update(observable: IObservable) {
-        throw new Error('Not implemented');
+        this.dates.add(observable);
+        this.render();
     }
 
     public render() {

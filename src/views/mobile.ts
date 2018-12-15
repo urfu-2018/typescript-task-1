@@ -14,14 +14,19 @@ export class MobileView implements IObserver, IView {
         let content: string = '<div class="mobile">';
         this.dates.forEach(date => {
             if (date instanceof NewsState) {
-                const freshNews = date.getArticles()[-1];
-                content += `[${freshNews.time}] 
-                ${freshNews.category} - ${freshNews.title}\n`;
+                date.getArticles()
+                    .slice(-1)
+                    .forEach(article => {
+                        content += `[${article.time}] 
+                        ${article.category} - ${article.title}\n`;
+                    });
             } else if (date instanceof WeatherState) {
-                const latestWeather = date.getMeasurements()[-1];
-                content += `[${latestWeather.time}] 
-                ${latestWeather.temperature} C, ${latestWeather.pressure} P, 
-                ${latestWeather.humidity} U\n`;
+                date.getMeasurements()
+                    .slice(-1)
+                    .forEach(weather => {
+                        content += `[${weather.time}] ${weather.temperature} C, 
+                        ${weather.pressure} P, ${weather.humidity} U\n`;
+                    });
             }
         });
         content += '</div>';
