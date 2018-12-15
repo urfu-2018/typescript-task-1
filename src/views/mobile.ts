@@ -11,7 +11,7 @@ export class MobileView implements IObserver, IView {
     }
 
     public render() {
-        let content: string = '<div class="mobile"><br>';
+        let content: string = '<div class="mobile">\n';
         this.dates.forEach(date => {
             if (date instanceof NewsState) {
                 date.getArticles()
