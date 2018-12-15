@@ -4,26 +4,12 @@ import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
 import { IMeasurement } from '../state/weather/types';
 import { IArticle } from '../state/news/types';
+import { prepareView } from '../utils/viewFunctions';
 
 export class DesktopView implements IObserver, IView {
     private static articlesSize: number = 3;
     private static measurementsSize: number = 2;
-
-    private static prepareData(measurements: IMeasurement[], articles: IArticle[]): string {
-        let result = '';
-
-        result = articles.reduce((prevValue, article) => {
-            const { time, category, title } = article;
-            return prevValue + `[${time}] ${category} - ${title}\n`;
-        }, result);
-
-        result = measurements.reduce((prevValue, measurement) => {
-            const { time, pressure, humidity, temperature } = measurement;
-            return prevValue + `[${time}] ${temperature} C, ${pressure} P, ${humidity} U\n`;
-        }, result);
-
-        return `<div class="desktop">\n${result}</div>`;
-    }
+    private static htmlClass: string = 'desktop';
 
     private markup: string = '';
     private lastMarkup: string | undefined;
@@ -44,7 +30,7 @@ export class DesktopView implements IObserver, IView {
         } else {
             return;
         }
-        this.markup = DesktopView.prepareData(this.lastMeasurements, this.lastArticles);
+        this.markup = prepareView(DesktopView.htmlClass, this.lastMeasurements, this.lastArticles);
 
         if (!this.lastMarkup || this.lastMarkup !== this.markup) {
             this.render();
