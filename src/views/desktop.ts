@@ -5,13 +5,22 @@ import { WeatherState } from '../state/weather';
 
 export class DesktopView implements IObserver, IView {
     private dates: Set<IObservable> = new Set();
+    private lastContent: string | undefined;
 
     public update(observable: IObservable) {
         this.dates.add(observable);
-        this.render();
+        const currentContent = this.getContent();
+        if (currentContent !== this.lastContent) {
+            this.lastContent = currentContent;
+            this.render();
+        }
     }
 
     public render() {
+        console.log(this.lastContent);
+    }
+
+    private getContent() {
         let content: string = '<div class="desktop">\n';
         this.dates.forEach(date => {
             if (date instanceof NewsState) {
@@ -32,6 +41,6 @@ export class DesktopView implements IObserver, IView {
             }
         });
         content += '</div>';
-        console.log(content);
+        return content;
     }
 }
