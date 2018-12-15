@@ -12,7 +12,7 @@ export class DesktopView implements IObserver, IView {
     }
 
     public render() {
-        let content: string = '<div class="mobile">\n';
+        let content: string = '<div class="desktop">\n';
         this.dates.forEach(date => {
             if (date instanceof NewsState) {
                 date.getArticles()
