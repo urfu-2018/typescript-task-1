@@ -25,6 +25,6 @@ export class MobileView implements IObserver, IView {
             }
         });
         content += '</div>';
-        return content;
+        console.log(content);
     }
 }
