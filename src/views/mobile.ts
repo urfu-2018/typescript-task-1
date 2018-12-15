@@ -1,12 +1,10 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
+import { ViewBase } from './types';
 
-export class MobileView implements IObserver, IView {
-    public update(observable: IObservable) {
-        throw new Error('Not implemented');
-    }
-
-    public render() {
-        throw new Error('Not implemented');
+export class MobileView extends ViewBase {
+    constructor() {
+        super();
+        this.maxWeatherCount = 1;
+        this.maxArticleCount = 1;
+        this.viewName = 'mobile';
     }
 }

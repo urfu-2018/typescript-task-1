@@ -8,3 +8,7 @@ export interface INewsState {
     getArticles(): IArticle[];
     setArticles(articles: IArticle[]): void;
 }
+
+export function renderArticle(article: IArticle) {
+    return `[${article.time}] ${article.category} - ${article.title}`;
+}

@@ -1,12 +1,10 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
+import { ViewBase } from './types';
 
-export class DesktopView implements IObserver, IView {
-    public update(observable: IObservable) {
-        throw new Error('Not implemented');
-    }
-
-    public render() {
-        throw new Error('Not implemented');
+export class DesktopView extends ViewBase {
+    constructor() {
+        super();
+        this.maxWeatherCount = 2;
+        this.maxArticleCount = 3;
+        this.viewName = 'desktop';
     }
 }
