@@ -18,16 +18,16 @@ export class DesktopView implements IObserver, IView {
                 date.getArticles()
                     .slice(-3)
                     .forEach(article => {
-                        content += `[${article.time}] 
-                        ${article.category} - ${article.title}\n`;
+                        content += `[${article.time}] ${article.category} - ${article.title}\n`;
                     });
             }
             if (date instanceof WeatherState) {
                 date.getMeasurements()
                     .slice(-2)
                     .forEach(weather => {
-                        content += `[${weather.time}] ${weather.temperature} C, 
-                        ${weather.pressure} P, ${weather.humidity} U\n`;
+                        content += `[${weather.time}] ${weather.temperature} C, ${
+                            weather.pressure
+                        } P, ${weather.humidity} U\n`;
                     });
             }
         });
