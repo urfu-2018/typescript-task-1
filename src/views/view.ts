@@ -11,6 +11,7 @@ export abstract class View implements IObserver, IView {
     private newsCount: number;
     private measurementsCount: number;
     private className: string;
+    private html?: string = undefined;
 
     protected constructor(newsCount: number, measurementsCount: number, className: string) {
         this.newsCount = newsCount;
@@ -19,28 +20,31 @@ export abstract class View implements IObserver, IView {
     }
 
     public update(observable: IObservable) {
-        let needRender = false;
-
         if (observable instanceof WeatherState) {
             const weatherState = observable as WeatherState;
             const measurements = weatherState.getMeasurements();
-            needRender = needRender || !this.equals(this.weather, measurements);
             this.weather = measurements;
         } else if (observable instanceof NewsState) {
             const newState = observable as NewsState;
             const news = newState.getArticles();
-            needRender = needRender || !this.equals(this.news, news);
             this.news = news;
         } else {
             throw new TypeError();
         }
 
-        if (needRender) {
-            this.render();
-        }
+        this.render();
     }
 
     public render() {
+        const html = this.getHtml();
+
+        if (html !== this.html) {
+            console.log(html);
+            this.html = html;
+        }
+    }
+
+    public getHtml() {
         let content = `<div class="${this.className}">\n`;
 
         content += this.news
@@ -53,10 +57,6 @@ export abstract class View implements IObserver, IView {
 
         content += `</div>`;
 
-        console.log(content);
-    }
-
-    private equals<T>(arr1: T[], arr2: T[]): boolean {
-        return arr1.length === arr2.length && arr1.every((v, i) => v === arr2[i]);
+        return content;
     }
 }
