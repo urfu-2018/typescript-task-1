@@ -39,7 +39,9 @@ export class DesktopView implements IObserver, IView {
         news.getArticles()
             .slice(-3)
             .forEach(article => {
-                articles.push(`[${article.time}] ${article.category} - ${article.title}\n`);
+                articles[articles.length] = `[${article.time}] ${article.category} - ${
+                    article.title
+                }\n`;
             });
         return articles.join('');
     }
@@ -50,11 +52,9 @@ export class DesktopView implements IObserver, IView {
             .getMeasurements()
             .slice(-2)
             .forEach(weather => {
-                measurements.push(
-                    `[${weather.time}] ${weather.temperature} C, ${weather.pressure} P, ${
-                        weather.humidity
-                    } U\n`
-                );
+                measurements[measurements.length] = `[${weather.time}] ${weather.temperature} C, ${
+                    weather.pressure
+                } P, ${weather.humidity} U\n`;
             });
         return measurements.join('');
     }
