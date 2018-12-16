@@ -11,29 +11,36 @@ export class View implements IView, IObserver {
     protected measurementsLimit = 0;
     protected articlesLimit = 0;
     protected className = '';
-    protected lastRender = '';
 
     public update(observable: IObservable): void {
         if (observable instanceof NewsState) {
+            const oldArticles = this.articles;
             const articles = observable.getArticles();
-            this.articles = articles.slice(articles.length - this.articlesLimit);
+            this.articles = articles.slice(-this.articlesLimit);
+
+            if (!this.shallowEquals(oldArticles, this.articles)) {
+                this.render();
+            }
         } else if (observable instanceof WeatherState) {
+            const oldMeasurements = this.measurements;
             const measurements = observable.getMeasurements();
-            this.measurements = measurements.slice(measurements.length - this.measurementsLimit);
+            this.measurements = measurements.slice(-this.measurementsLimit);
+
+            if (!this.shallowEquals(oldMeasurements, this.measurements)) {
+                this.render();
+            }
         } else {
             throw new TypeError('Unsupported state type!');
-        }
-
-        const block = this.renderBlock();
-
-        if (this.lastRender !== block) {
-            this.lastRender = block;
-            this.render();
         }
     }
 
     public render(): void {
-        console.log(this.lastRender);
+        const block = this.renderBlock();
+        console.log(block);
+    }
+
+    private shallowEquals<T>(a: T[], b: T[]): boolean {
+        return a.length === b.length && a.every((val, i) => val === b[i]);
     }
 
     private renderArticle({ time, category, title }: IArticle): string {
