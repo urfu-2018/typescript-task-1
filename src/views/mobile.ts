@@ -6,8 +6,8 @@ import { IArticle } from '../state/news/types';
 import { IMeasurement } from '../state/weather/types';
 
 export class MobileView implements IObserver, IView {
-    private static articleCount: number = 3;
-    private static measurementsCount: number = 2;
+    private static articleCount: number = 1;
+    private static measurementsCount: number = 1;
 
     private static prepare(measurements: IMeasurement[], articles: IArticle[]): string {
         let result: string = '';
