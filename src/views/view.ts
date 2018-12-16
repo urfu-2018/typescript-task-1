@@ -49,7 +49,7 @@ export abstract class View implements IObserver, IView {
         console.log(content);
     }
 
-    private equals<T>(arr1: T[], arr2: T[]) : boolean{
+    private equals<T>(arr1: T[], arr2: T[]): boolean {
         return arr1.length === arr2.length && arr1.every((v, i) => v === arr2[i]);
     }
 }
