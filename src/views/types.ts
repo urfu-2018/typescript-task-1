@@ -10,6 +10,7 @@ export interface IUpdateableView {
     handleObservable(observable: IObservable): void;
     setArticles(articles: IArticle[]): void;
     setMeasurements(measurements: IMeasurement[]): void;
+    hasNotRenderedEntries(): boolean;
     renderArticle(article: IArticle): string;
     renderMeasurement(measurement: IMeasurement): string;
 }

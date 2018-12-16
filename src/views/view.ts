@@ -30,14 +30,16 @@ export class UpdateableView implements IUpdateableView {
      * @param {IArticle[]} entries
      */
     public setArticles(entries: IArticle[]) {
-        this.nextArticles = entries.filter((entry: IArticle) => {
-            const EXISTS = this.articles.indexOf(entry) !== -1;
-            if (!EXISTS) {
-                this.articles.push(entry);
-            }
+        this.nextArticles.push(
+            ...entries.filter((entry: IArticle) => {
+                const EXISTS = this.articles.indexOf(entry) !== -1;
+                if (!EXISTS) {
+                    this.articles.push(entry);
+                }
 
-            return !EXISTS;
-        });
+                return !EXISTS;
+            })
+        );
     }
 
     /**
@@ -45,14 +47,24 @@ export class UpdateableView implements IUpdateableView {
      * @param {IMeasurement[]} entries
      */
     public setMeasurements(entries: IMeasurement[]) {
-        this.nextMeasurements = entries.filter((entry: IMeasurement) => {
-            const EXISTS = this.measurements.indexOf(entry) !== -1;
-            if (!EXISTS) {
-                this.measurements.push(entry);
-            }
+        this.nextMeasurements.push(
+            ...entries.filter((entry: IMeasurement) => {
+                const EXISTS = this.measurements.indexOf(entry) !== -1;
+                if (!EXISTS) {
+                    this.measurements.push(entry);
+                }
 
-            return !EXISTS;
-        });
+                return !EXISTS;
+            })
+        );
+    }
+
+    /**
+     * Проверяет есть ли данные для вывода
+     * @returns {boolean}
+     */
+    public hasNotRenderedEntries(): boolean {
+        return this.nextArticles.length > 0 || this.nextMeasurements.length > 0;
     }
 
     /**
@@ -62,7 +74,7 @@ export class UpdateableView implements IUpdateableView {
      * @param {number} weatherCount - количество материалов погоды к выводу
      */
     public renderEntries(classModifier: string, newsCount: number, weatherCount: number) {
-        if (!this.nextArticles.length && !this.nextMeasurements.length) {
+        if (!this.hasNotRenderedEntries()) {
             return;
         }
         let rendered: string[] = [];
@@ -70,6 +82,8 @@ export class UpdateableView implements IUpdateableView {
         rendered = rendered.concat(
             this.nextMeasurements.slice(0, weatherCount).map(this.renderMeasurement)
         );
+        this.nextArticles = [];
+        this.nextMeasurements = [];
         console.log(`<div class="${classModifier}">\n${rendered.join('\n')}\n</div>`);
     }
 

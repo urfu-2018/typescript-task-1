@@ -5,7 +5,9 @@ import { UpdateableView } from './view';
 export class MobileView extends UpdateableView implements IObserver, IView {
     public update(observable: IObservable) {
         super.handleObservable(observable);
-        this.render();
+        if (this.hasNotRenderedEntries()) {
+            this.render();
+        }
     }
 
     public render() {
