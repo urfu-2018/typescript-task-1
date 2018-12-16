@@ -26,7 +26,6 @@ export class MobileView implements IObserver, IView {
         }
 
         const newMarkup = Render.createView(this.articles, this.measurements, this.htmlClass);
-        this.render();
 
         if (this.isNeedRender(newMarkup)) {
             this.markup = newMarkup;
