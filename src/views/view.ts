@@ -20,7 +20,6 @@ export abstract class View implements IObserver, IView {
     }
 
     public update(observable: IObservable) {
-
         if (observable instanceof WeatherState) {
             const weatherState = observable as WeatherState;
             const measurements = weatherState.getMeasurements();
