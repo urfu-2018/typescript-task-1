@@ -42,12 +42,15 @@ export abstract class View implements IObserver, IView {
 
     public render() {
         let content = `<div class="${this.className}">\n`;
+
         content += this.news
-            .slice(0, this.newsCount)
+            .slice(this.news.length - this.newsCount)
             .map(x => `[${x.time}] ${x.category} - ${x.title}\n`);
+
         content += this.weather
-            .slice(0, this.measurementsCount)
+            .slice(this.weather.length - this.measurementsCount)
             .map(x => `[${x.time}] ${x.temperature} C, ${x.pressure} P, ${x.humidity} U\n`);
+
         content += `</div>`;
 
         console.log(content);
