@@ -25,10 +25,24 @@ export class MobileView implements IObserver, IView {
             throw new TypeError();
         }
 
-        this.markup = Render.createView(this.articles, this.measurements, this.htmlClass);
+        const newMarkup = Render.createView(this.articles, this.measurements, this.htmlClass);
         this.render();
+
+        if (this.isNeedRender(newMarkup)) {
+            this.markup = newMarkup;
+            this.render();
+        }
     }
+
     public render() {
         console.log(this.markup);
+    }
+
+    private isNeedRender(markup: string) {
+        if (this.markup !== markup || this.markup === '') {
+            return true;
+        }
+
+        return false;
     }
 }
