@@ -14,7 +14,7 @@ export class ViewBase implements IView, IObserver {
     protected maxWeatherCount: number = 0;
     protected maxArticleCount: number = 0;
     protected viewName: string = '';
-    protected lastRenderedPage: string | undefined;
+    protected lastRenderedPage?: string;
 
     public update(observable: IObservable): void {
         if (this.isINewsState(observable)) {
