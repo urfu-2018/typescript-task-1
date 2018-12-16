@@ -45,7 +45,7 @@ export class View implements IView, IObserver {
     }
 
     private renderBlock(): string {
-        const openTag = `<div> class=${this.className}>`;
+        const openTag = `<div class="${this.className}">`;
         const closeTag = '</div>';
         const renderedArticles = this.articles.map(this.renderArticle);
         const renderedMeasurements = this.measurements.map(this.renderMeasurement);
