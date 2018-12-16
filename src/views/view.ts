@@ -32,7 +32,7 @@ export class UpdateableView implements IUpdateableView {
     public setArticles(entries: IArticle[]) {
         this.nextArticles.push(
             ...entries.filter((entry: IArticle) => {
-                const EXISTS = this.articles.indexOf(entry) !== -1;
+                const EXISTS = this.articles.includes(entry);
                 if (!EXISTS) {
                     this.articles.push(entry);
                 }
@@ -49,7 +49,7 @@ export class UpdateableView implements IUpdateableView {
     public setMeasurements(entries: IMeasurement[]) {
         this.nextMeasurements.push(
             ...entries.filter((entry: IMeasurement) => {
-                const EXISTS = this.measurements.indexOf(entry) !== -1;
+                const EXISTS = this.measurements.includes(entry);
                 if (!EXISTS) {
                     this.measurements.push(entry);
                 }
