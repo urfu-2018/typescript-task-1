@@ -1,7 +1,5 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
-import { NewsState } from '../state/news';
-import { WeatherState } from '../state/weather';
 import { IArticle } from '../state/news/types';
 import { IMeasurement } from '../state/weather/types';
 import { Render } from '../render/index';
