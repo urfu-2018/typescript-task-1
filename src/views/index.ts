@@ -26,7 +26,7 @@ export class View implements IView, IObserver {
 
         const block = this.renderBlock();
 
-        if (this.lastRender === '' || this.lastRender !== block) {
+        if (this.lastRender !== block) {
             this.lastRender = block;
             this.render();
         }
