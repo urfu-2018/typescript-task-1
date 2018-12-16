@@ -33,7 +33,10 @@ export abstract class View implements IObserver, IView {
             needRender = needRender || this.equals(this.news, news);
             this.news = news;
         }
-        this.render();
+
+        if (needRender) {
+            this.render();
+        }
     }
 
     public render() {
