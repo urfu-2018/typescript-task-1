@@ -11,7 +11,6 @@ export interface IWeatherState {
 }
 
 export function renderMeasurment(measurment: IMeasurement) {
-    return `[${measurment.time}] ${measurment.temperature} C, ${measurment.pressure} P, ${
-        measurment.humidity
-    } U\n`;
+    const { time, temperature, pressure, humidity } = measurment;
+    return `[${time}] ${temperature} C, ${pressure} P, ${humidity} U\n`;
 }
