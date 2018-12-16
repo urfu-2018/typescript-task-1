@@ -6,6 +6,8 @@ export interface IView {
     render(): void;
 }
 
+type ObservableNewsOrWeather = IObservable | INewsState | IWeatherState;
+
 export class ViewBase implements IView, IObserver {
     protected weatherMeasurments: IMeasurement[] = [];
     protected articles: IArticle[] = [];
@@ -33,11 +35,11 @@ export class ViewBase implements IView, IObserver {
         console.log(this.lastRenderedPage);
     }
 
-    private isINewsState(observable: any): observable is INewsState {
+    private isINewsState(observable: ObservableNewsOrWeather): observable is INewsState {
         return (observable as INewsState).getArticles !== undefined;
     }
 
-    private isIWeatherState(observable: any): observable is IWeatherState {
+    private isIWeatherState(observable: ObservableNewsOrWeather): observable is IWeatherState {
         return (observable as IWeatherState).getMeasurements !== undefined;
     }
 
