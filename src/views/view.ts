@@ -22,12 +22,10 @@ export abstract class View implements IObserver, IView {
     public update(observable: IObservable) {
         if (observable instanceof WeatherState) {
             const weatherState = observable as WeatherState;
-            const measurements = weatherState.getMeasurements();
-            this.weather = measurements;
+            this.weather = weatherState.getMeasurements();
         } else if (observable instanceof NewsState) {
             const newState = observable as NewsState;
-            const news = newState.getArticles();
-            this.news = news;
+            this.news = newState.getArticles();
         } else {
             throw new TypeError();
         }
@@ -49,11 +47,13 @@ export abstract class View implements IObserver, IView {
 
         content += this.news
             .slice(-this.newsCount)
-            .map(x => `[${x.time}] ${x.category} - ${x.title}\n`);
+            .map(x => `[${x.time}] ${x.category} - ${x.title}\n`)
+            .join('');
 
         content += this.weather
             .slice(-this.measurementsCount)
-            .map(x => `[${x.time}] ${x.temperature} C, ${x.pressure} P, ${x.humidity} U\n`);
+            .map(x => `[${x.time}] ${x.temperature} C, ${x.pressure} P, ${x.humidity} U\n`)
+            .join('');
 
         content += `</div>`;
 
