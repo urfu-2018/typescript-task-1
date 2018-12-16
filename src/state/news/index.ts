@@ -7,6 +7,7 @@ export class NewsState extends Observable implements INewsState {
     }
 
     public setArticles(articles: IArticle[]) {
+        // Ваше решение
         throw new Error('Not implemented');
     }
 }
