@@ -21,26 +21,41 @@ export class DesktopView implements IObserver, IView {
     }
 
     private getContent() {
-        let content: string = '<div class="desktop">\n';
+        let articles: string = '';
+        let weatherMeasurements: string = '';
         this.dates.forEach(date => {
             if (date instanceof NewsState) {
-                date.getArticles()
-                    .slice(-3)
-                    .forEach(article => {
-                        content += `[${article.time}] ${article.category} - ${article.title}\n`;
-                    });
+                articles = this.getNewsContent(date);
             }
             if (date instanceof WeatherState) {
-                date.getMeasurements()
-                    .slice(-2)
-                    .forEach(weather => {
-                        content += `[${weather.time}] ${weather.temperature} C, ${
-                            weather.pressure
-                        } P, ${weather.humidity} U\n`;
-                    });
+                weatherMeasurements = this.getWeatherContent(date);
             }
         });
-        content += '</div>';
-        return content;
+        return `<div class="desktop">\n${articles}${weatherMeasurements}<\div>`;
+    }
+
+    private getNewsContent(news: NewsState) {
+        const articles: string[] = [];
+        news.getArticles()
+            .slice(-3)
+            .forEach(article => {
+                articles[articles.length] = `[${article.time}] ${article.category} - ${
+                    article.title
+                }\n`;
+            });
+        return articles.join('');
+    }
+
+    private getWeatherContent(weatherState: WeatherState) {
+        const measurements: string[] = [];
+        weatherState
+            .getMeasurements()
+            .slice(-2)
+            .forEach(weather => {
+                measurements[measurements.length] = `[${weather.time}] ${weather.temperature} C, ${
+                    weather.pressure
+                } P, ${weather.humidity} U\n`;
+            });
+        return measurements.join('');
     }
 }
