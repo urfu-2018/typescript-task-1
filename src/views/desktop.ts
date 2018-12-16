@@ -40,7 +40,7 @@ export class DesktopView implements IObserver, IView {
                     });
             }
         });
-        content += '</div>.';
+        content += '</div>';
         return content;
     }
 }
