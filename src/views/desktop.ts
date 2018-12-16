@@ -21,41 +21,26 @@ export class DesktopView implements IObserver, IView {
     }
 
     private getContent() {
-        let articles: string = '';
-        let weatherMeasurements: string = '';
+        let content: string = '<div class="desktop">\n';
         this.dates.forEach(date => {
             if (date instanceof NewsState) {
-                articles = this.getNewsContent(date);
+                date.getArticles()
+                    .slice(-3)
+                    .forEach(article => {
+                        content += `[${article.time}] ${article.category} - ${article.title}\n`;
+                    });
             }
             if (date instanceof WeatherState) {
-                weatherMeasurements = this.getWeatherContent(date);
+                date.getMeasurements()
+                    .slice(-2)
+                    .forEach(weather => {
+                        content += `[${weather.time}] ${weather.temperature} C, ${
+                            weather.pressure
+                        } P, ${weather.humidity} U\n`;
+                    });
             }
         });
-        return `<div class="desktop">\n${articles}${weatherMeasurements}<\div>`;
-    }
-
-    private getNewsContent(news: NewsState) {
-        const articles: string[] = [];
-        news.getArticles()
-            .slice(-3)
-            .forEach(article => {
-                articles[articles.length] = `[${article.time}] ${article.category} - ${
-                    article.title
-                }\n`;
-            });
-        return articles.join('');
-    }
-
-    private getWeatherContent(weatherState: WeatherState) {
-        const measurements: string[] = [];
-        weatherState
-            .getMeasurements()
-            .slice(-2)
-            .forEach(weather => {
-                measurements[measurements.length] = `[${weather.time}] ${weather.temperature} C, ${
-                    weather.pressure
-                } P, ${weather.humidity} U\n`;
-            });
-        return measurements.join('');
+        content += '</div>.';
+        return content;
     }
 }
