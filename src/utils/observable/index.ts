@@ -8,7 +8,10 @@ export class Observable implements IObservable {
     }
 
     public deleteObserver(observer: IObserver) {
-        this.observers.slice(this.observers.indexOf(observer), 1);
+        const index = this.observers.indexOf(observer);
+        if (index !== -1) {
+            this.observers.splice(index, 1);
+        }
     }
 
     public notifyObservers() {

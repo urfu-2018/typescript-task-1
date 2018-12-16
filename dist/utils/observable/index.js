@@ -8,7 +8,10 @@ class Observable {
         this.observers.push(observer);
     }
     deleteObserver(observer) {
-        this.observers.slice(this.observers.indexOf(observer), 1);
+        const index = this.observers.indexOf(observer);
+        if (index !== -1) {
+            this.observers.splice(index, 1);
+        }
     }
     notifyObservers() {
         this.observers.forEach(observer => observer.update(this));

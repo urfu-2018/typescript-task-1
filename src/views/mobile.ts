@@ -8,18 +8,18 @@ import { WeatherState } from '../state/weather';
 export class MobileView implements IObserver, IView {
     private static newsCount = 1;
     private static weatherCount = 1;
-    private currentNews = [];
-    private currentWeather = [];
+    private currentNews: IArticle[] = [];
+    private currentWeather: IMeasurement[] = [];
     private newsToRender: IArticle[] = [];
     private weatherToRender: IMeasurement[] = [];
 
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
             const all = observable.getArticles();
-            this.newsToRender = all.slice(all.length - MobileView.newsCount, all.length);
+            this.newsToRender = all.slice(all.length - MobileView.newsCount);
         } else if (observable instanceof WeatherState) {
             const all = observable.getMeasurements();
-            this.weatherToRender = all.slice(all.length - MobileView.weatherCount, all.length);
+            this.weatherToRender = all.slice(all.length - MobileView.weatherCount);
         } else {
             throw new Error('Wrong state: should be news or weather');
         }
@@ -40,5 +40,7 @@ export class MobileView implements IObserver, IView {
         );
         result += '</div>';
         console.log(result);
+        this.currentNews.splice(0, this.currentNews.length, ...this.newsToRender);
+        this.currentWeather.splice(0, this.currentWeather.length, ...this.weatherToRender);
     }
 }
