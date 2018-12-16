@@ -5,7 +5,7 @@ import { WeatherState } from '../state/weather';
 
 export class MobileView implements IObserver, IView {
     private dates: Set<IObservable> = new Set();
-    private lastContent: string | undefined;
+    private lastContent?: string;
 
     public update(observable: IObservable) {
         this.dates.add(observable);
@@ -21,25 +21,39 @@ export class MobileView implements IObserver, IView {
     }
 
     private getContent() {
-        let content: string = '<div class="mobile">\n';
+        let article: string = '';
+        let weatherMeasurement: string = '';
         this.dates.forEach(date => {
             if (date instanceof NewsState) {
-                date.getArticles()
-                    .slice(-1)
-                    .forEach(article => {
-                        content += `[${article.time}] ${article.category} - ${article.title}\n`;
-                    });
-            } else if (date instanceof WeatherState) {
-                date.getMeasurements()
-                    .slice(-1)
-                    .forEach(weather => {
-                        content += `[${weather.time}] ${weather.temperature} C, ${
-                            weather.pressure
-                        } P, ${weather.humidity} U\n`;
-                    });
+                article = this.getNewsContent(date);
+            }
+            if (date instanceof WeatherState) {
+                weatherMeasurement = this.getWeatherContent(date);
             }
         });
-        content += '</div>';
+        return `<div class="mobile">\n${article}${weatherMeasurement}<\div>`;
+    }
+
+    private getNewsContent(news: NewsState) {
+        let content: string = '';
+        news.getArticles()
+            .slice(-1)
+            .forEach(article => {
+                content = `[${article.time}] ${article.category} - ${article.title}\n`;
+            });
         return content;
+    }
+
+    private getWeatherContent(weatherState: WeatherState) {
+        let measurement: string = '';
+        weatherState
+            .getMeasurements()
+            .slice(-1)
+            .forEach(weather => {
+                measurement = `[${weather.time}] ${weather.temperature} C, ${weather.pressure} P, ${
+                    weather.humidity
+                } U\n`;
+            });
+        return measurement;
     }
 }
