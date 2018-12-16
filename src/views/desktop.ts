@@ -31,7 +31,10 @@ export class DesktopView implements IObserver, IView {
                 weatherMeasurements = this.getWeatherContent(date);
             }
         });
-        return `<div class="desktop">\n${articles}${weatherMeasurements}<\div>`;
+        return `<div class="desktop">
+${articles}
+${weatherMeasurements}
+<\div>`;
     }
 
     private getNewsContent(news: NewsState) {
@@ -39,9 +42,9 @@ export class DesktopView implements IObserver, IView {
         news.getArticles()
             .slice(-3)
             .forEach(article => {
-                articles.push(`[${article.time}] ${article.category} - ${article.title}\n`);
+                articles.push(`[${article.time}] ${article.category} - ${article.title}`);
             });
-        return articles.join('');
+        return articles.join('\n');
     }
 
     private getWeatherContent(weatherState: WeatherState) {
@@ -53,9 +56,9 @@ export class DesktopView implements IObserver, IView {
                 measurements.push(
                     `[${weather.time}] ${weather.temperature} C, ${weather.pressure} P, ${
                         weather.humidity
-                    } U\n`
+                    } U`
                 );
             });
-        return measurements.join('');
+        return measurements.join('\n');
     }
 }

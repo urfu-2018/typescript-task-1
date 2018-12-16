@@ -31,7 +31,10 @@ export class MobileView implements IObserver, IView {
                 weatherMeasurement = this.getWeatherContent(date);
             }
         });
-        return `<div class="mobile">\n${article}${weatherMeasurement}<\div>`;
+        return `<div class="mobile">
+${article}
+${weatherMeasurement}
+<\div>`;
     }
 
     private getNewsContent(news: NewsState) {
@@ -39,7 +42,7 @@ export class MobileView implements IObserver, IView {
         news.getArticles()
             .slice(-1)
             .forEach(article => {
-                content = `[${article.time}] ${article.category} - ${article.title}\n`;
+                content = `[${article.time}] ${article.category} - ${article.title}`;
             });
         return content;
     }
@@ -52,7 +55,7 @@ export class MobileView implements IObserver, IView {
             .forEach(weather => {
                 measurement = `[${weather.time}] ${weather.temperature} C, ${weather.pressure} P, ${
                     weather.humidity
-                } U\n`;
+                } U`;
             });
         return measurement;
     }
