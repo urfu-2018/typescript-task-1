@@ -26,14 +26,12 @@ export abstract class View implements IObserver, IView {
             const measurements = weatherState.getMeasurements();
             needRender = needRender || !this.equals(this.weather, measurements);
             this.weather = measurements;
-        }
-        else if (observable instanceof NewsState) {
+        } else if (observable instanceof NewsState) {
             const weatherState = observable as NewsState;
             const news = weatherState.getArticles();
             needRender = needRender || !this.equals(this.news, news);
             this.news = news;
-        }
-        else {
+        } else {
             throw new TypeError();
         }
 
