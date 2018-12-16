@@ -1,9 +1,10 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
+import { NewsState } from '../state/news';
+import { WeatherState } from '../state/weather';
 import { IArticle } from '../state/news/types';
 import { IMeasurement } from '../state/weather/types';
 import { Render } from '../render/index';
-import { getInfo } from './helper';
 
 export class DesktopView implements IObserver, IView {
     private articleCount: number = 3;
@@ -14,20 +15,33 @@ export class DesktopView implements IObserver, IView {
     private markup: string = '';
 
     public update(observable: IObservable) {
-        const { articles, measurements } = getInfo(
-            observable,
-            this.articleCount,
-            this.weatherCount
-        );
+        if (observable instanceof NewsState) {
+            const rawArticles = observable.getArticles();
+            this.articles = rawArticles.slice(rawArticles.length - this.articleCount);
+        } else if (observable instanceof WeatherState) {
+            const rawMeasurements = observable.getMeasurements();
+            this.measurements = rawMeasurements.slice(rawMeasurements.length - this.weatherCount);
+        } else {
+            throw new TypeError();
+        }
 
-        this.articles = articles;
-        this.measurements = measurements;
+        const newMarkup = Render.createView(this.articles, this.measurements, this.htmlClass);
 
-        this.markup = Render.createView(this.articles, this.measurements, this.htmlClass);
-        this.render();
+        if (this.isNeedRender(newMarkup)) {
+            this.markup = newMarkup;
+            this.render();
+        }
     }
 
     public render() {
         console.log(this.markup);
+    }
+
+    private isNeedRender(markup: string) {
+        if (this.markup !== markup || this.markup === '') {
+            return true;
+        }
+
+        return false;
     }
 }
