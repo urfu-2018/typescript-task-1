@@ -31,7 +31,7 @@ export class MobileView implements IObserver, IView {
                 weatherMeasurement = this.getWeatherContent(date);
             }
         });
-        return `<div class="mobile">\n${article}${weatherMeasurement}<\div>`;
+        return `<div class="mobile">\n${article}${weatherMeasurement}</div>`;
     }
 
     private getNewsContent(news: NewsState) {

@@ -31,7 +31,7 @@ export class DesktopView implements IObserver, IView {
                 weatherMeasurements = this.getWeatherContent(date);
             }
         });
-        return `<div class="desktop">\n${articles}${weatherMeasurements}<\div>`;
+        return `<div class="desktop">\n${articles}${weatherMeasurements}</div>`;
     }
 
     private getNewsContent(news: NewsState) {
