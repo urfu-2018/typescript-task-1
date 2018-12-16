@@ -1,12 +1,17 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
+import { UpdateableView } from './view';
 
-export class DesktopView implements IObserver, IView {
+export class DesktopView extends UpdateableView implements IObserver, IView {
     public update(observable: IObservable) {
-        throw new Error('Not implemented');
+        super.handleObservable(observable);
+        this.render();
     }
 
     public render() {
-        throw new Error('Not implemented');
+        const WRAPPER_CLASS = 'desktop';
+        const NEWS_COUNT = 3;
+        const WEATHER_COUNT = 2;
+        super.renderEntries(WRAPPER_CLASS, NEWS_COUNT, WEATHER_COUNT);
     }
 }
