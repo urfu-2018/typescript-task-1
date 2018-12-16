@@ -5,7 +5,7 @@ import { WeatherState } from '../state/weather';
 
 export class DesktopView implements IObserver, IView {
     private dates: Set<IObservable> = new Set();
-    private lastContent?: string;
+    private lastContent: string | undefined;
 
     public update(observable: IObservable) {
         this.dates.add(observable);
