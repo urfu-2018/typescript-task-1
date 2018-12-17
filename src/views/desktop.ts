@@ -4,16 +4,16 @@ import { UpdateableView } from './view';
 
 export class DesktopView extends UpdateableView implements IObserver, IView {
     public update(observable: IObservable) {
-        super.handleObservable(observable);
-        if (this.hasNotRenderedEntries()) {
+        const NEWS_COUNT = 3;
+        const WEATHER_COUNT = 2;
+        super.handleObservable(observable, NEWS_COUNT, WEATHER_COUNT);
+        if (this.shouldOutputEntries()) {
             this.render();
         }
     }
 
     public render() {
         const WRAPPER_CLASS = 'desktop';
-        const NEWS_COUNT = 3;
-        const WEATHER_COUNT = 2;
-        super.renderEntries(WRAPPER_CLASS, NEWS_COUNT, WEATHER_COUNT);
+        super.outputRendered(WRAPPER_CLASS);
     }
 }

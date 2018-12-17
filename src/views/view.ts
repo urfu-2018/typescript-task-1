@@ -6,22 +6,31 @@ import { IMeasurement } from '../state/weather/types';
 import { IObservable } from '../utils/observable/types';
 
 export class UpdateableView implements IUpdateableView {
-    private articles: IArticle[] = []; // отрендеренные новости
-    private nextArticles: IArticle[] = []; // новости для вывода (без старых материалов)
-    private measurements: IMeasurement[] = []; // отрендеренная погода
-    private nextMeasurements: IMeasurement[] = []; // погода для вывода (без старых материалов)
+    private articles: IArticle[] = [];
+    private measurements: IMeasurement[] = [];
+    private previous: string = ''; // ранее выведенные данные
+    private rendered: string = ''; // данные к выводу
 
-    /**
-     * Сохраняет Новости и Погоду для вывода
-     * @param {IObservable} observable
-     * @returns void
-     */
-    public handleObservable(observable: IObservable) {
+    public handleObservable(observable: IObservable, newsCount: number, weatherCount: number) {
         if (observable instanceof NewsState) {
             this.setArticles(observable.getArticles());
         }
         if (observable instanceof WeatherState) {
             this.setMeasurements(observable.getMeasurements());
+        }
+        let entries: string[] = [];
+        entries = entries.concat(this.articles.slice(-newsCount).map(this.renderArticle));
+        entries = entries.concat(
+            this.measurements.slice(-weatherCount).map(this.renderMeasurement)
+        );
+        this.rendered = entries.join('\n');
+        if (!this.rendered.length) {
+            return;
+        }
+        if (this.previous === this.rendered) {
+            this.rendered = '';
+        } else {
+            this.previous = this.rendered;
         }
     }
 
@@ -30,16 +39,12 @@ export class UpdateableView implements IUpdateableView {
      * @param {IArticle[]} entries
      */
     public setArticles(entries: IArticle[]) {
-        this.nextArticles.push(
-            ...entries.filter((entry: IArticle) => {
-                const EXISTS = this.articles.includes(entry);
-                if (!EXISTS) {
-                    this.articles.push(entry);
-                }
-
-                return !EXISTS;
-            })
-        );
+        entries.forEach((entry: IArticle) => {
+            if (this.articles.includes(entry)) {
+                return;
+            }
+            this.articles.push(entry);
+        });
     }
 
     /**
@@ -47,44 +52,31 @@ export class UpdateableView implements IUpdateableView {
      * @param {IMeasurement[]} entries
      */
     public setMeasurements(entries: IMeasurement[]) {
-        this.nextMeasurements.push(
-            ...entries.filter((entry: IMeasurement) => {
-                const EXISTS = this.measurements.includes(entry);
-                if (!EXISTS) {
-                    this.measurements.push(entry);
-                }
-
-                return !EXISTS;
-            })
-        );
+        entries.forEach((entry: IMeasurement) => {
+            if (this.measurements.includes(entry)) {
+                return;
+            }
+            this.measurements.push(entry);
+        });
     }
 
     /**
      * Проверяет есть ли данные для вывода
      * @returns {boolean}
      */
-    public hasNotRenderedEntries(): boolean {
-        return this.nextArticles.length > 0 || this.nextMeasurements.length > 0;
+    public shouldOutputEntries(): boolean {
+        return this.rendered.length > 0;
     }
 
     /**
      * Выводит блок новостей и погоды на экран
      * @param {string} classModifier - имя класса блока-обертки
-     * @param {number} newsCount - количество материалов новостей к выводу
-     * @param {number} weatherCount - количество материалов погоды к выводу
      */
-    public renderEntries(classModifier: string, newsCount: number, weatherCount: number) {
-        if (!this.hasNotRenderedEntries()) {
+    public outputRendered(classModifier: string) {
+        if (!this.shouldOutputEntries()) {
             return;
         }
-        let rendered: string[] = [];
-        rendered = rendered.concat(this.nextArticles.slice(0, newsCount).map(this.renderArticle));
-        rendered = rendered.concat(
-            this.nextMeasurements.slice(0, weatherCount).map(this.renderMeasurement)
-        );
-        this.nextArticles = [];
-        this.nextMeasurements = [];
-        console.log(`<div class="${classModifier}">\n${rendered.join('\n')}\n</div>`);
+        console.log(`<div class="${classModifier}">\n${this.rendered}\n</div>`);
     }
 
     public renderArticle(entry: IArticle): string {

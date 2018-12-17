@@ -7,10 +7,11 @@ export interface IView {
 }
 
 export interface IUpdateableView {
-    handleObservable(observable: IObservable): void;
+    handleObservable(observable: IObservable, newsCount: number, weatherCount: number): void;
     setArticles(articles: IArticle[]): void;
     setMeasurements(measurements: IMeasurement[]): void;
-    hasNotRenderedEntries(): boolean;
+    shouldOutputEntries(): boolean;
+    outputRendered(wrapperClass: string): void;
     renderArticle(article: IArticle): string;
     renderMeasurement(measurement: IMeasurement): string;
 }
