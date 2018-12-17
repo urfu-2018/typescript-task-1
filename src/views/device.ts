@@ -37,17 +37,17 @@ export abstract class DeviceView implements IObserver, IView {
     private leadToOutputFormat(): string {
         let result: string = this.articles.reduce(
             (concatValue, article) =>
-                concatValue + `[${article.time}] ${article.category} - ${article.title}`,
+                concatValue + `[${article.time}] ${article.category} - ${article.title}\n`,
             ''
         );
         result = this.measurements.reduce(
             (concatValue, measurement) =>
                 concatValue +
                 `[${measurement.time}] ${measurement.temperature} C,` +
-                ` ${measurement.pressure} P, ${measurement.humidity} U`,
+                ` ${measurement.pressure} P, ${measurement.humidity} U\n`,
             result
         );
 
-        return `<div class="${this.deviceName}">\n${result}\n</div>`;
+        return `<div class="${this.deviceName}">\n${result}</div>`;
     }
 }
