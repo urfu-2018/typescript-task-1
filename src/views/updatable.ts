@@ -2,10 +2,10 @@ import { IArticle } from '../state/news/types';
 import { IMeasurement } from '../state/weather/types';
 import { IView } from './types';
 
-export class Updatable implements IView {
+export abstract class Updatable implements IView {
     protected lastNews: string[] = [];
     protected lastMeasurments: string[] = [];
-    protected view: string = '';
+    protected abstract view: string;
 
     public render() {
         console.log(
@@ -16,10 +16,9 @@ export class Updatable implements IView {
     }
 
     protected updateNews(articles: IArticle[]) {
-        const currentNews = [];
-        for (const article of articles) {
-            currentNews.push(`[${article.time}] ${article.category} - ${article.title}`);
-        }
+        const currentNews = articles.map(
+            article => `[${article.time}] ${article.category} - ${article.title}`
+        );
         if (!currentNews.every(e => this.lastNews.includes(e))) {
             this.lastNews = currentNews;
             this.render();
@@ -27,14 +26,12 @@ export class Updatable implements IView {
     }
 
     protected updateWeather(measurements: IMeasurement[]) {
-        const currentMeasurements = [];
-        for (const measurement of measurements) {
-            currentMeasurements.push(
+        const currentMeasurements = measurements.map(
+            measurement =>
                 `[${measurement.time}] ${measurement.temperature} C, ${measurement.pressure} P, ${
                     measurement.humidity
                 } U`
-            );
-        }
+        );
         if (!currentMeasurements.every(e => this.lastMeasurments.includes(e))) {
             this.lastMeasurments = currentMeasurements;
             this.render();
