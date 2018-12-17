@@ -11,6 +11,12 @@ export class UpdateableView implements IUpdateableView {
     private previous: string = ''; // ранее выведенные данные
     private rendered: string = ''; // данные к выводу
 
+    /**
+     * Обрабатывает данные из источника (observable)
+     * @param {IObservable} observable - источник данных
+     * @param {number} newsCount - количество материалов новостей
+     * @param {number} weatherCount - количество материалов измерений погоды
+     */
     public handleObservable(observable: IObservable, newsCount: number, weatherCount: number) {
         if (observable instanceof NewsState) {
             this.setArticles(observable.getArticles());
@@ -35,7 +41,7 @@ export class UpdateableView implements IUpdateableView {
     }
 
     /**
-     * Отбирает новости, исключая старые материалы, и дополняя ранее выведенные
+     * Сохраняет материалы новостей
      * @param {IArticle[]} entries
      */
     public setArticles(entries: IArticle[]) {
@@ -48,7 +54,7 @@ export class UpdateableView implements IUpdateableView {
     }
 
     /**
-     * Отбирает погоду, исключая старые материалы, и дополняя ранее выведенные
+     * Сохраняет материалы измерений погоды
      * @param {IMeasurement[]} entries
      */
     public setMeasurements(entries: IMeasurement[]) {
@@ -70,6 +76,7 @@ export class UpdateableView implements IUpdateableView {
 
     /**
      * Выводит блок новостей и погоды на экран
+     * @param {string} test
      * @param {string} classModifier - имя класса блока-обертки
      */
     public outputRendered(classModifier: string) {
