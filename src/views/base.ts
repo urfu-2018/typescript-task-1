@@ -1,6 +1,6 @@
 import { IObservable, IObserver } from '../utils/observable/types';
-import { IArticle, isINewsState } from '../state/news/types';
-import { IMeasurement, isIWeatherState } from '../state/weather/types';
+import { isINewsState, IArticle } from '../state/news/types';
+import { isIWeatherState, IMeasurement } from '../state/weather/types';
 import { IView } from './types';
 import { Formatter } from './formatters';
 import { addNewLineIfNotEmpty, formatArticle, formatList, formatMeasurement } from './formatters';
