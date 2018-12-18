@@ -25,11 +25,25 @@ export class DesktopView implements IObserver, IView {
         }
 
         if (
-            this.currentNews !== this.newsToRender ||
-            this.currentWeather !== this.weatherToRender
+            this.isShallowEqual(this.currentNews, this.newsToRender) ||
+            this.isShallowEqual(this.currentWeather, this.weatherToRender)
         ) {
             this.render();
         }
+    }
+
+    public isShallowEqual(
+        arr1: IArticle[] | IMeasurement[],
+        arr2: IArticle[] | IMeasurement[]
+    ): boolean {
+        if (arr1.length !== arr2.length) {
+            for (let i = 0; i < arr1.length; i++) {
+                if (arr1[i] !== arr2[i]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public render() {
