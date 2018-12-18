@@ -3,7 +3,7 @@ import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
 import { IView } from './types';
 
-export class View implements IObserver, IView {
+export abstract class View implements IObserver, IView {
     private lastArticles: string;
     private lastMeasurements: string;
     private oldMessage: string;
@@ -11,7 +11,7 @@ export class View implements IObserver, IView {
     private readonly measurementsCount: number;
     private readonly tagName: string;
 
-    constructor(tagName: string, articlesCount: number, measurementsCount: number) {
+    protected constructor(tagName: string, articlesCount: number, measurementsCount: number) {
         this.tagName = tagName;
         this.articlesCount = articlesCount;
         this.measurementsCount = measurementsCount;
@@ -45,7 +45,7 @@ export class View implements IObserver, IView {
         const currentMessage = `<div class="${this.tagName}">\n${this.lastArticles}${
             this.lastMeasurements
         }</div>`;
-        if (currentMessage !== this.oldMessage) {
+        if (this.oldMessage !== currentMessage) {
             this.oldMessage = currentMessage;
             console.log(currentMessage);
         }
