@@ -4,21 +4,12 @@ import { WeatherState } from '../state/weather';
 import { IView } from './types';
 
 export abstract class View implements IObserver, IView {
-    private lastArticles: string;
-    private lastMeasurements: string;
-    private oldMessage: string;
-    private readonly articlesCount: number;
-    private readonly measurementsCount: number;
-    private readonly tagName: string;
-
-    protected constructor(tagName: string, articlesCount: number, measurementsCount: number) {
-        this.tagName = tagName;
-        this.articlesCount = articlesCount;
-        this.measurementsCount = measurementsCount;
-        this.oldMessage = '';
-        this.lastArticles = '';
-        this.lastMeasurements = '';
-    }
+    protected abstract articlesCount: number;
+    protected abstract measurementsCount: number;
+    protected abstract tagName: string;
+    private lastArticles: string = '';
+    private lastMeasurements: string = '';
+    private oldMessage: string = '';
 
     public update(observable: IObservable): void {
         if (observable instanceof NewsState) {
