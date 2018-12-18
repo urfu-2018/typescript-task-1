@@ -25,30 +25,31 @@ export class View implements IObserver, IView {
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
             this.lastArticles = (observable as NewsState).getArticles().splice(-this.articlesCount);
-        }
-        if (observable instanceof WeatherState) {
+        } else if (observable instanceof WeatherState) {
             this.lastMeasurements = (observable as WeatherState)
                 .getMeasurements()
                 .slice(-this.measurementsCount);
+        } else {
+            throw new TypeError();
         }
         this.render();
     }
 
     public render(): void {
-        const articlesStr = this.lastArticles.reduce(
-            (x, y) => x + `[${y.time}] ${y.category} - ${y.title}\n`,
-            ''
-        );
-        const measurementStr = this.lastMeasurements.reduce(
-            (x, y) => x + `[${y.time}] ${y.temperature} C, ${y.pressure} P, ${y.humidity} U\n`,
-            ''
-        );
-        const currentMessage = `<div class="${
-            this.tagName
-        }">\n${articlesStr}${measurementStr}</div>`;
+        const currentMessage = this.getMessage();
         if (currentMessage !== this.oldMessage) {
             this.oldMessage = currentMessage;
             console.log(currentMessage);
         }
+    }
+
+    private getMessage(): string {
+        const articlesStr = this.lastArticles
+            .map(x => `[${x.time}] ${x.category} - ${x.title}\n`)
+            .join('');
+        const measurementStr = this.lastMeasurements
+            .map(x => `[${x.time}] ${x.temperature} C, ${x.pressure} P, ${x.humidity} U\n`)
+            .join('');
+        return `<div class="${this.tagName}">\n${articlesStr}${measurementStr}</div>`;
     }
 }
