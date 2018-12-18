@@ -1,21 +1,7 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
-import { ViewUpdater } from './viewUpdater';
+import { View } from './view';
 
-export class DesktopView implements IObserver, IView {
-    private viewUpdater: ViewUpdater;
-
+export class DesktopView extends View {
     constructor() {
-        this.viewUpdater = new ViewUpdater('desktop', 3, 2);
-    }
-
-    public update(observable: IObservable) {
-        if (this.viewUpdater.update(observable)) {
-            this.render();
-        }
-    }
-
-    public render() {
-        console.log(this.viewUpdater.getInfo());
+        super('desktop', 3, 2);
     }
 }

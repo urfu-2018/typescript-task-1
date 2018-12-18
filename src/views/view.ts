@@ -1,10 +1,12 @@
-import { IObservable } from '../utils/observable/types';
+import { IObservable, IObserver } from '../utils/observable/types';
 import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
+import { IView } from './types';
 
-export class ViewUpdater {
+export class View implements IObserver, IView {
     private lastArticles: string;
     private lastMeasurements: string;
+    private oldMessage: string;
     private readonly articlesCount: number;
     private readonly measurementsCount: number;
     private readonly tagName: string;
@@ -13,13 +15,12 @@ export class ViewUpdater {
         this.tagName = tagName;
         this.articlesCount = articlesCount;
         this.measurementsCount = measurementsCount;
+        this.oldMessage = '';
         this.lastArticles = '';
         this.lastMeasurements = '';
     }
 
-    public update(observable: IObservable): boolean {
-        const oldArticles = this.lastArticles.slice(0);
-        const oldMeasurements = this.lastMeasurements.slice(0);
+    public update(observable: IObservable) {
         if (observable instanceof NewsState) {
             const articles = (observable as NewsState).getArticles().splice(-this.articlesCount);
             this.lastArticles = articles.reduce(
@@ -36,10 +37,16 @@ export class ViewUpdater {
                 ''
             );
         }
-        return oldArticles !== this.lastArticles || oldMeasurements !== this.lastMeasurements;
+        this.render();
     }
 
-    public getInfo(): string {
-        return `<div class="${this.tagName}">\n${this.lastArticles}${this.lastMeasurements}</div>`;
+    public render(): void {
+        const currentMessage = `<div class="${this.tagName}">\n${this.lastArticles}${
+            this.lastMeasurements
+        }</div>`;
+        if (currentMessage !== this.oldMessage) {
+            this.oldMessage = currentMessage;
+            console.log(this.oldMessage);
+        }
     }
 }
