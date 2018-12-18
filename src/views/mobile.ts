@@ -1,40 +1,47 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
-import { articleToString, IArticle, INewsState } from '../state/news/types';
-import { measurementToString, IMeasurement, IWeatherState } from '../state/weather/types';
+import { IArticle } from '../state/news/types';
+import { articleToString, measurementToString } from '../utils/formatters';
+import { IMeasurement } from '../state/weather/types';
+import { NewsState } from '../state/news';
+import { WeatherState } from '../state/weather';
+import { articlesChanged, measurementsChanged } from './comparer';
 
 export class MobileView implements IObserver, IView {
-    private static isInstanceOfINewsState(obj: any): obj is INewsState {
-        return 'getArticles' in obj;
-    }
-
-    private static isInstanceOfIWeatherState(obj: any): obj is IWeatherState {
-        return 'getMeasurements' in obj;
-    }
-
-    private news: IArticle[] = [];
-    private weatherReports: IMeasurement[] = [];
+    private static readonly NewsAmount = 1;
+    private static readonly MeasurementsAmount = 1;
+    private articles: IArticle[] = [];
+    private measurements: IMeasurement[] = [];
 
     public update(observable: IObservable) {
-        if (MobileView.isInstanceOfINewsState(observable)) {
-            this.news = (observable as INewsState).getArticles();
-        } else if (MobileView.isInstanceOfIWeatherState(observable)) {
-            this.weatherReports = (observable as IWeatherState).getMeasurements();
+        if (observable instanceof NewsState) {
+            const incomingArticles = observable.getArticles();
+            const relevantArticles = incomingArticles.slice(
+                Math.max(incomingArticles.length - MobileView.NewsAmount, 0)
+            );
+            if (!articlesChanged(this.articles, relevantArticles)) {
+                return;
+            }
+            this.articles = relevantArticles;
+        } else if (observable instanceof WeatherState) {
+            const incomingMeasurements = observable.getMeasurements();
+            const relevantMeasurements = incomingMeasurements.slice(
+                Math.max(incomingMeasurements.length - MobileView.MeasurementsAmount, 0)
+            );
+            if (!measurementsChanged(this.measurements, relevantMeasurements)) {
+                return;
+            }
+            this.measurements = relevantMeasurements;
         } else {
             throw new TypeError('Unsupported event type');
         }
+
         this.render();
     }
 
     public render() {
-        const articles = this.news
-            .slice(this.news.length - 1)
-            .map(article => articleToString(article));
-        const reports = this.weatherReports
-            .slice(this.weatherReports.length - 1)
-            .map(report => measurementToString(report));
-        const rendered =
-            '<div class="mobile">\n' + articles.concat(reports).join('\n') + '\n</div>';
-        console.log(rendered);
+        const articles = this.articles.map(article => articleToString(article));
+        const reports = this.measurements.map(report => measurementToString(report));
+        console.log(`<div class="mobile">\n${articles.concat(reports).join('\n')}\n</div>`);
     }
 }
