@@ -9,3 +9,7 @@ export interface IWeatherState {
     getMeasurements(): IMeasurement[];
     setMeasurements(measurements: IMeasurement[]): void;
 }
+
+export function isIWeatherState(obj: any): obj is IWeatherState {
+    return obj.getMeasurements !== undefined && obj.setMeasurements !== undefined;
+}

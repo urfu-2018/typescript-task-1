@@ -8,3 +8,7 @@ export interface INewsState {
     getArticles(): IArticle[];
     setArticles(articles: IArticle[]): void;
 }
+
+export function isINewsState(obj: any): obj is INewsState {
+    return obj.getArticles !== undefined && obj.setArticles !== undefined;
+}
