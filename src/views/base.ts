@@ -6,14 +6,6 @@ import { WeatherState } from '../state/weather/index';
 import { IMeasurement } from '../state/weather/types';
 
 export abstract class BaseView implements IObserver, IView {
-    protected abstract articlesCount: number;
-    protected abstract measurementsCount: number;
-    protected abstract typeName: string;
-
-    private previousMarkup: string = '';
-    private articles: IArticle[] = [];
-    private measurements: IMeasurement[] = [];
-
     private static renderArticle(item: IArticle) {
         return `[${item.time}] ${item.category} - ${item.title}`;
     }
@@ -21,6 +13,14 @@ export abstract class BaseView implements IObserver, IView {
     private static renderMeasurement(item: IMeasurement) {
         return `[${item.time}] ${item.temperature} C, ${item.pressure} P, ${item.humidity} U`;
     }
+
+    protected abstract articlesCount: number;
+    protected abstract measurementsCount: number;
+    protected abstract typeName: string;
+
+    private previousMarkup: string = '';
+    private articles: IArticle[] = [];
+    private measurements: IMeasurement[] = [];
 
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
