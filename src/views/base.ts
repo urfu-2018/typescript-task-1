@@ -4,6 +4,7 @@ import { isIWeatherState, IMeasurement } from '../state/weather/types';
 import { IView } from './types';
 import { Formatter } from './formatters';
 import { addNewLineIfNotEmpty, formatArticle, formatList, formatMeasurement } from './formatters';
+import { isShallowEqual } from '../utils';
 
 export class BaseView implements IObserver, IView {
     public readonly name: string;
@@ -21,9 +22,19 @@ export class BaseView implements IObserver, IView {
 
     public update(observable: IObservable) {
         if (isIWeatherState(observable)) {
-            this.measurements = observable.getMeasurements().slice(-this.measurementsShowLimit);
+            const measurements = observable.getMeasurements().slice(-this.measurementsShowLimit);
+            if (isShallowEqual(measurements, this.measurements)) {
+                return;
+            }
+
+            this.measurements = measurements;
         } else if (isINewsState(observable)) {
-            this.articles = observable.getArticles().slice(-this.articlesShowLimit);
+            const articles = observable.getArticles().slice(-this.articlesShowLimit);
+            if (isShallowEqual(articles, this.articles)) {
+                return;
+            }
+
+            this.articles = articles;
         } else {
             throw new TypeError('incorrect event type');
         }
