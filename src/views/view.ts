@@ -23,7 +23,7 @@ export class View implements IObserver, IView {
 
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
-            this.lastArticles = (observable as NewsState).getArticles().splice(-this.articlesCount);
+            this.lastArticles = (observable as NewsState).getArticles().slice(-this.articlesCount);
         } else if (observable instanceof WeatherState) {
             this.lastMeasurements = (observable as WeatherState)
                 .getMeasurements()
