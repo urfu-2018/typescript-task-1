@@ -6,7 +6,7 @@ export class DesktopView implements IObserver, IView {
     private viewUpdater: ViewUpdater;
 
     constructor() {
-        this.viewUpdater = new ViewUpdater('desktop', 1, 1);
+        this.viewUpdater = new ViewUpdater('desktop', 3, 2);
     }
 
     public update(observable: IObservable) {
