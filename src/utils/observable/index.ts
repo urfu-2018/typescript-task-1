@@ -1,18 +1,18 @@
 import { IObservable, IObserver } from './types';
 
 export class Observable implements IObservable {
-    private observers: IObserver[];
+    private observers: Set<IObserver>;
 
     constructor() {
-        this.observers = [];
+        this.observers = new Set<IObserver>();
     }
 
     public addObserver(observer: IObserver) {
-        this.observers.push(observer);
+        this.observers.add(observer);
     }
 
     public deleteObserver(observer: IObserver) {
-        this.observers = this.observers.filter(x => x !== observer);
+        this.observers.delete(observer);
     }
 
     public notifyObservers() {
