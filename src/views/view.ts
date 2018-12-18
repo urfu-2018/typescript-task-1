@@ -20,15 +20,14 @@ export class View implements IObserver, IView {
         this.lastMeasurements = '';
     }
 
-    public update(observable: IObservable) {
+    public update(observable: IObservable): void {
         if (observable instanceof NewsState) {
             const articles = (observable as NewsState).getArticles().splice(-this.articlesCount);
             this.lastArticles = articles.reduce(
                 (x, y) => x + `[${y.time}] ${y.category} - ${y.title}\n`,
                 ''
             );
-        }
-        if (observable instanceof WeatherState) {
+        } else if (observable instanceof WeatherState) {
             const measurements = (observable as WeatherState)
                 .getMeasurements()
                 .slice(-this.measurementsCount);
@@ -36,6 +35,8 @@ export class View implements IObserver, IView {
                 (x, y) => x + `[${y.time}] ${y.temperature} C, ${y.pressure} P, ${y.humidity} U\n`,
                 ''
             );
+        } else {
+            throw new TypeError();
         }
         this.render();
     }
@@ -46,7 +47,7 @@ export class View implements IObserver, IView {
         }</div>`;
         if (currentMessage !== this.oldMessage) {
             this.oldMessage = currentMessage;
-            console.log(this.oldMessage);
+            console.log(currentMessage);
         }
     }
 }
