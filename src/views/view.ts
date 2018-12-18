@@ -8,7 +8,7 @@ import { IMeasurement } from '../state/weather/types';
 export class View implements IObserver, IView {
     private lastArticles: IArticle[];
     private lastMeasurements: IMeasurement[];
-    private oldMessage: string;
+    private oldMessage?: string;
     private readonly articlesCount: number;
     private readonly measurementsCount: number;
     private readonly tagName: string;
@@ -17,7 +17,6 @@ export class View implements IObserver, IView {
         this.tagName = tagName;
         this.articlesCount = articlesCount;
         this.measurementsCount = measurementsCount;
-        this.oldMessage = '';
         this.lastArticles = [];
         this.lastMeasurements = [];
     }
