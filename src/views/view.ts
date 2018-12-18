@@ -50,6 +50,6 @@ export class View implements IObserver, IView {
         const measurementStr = this.lastMeasurements
             .map(x => `[${x.time}] ${x.temperature} C, ${x.pressure} P, ${x.humidity} U\n`)
             .join('');
-        return `<div class="${this.tagName}">\n${articlesStr}${measurementStr}</div>`;
+        return `<div class="${this.tagName}">\n${articlesStr + measurementStr}</div>`;
     }
 }
