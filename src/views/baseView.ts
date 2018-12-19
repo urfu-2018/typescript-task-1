@@ -31,8 +31,13 @@ export class BaseView implements IObserver, IView {
     }
 
     public render(): void {
-        const news = this.articles.slice(0, this.newsLimit).map(BaseView.prepareNews);
-        const weather = this.measurements.slice(0, this.weatherLimit).map(BaseView.prepareWeather);
+        const news = this.articles
+            .slice(this.articles.length - this.newsLimit)
+            .map(BaseView.prepareNews);
+        const weather = this.measurements
+            .slice(this.articles.length - this.weatherLimit)
+            .map(BaseView.prepareWeather);
+
         const toRender = news.concat(weather).join('\n');
         const result = `<div class="${this.name}">\n${toRender}\n</div>`;
 
