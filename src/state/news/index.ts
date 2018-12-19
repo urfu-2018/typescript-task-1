@@ -2,11 +2,13 @@ import { Observable } from '../../utils/observable';
 import { IArticle, INewsState } from './types';
 
 export class NewsState extends Observable implements INewsState {
+    private news: IArticle[] = [];
     public getArticles() {
-        return [];
+        return [...this.news];
     }
 
     public setArticles(articles: IArticle[]) {
-        throw new Error('Not implemented');
+        this.news = articles;
+        this.notifyObservers();
     }
 }

@@ -2,11 +2,13 @@ import { IMeasurement, IWeatherState } from './types';
 import { Observable } from '../../utils/observable';
 
 export class WeatherState extends Observable implements IWeatherState {
+    private weathers: IMeasurement[] = [];
     public getMeasurements() {
-        return [];
+        return [...this.weathers];
     }
 
     public setMeasurements(measurements: IMeasurement[]) {
-        throw new Error('Not implemented');
+        this.weathers = measurements;
+        this.notifyObservers();
     }
 }
