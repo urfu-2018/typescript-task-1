@@ -1,25 +1,7 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
-import { IMeasurement } from '../state/weather/types';
-import { IArticle } from '../state/news/types';
-import { WeatherState } from '../state/weather';
-import { NewsState } from '../state/news';
+import { IObserver } from '../utils/observable/types';
+import { GlobalView } from './globalView';
 
-export class MobileView implements IObserver, IView {
-    private weather: IMeasurement[] = [];
-    private news: IArticle[] = [];
-
-    public update(observable: IObservable) {
-        if (observable instanceof WeatherState) {
-            this.weather = (observable as WeatherState).getMeasurements();
-        } else if (observable instanceof NewsState) {
-            const newState = observable as NewsState;
-            this.news = newState.getArticles();
-        }
-
-        this.render();
-    }
-
+export class MobileView extends GlobalView implements IObserver {
     public render() {
         let content = `<div class="mobile">\n`;
         if (this.news.length > 0) {
