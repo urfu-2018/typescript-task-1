@@ -12,9 +12,8 @@ export class DesktopView extends GlobalView implements IObserver {
 
         const weatherCount = Math.min(2, this.weather.length);
         for (let i = this.weather.length - weatherCount; i < this.weather.length; i++) {
-            const weather = this.weather[i];
-            // tslint:disable-next-line
-            content += `[${weather.time}] ${weather.temperature} C, ${weather.pressure} P, ${weather.humidity} U\n`;
+            const w = this.weather[i];
+            content += `[${w.time}] ${w.temperature} C, ${w.pressure} P, ${w.humidity} U\n`;
         }
         content += `</div>`;
 

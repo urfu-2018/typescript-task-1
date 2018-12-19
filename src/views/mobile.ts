@@ -10,9 +10,8 @@ export class MobileView extends GlobalView implements IObserver {
         }
 
         if (this.weather.length > 0) {
-            const weather = this.weather[this.weather.length - 1];
-            // tslint:disable-next-line
-            content += `[${weather.time}] ${weather.temperature} C, ${weather.pressure} P, ${weather.humidity} U\n`;
+            const w = this.weather[this.weather.length - 1];
+            content += `[${w.time}] ${w.temperature} C, ${w.pressure} P, ${w.humidity} U\n`;
         }
 
         content += `</div>`;
