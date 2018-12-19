@@ -17,10 +17,6 @@ export abstract class BaseView implements IObserver, IView {
         return `[${article.time}] ${article.category} - ${article.title}`;
     }
 
-    private static deepEqual(object1: any, object2: any): boolean {
-        return object1 === object2 || JSON.stringify(object1) === JSON.stringify(object2);
-    }
-
     private static getSortedByTime<T extends IArticle | IMeasurement>(objects: T[]): T[] {
         const objectsCopy = objects.slice();
         objectsCopy.sort((first, second) => {
@@ -37,34 +33,28 @@ export abstract class BaseView implements IObserver, IView {
     protected lastArticles: IArticle[];
     private readonly showMeasurements: number;
     private readonly showArticles: number;
+    private lastRendered: string;
 
     protected constructor(showMeasurements: number, showArticles: number) {
         this.showMeasurements = showMeasurements;
         this.showArticles = showArticles;
         this.lastMeasurements = [];
         this.lastArticles = [];
+        this.lastRendered = '';
     }
 
     public update(observable: IObservable) {
-        let newMeasurements = this.lastMeasurements;
-        let newArticles = this.lastArticles;
         if (observable instanceof WeatherState) {
-            newMeasurements = BaseView.getSortedByTime(observable.getMeasurements());
-            newMeasurements = newMeasurements.slice(-this.showMeasurements);
+            this.lastMeasurements = BaseView.getSortedByTime(observable.getMeasurements()).slice(
+                -this.showMeasurements
+            );
         } else if (observable instanceof NewsState) {
-            newArticles = BaseView.getSortedByTime(observable.getArticles());
-            newArticles = newArticles.slice(-this.showArticles);
+            this.lastArticles = BaseView.getSortedByTime(observable.getArticles()).slice(
+                -this.showArticles
+            );
         } else {
             throw new Error('Unknown IObservable type');
         }
-        if (
-            BaseView.deepEqual(newMeasurements, this.lastMeasurements) &&
-            BaseView.deepEqual(newArticles, this.lastArticles)
-        ) {
-            return;
-        }
-        this.lastArticles = newArticles;
-        this.lastMeasurements = newMeasurements;
         this.render();
     }
 
@@ -78,7 +68,11 @@ export abstract class BaseView implements IObserver, IView {
             lines.push(BaseView.renderArticle(article));
         }
         lines.push(`</div>`);
-        console.log(lines.join('\n'));
+        const rendered = lines.join('\n');
+        if (rendered !== this.lastRendered) {
+            this.lastRendered = rendered;
+            console.log(rendered);
+        }
     }
 
     protected abstract getViewName(): string;
