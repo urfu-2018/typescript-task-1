@@ -18,9 +18,5 @@ export function formatList<T>(list: T[], formatter: Formatter<T>): string {
 }
 
 export function addNewLineIfNotEmpty(str: string): string {
-    if (str) {
-        return `${str}\n`;
-    }
-
-    return str;
+    return str.length > 0 ? `${str}\n` : '';
 }

@@ -1,4 +1,4 @@
-function isObjShallowEqual(a: {}, b: {}): boolean {
+function isObjShallowEqual(a: { [index: string]: any }, b: { [index: string]: any }): boolean {
     const aKeys = Object.keys(a);
     const bKeys = Object.keys(b);
 
@@ -7,7 +7,6 @@ function isObjShallowEqual(a: {}, b: {}): boolean {
     }
 
     for (const key of aKeys) {
-        // @ts-ignore
         if (a[key] !== b[key]) {
             return false;
         }

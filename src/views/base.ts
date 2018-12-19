@@ -7,18 +7,16 @@ import { addNewLineIfNotEmpty, formatArticle, formatList, formatMeasurement } fr
 import { isShallowEqual } from '../utils';
 
 export class BaseView implements IObserver, IView {
-    public readonly name: string;
-    public readonly articlesShowLimit: number;
-    public readonly measurementsShowLimit: number;
-
     private articles: IArticle[] = [];
     private measurements: IMeasurement[] = [];
 
-    constructor(name: string, articlesShowLimit: number, measurementsShowLimit: number) {
-        this.name = name;
-        this.articlesShowLimit = articlesShowLimit;
-        this.measurementsShowLimit = measurementsShowLimit;
-    }
+    constructor(
+        public readonly name: string,
+        public readonly articlesShowLimit: number,
+        public readonly measurementsShowLimit: number,
+        private articleFormatter: Formatter<IArticle> = formatArticle,
+        private measurementFormatter: Formatter<IMeasurement> = formatMeasurement
+    ) {}
 
     public update(observable: IObservable) {
         if (isIWeatherState(observable)) {
@@ -42,12 +40,9 @@ export class BaseView implements IObserver, IView {
         this.render();
     }
 
-    public render(
-        articleFormatter: Formatter<IArticle> = formatArticle,
-        measurementFormatter: Formatter<IMeasurement> = formatMeasurement
-    ) {
-        let formattedArticles = formatList(this.articles, articleFormatter);
-        let formattedMeasurements = formatList(this.measurements, measurementFormatter);
+    public render() {
+        let formattedArticles = formatList(this.articles, this.articleFormatter);
+        let formattedMeasurements = formatList(this.measurements, this.measurementFormatter);
 
         formattedArticles = addNewLineIfNotEmpty(formattedArticles);
         formattedMeasurements = addNewLineIfNotEmpty(formattedMeasurements);
