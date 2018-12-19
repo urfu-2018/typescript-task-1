@@ -16,8 +16,6 @@ export class DesktopView implements IObserver, IView {
         } else if (observable instanceof NewsState) {
             const newState = observable as NewsState;
             this.news = newState.getArticles();
-        } else {
-            throw new TypeError();
         }
 
         this.render();
