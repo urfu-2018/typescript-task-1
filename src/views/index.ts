@@ -2,22 +2,27 @@ import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
 import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
+import { IMeasurement } from '../state/weather/types';
+import { IArticle } from '../state/news/types';
 
 export abstract class View implements IObserver, IView {
     protected abstract measurementsCount: number;
     protected abstract articlesCount: number;
     protected abstract deviceType: string;
 
+    private measurements: IMeasurement[] = [];
+    private articles: IArticle[] = [];
+
     private content: string = '';
 
     public update(observable: IObservable) {
-        let newContent = '';
         if (observable instanceof WeatherState) {
-            newContent = this.getWeatherContent(observable);
+            this.measurements = this.getMeasurements(observable);
         } else if (observable instanceof NewsState) {
-            newContent = this.getNewsContent(observable);
+            this.articles = this.getArticles(observable);
         }
 
+        const newContent = this.getContent();
         if (newContent !== this.content) {
             this.content = newContent;
             this.render();
@@ -28,23 +33,29 @@ export abstract class View implements IObserver, IView {
         console.log(`<div class="${this.deviceType}">\n${this.content}\n</div>`);
     }
 
-    private getNewsContent(newsState: NewsState): string {
-        return newsState
-            .getArticles()
-            .slice(-this.articlesCount)
-            .map(article => `[${article.time}] ${article.category} - ${article.title}`)
-            .join('\n');
+    private getContent(): string {
+        const articlesContents = this.articles.map(this.renderArticle);
+        const measurementsContents = this.measurements.map(this.renderMeasurement);
+
+        return [...articlesContents, ...measurementsContents].join('\n');
     }
 
-    private getWeatherContent(weatherState: WeatherState): string {
-        return weatherState
-            .getMeasurements()
-            .slice(-this.measurementsCount)
-            .map(
-                measurement =>
-                    `[${measurement.time}] ${measurement.temperature} C,` +
-                    ` ${measurement.pressure} P, ${measurement.humidity} U`
-            )
-            .join('\n');
+    private getArticles(newsState: NewsState): IArticle[] {
+        return newsState.getArticles().slice(-this.articlesCount);
+    }
+
+    private getMeasurements(weatherState: WeatherState): IMeasurement[] {
+        return weatherState.getMeasurements().slice(-this.measurementsCount);
+    }
+
+    private renderArticle(article: IArticle): string {
+        return `[${article.time}] ${article.category} - ${article.title}`;
+    }
+
+    private renderMeasurement(measurement: IMeasurement): string {
+        return (
+            `[${measurement.time}] ${measurement.temperature} C,` +
+            ` ${measurement.pressure} P, ${measurement.humidity} U`
+        );
     }
 }
