@@ -1,15 +1,23 @@
 import { IObservable, IObserver } from './types';
 
 export class Observable implements IObservable {
+    private readonly observers: Set<IObserver>;
+
+    public constructor() {
+        this.observers = new Set<IObserver>();
+    }
+
     public addObserver(observer: IObserver) {
-        throw new Error('Not implemented');
+        this.observers.add(observer);
     }
 
     public deleteObserver(observer: IObserver) {
-        throw new Error('Not implemented');
+        this.observers.delete(observer);
     }
 
     public notifyObservers() {
-        throw new Error('Not implemented');
+        for (const observer of this.observers) {
+            observer.update(this);
+        }
     }
 }
