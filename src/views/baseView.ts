@@ -61,11 +61,11 @@ export abstract class BaseView implements IObserver, IView {
     public render() {
         const lines = [];
         lines.push(`<div class="${this.getViewName()}">`);
-        for (const measurement of this.lastMeasurements) {
-            lines.push(BaseView.renderMeasurement(measurement));
-        }
         for (const article of this.lastArticles) {
             lines.push(BaseView.renderArticle(article));
+        }
+        for (const measurement of this.lastMeasurements) {
+            lines.push(BaseView.renderMeasurement(measurement));
         }
         lines.push(`</div>`);
         const rendered = lines.join('\n');
