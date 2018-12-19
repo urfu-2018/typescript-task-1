@@ -1,12 +1,7 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
+import { ViewObserver } from './general';
 
-export class DesktopView implements IObserver, IView {
-    public update(observable: IObservable) {
-        throw new Error('Not implemented');
-    }
-
-    public render() {
-        throw new Error('Not implemented');
+export class DesktopView extends ViewObserver {
+    constructor() {
+        super(3, 2, 'desktop');
     }
 }
