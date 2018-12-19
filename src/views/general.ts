@@ -36,7 +36,7 @@ export class ViewObserver implements IView, IObserver {
     }
 
     public update(observable: IObservable): void {
-        let shouldRender = false;
+        let shouldRender = true;
         if (observable instanceof WeatherState) {
             const prevLines = this.getLastWeatherLines(this.weatherMeasurmentsToShowAmount);
             this.updateWeatherLines(observable.getMeasurements());
