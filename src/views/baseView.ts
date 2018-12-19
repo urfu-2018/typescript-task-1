@@ -38,8 +38,8 @@ export class BaseView implements IObserver, IView {
 
         if (this.prevRender !== toRender) {
             console.log(result);
+            this.prevRender = toRender;
         }
-        this.prevRender = toRender;
     }
 
     public update(observable: IObservable): void {
