@@ -15,15 +15,27 @@ export class MobileView implements IObserver, IView {
     private weather: IMeasurement[] = [];
 
     public update(observable: IObservable) {
+        let needRender = false;
+
         if (observable instanceof NewsState) {
-            this.news = observable.getArticles();
+            const articles = observable.getArticles();
+            if (articles !== this.news) {
+                this.news = observable.getArticles();
+                needRender = true;
+            }
         }
 
         if (observable instanceof WeatherState) {
-            this.weather = observable.getMeasurements();
+            const measurements = observable.getMeasurements();
+            if (measurements !== this.weather) {
+                this.weather = observable.getMeasurements();
+                needRender = true;
+            }
         }
 
-        this.render();
+        if (needRender) {
+            this.render();
+        }
     }
 
     public render() {
