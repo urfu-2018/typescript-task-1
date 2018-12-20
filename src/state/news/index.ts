@@ -9,5 +9,6 @@ export class NewsState extends Observable implements INewsState {
 
     public setArticles(articles: IArticle[]) {
         this.articles = articles;
+        this.notifyObservers();
     }
 }
