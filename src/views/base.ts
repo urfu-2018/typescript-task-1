@@ -4,11 +4,11 @@ import { isIWeatherState, IMeasurement } from '../state/weather/types';
 import { IView } from './types';
 import { Formatter } from './formatters';
 import { addNewLineIfNotEmpty, formatArticle, formatList, formatMeasurement } from './formatters';
-import { isShallowEqual } from '../utils';
 
 export class BaseView implements IObserver, IView {
-    private articles: IArticle[] = [];
-    private measurements: IMeasurement[] = [];
+    private lastArticles: IArticle[] = [];
+    private lastMeasurements: IMeasurement[] = [];
+    private lastRenderedData?: string;
 
     constructor(
         public readonly name: string,
@@ -20,35 +20,31 @@ export class BaseView implements IObserver, IView {
 
     public update(observable: IObservable) {
         if (isIWeatherState(observable)) {
-            const measurements = observable.getMeasurements().slice(-this.measurementsShowLimit);
-            if (isShallowEqual(measurements, this.measurements)) {
-                return;
-            }
-
-            this.measurements = measurements;
+            this.lastMeasurements = observable.getMeasurements().slice(-this.measurementsShowLimit);
         } else if (isINewsState(observable)) {
-            const articles = observable.getArticles().slice(-this.articlesShowLimit);
-            if (isShallowEqual(articles, this.articles)) {
-                return;
-            }
-
-            this.articles = articles;
+            this.lastArticles = observable.getArticles().slice(-this.articlesShowLimit);
         } else {
             throw new TypeError('incorrect event type');
         }
 
-        this.render();
+        const newData = this.getDataRepresentation();
+        if (newData !== this.lastRenderedData) {
+            this.lastRenderedData = newData;
+            this.render();
+        }
     }
 
     public render() {
-        let formattedArticles = formatList(this.articles, this.articleFormatter);
-        let formattedMeasurements = formatList(this.measurements, this.measurementFormatter);
+        console.log(this.lastRenderedData);
+    }
+
+    private getDataRepresentation(): string {
+        let formattedArticles = formatList(this.lastArticles, this.articleFormatter);
+        let formattedMeasurements = formatList(this.lastMeasurements, this.measurementFormatter);
 
         formattedArticles = addNewLineIfNotEmpty(formattedArticles);
         formattedMeasurements = addNewLineIfNotEmpty(formattedMeasurements);
 
-        console.log(
-            `<div class="${this.name}">\n${formattedArticles}${formattedMeasurements}</div>`
-        );
+        return `<div class="${this.name}">\n${formattedArticles}${formattedMeasurements}</div>`;
     }
 }
