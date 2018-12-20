@@ -1,12 +1,14 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
+import { RenderDataContainer, RenderDataProvider } from './renderData';
 
-export class DesktopView implements IObserver, IView {
+export class DesktopView extends RenderDataContainer implements IObserver, IView {
     public update(observable: IObservable) {
-        throw new Error('Not implemented');
+        this.renderData += RenderDataProvider.provide(observable, 3, 2);
+        this.render();
     }
 
     public render() {
-        throw new Error('Not implemented');
+        console.log(`<div class="desktop">\n${this.renderData}</div>`);
     }
 }

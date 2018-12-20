@@ -1,15 +1,23 @@
 import { IObservable, IObserver } from './types';
 
 export class Observable implements IObservable {
+    private readonly observers: IObserver[] = [];
+
     public addObserver(observer: IObserver) {
-        throw new Error('Not implemented');
+        this.observers.push(observer);
     }
 
     public deleteObserver(observer: IObserver) {
-        throw new Error('Not implemented');
+        const observerIndex = this.observers.indexOf(observer);
+        if (observerIndex < 0) {
+            return;
+        }
+        this.observers.splice(observerIndex, 1);
     }
 
     public notifyObservers() {
-        throw new Error('Not implemented');
+        this.observers.forEach(observer => {
+            observer.update(this);
+        });
     }
 }
