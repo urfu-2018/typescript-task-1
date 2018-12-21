@@ -18,11 +18,18 @@ export class DesktopView implements IObserver, IView {
         }
         if (observable instanceof WeatherState){
             this.measurements= observable.getMeasurements().slice(-2);
-            this.render;
+            this.render();
         }
     }
 
     public render() {
-        throw new Error('Not implemented');
+        const newContent = [
+            ...this.measurements.map(measurement => 
+                `[${measurement.time}] ${measurement.temperature} C, ${measurement.pressure} P, ${measurement.humidity} U`
+            ), 
+            ...this.articles.map(article => `[${article.time}] ${article.category} - ${article.title}`
+            )
+        ];
+        console.log(`<div class="mobile">\n${newContent.join('\n')}\n</div>`);
     }
 }
