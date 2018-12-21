@@ -41,6 +41,7 @@ export abstract class UpdatesRenderer implements IObserver, IView {
             console.log(result);
             this.prevRender = result;
         }
+        this.toRender = [];
     }
 
     private articleToString = (article: IArticle) =>
