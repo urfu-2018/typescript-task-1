@@ -1,9 +1,11 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
 import { Content } from './content';
+import { NewsState } from '../state/news';
+import { WeatherState } from '../state/weather';
 
 export class MobileView implements IObserver, IView {
-    private data: Set<IObservable> = new Set();
+    private data: Set<IObservable | NewsState | WeatherState> = new Set();
     private lastContent?: string;
 
     public update(observable: IObservable) {

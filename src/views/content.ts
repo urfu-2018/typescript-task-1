@@ -5,7 +5,7 @@ import { IArticle } from '../state/news/types';
 import { IMeasurement } from '../state/weather/types';
 
 export class Content {
-    private facts: Set<IObservable>;
+    private facts: Set<IObservable | WeatherState | NewsState>;
     private weatherCount: number = 0;
     private newsCount: number = 0;
     private news: string = '';
