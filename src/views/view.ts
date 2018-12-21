@@ -11,7 +11,7 @@ export abstract class View implements IObserver, IView {
     private news: IArticle[] = [];
     private countNews: number;
     private countMeasurements: number;
-    private rendition: string = '';
+    private rendition: string | undefined;
 
     protected constructor(countNews: number, countMeasurements: number, viewType: string) {
         this.countNews = countNews;
@@ -21,9 +21,11 @@ export abstract class View implements IObserver, IView {
 
     public update(observable: IObservable) {
         if (observable instanceof WeatherState) {
-            this.weather = (observable as WeatherState).getMeasurements();
+            const weatherState = observable as WeatherState;
+            this.weather = weatherState.getMeasurements();
         } else if (observable instanceof NewsState) {
-            this.news = (observable as NewsState).getArticles();
+            const newState = observable as NewsState;
+            this.news = newState.getArticles();
         } else {
             throw new TypeError();
         }
