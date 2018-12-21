@@ -56,7 +56,7 @@ export class View implements IObserver, IView {
     private tryUpdateWeather(observable: IObservable) {
         if (observable instanceof WeatherState) {
             const newItems = observable.getMeasurements().slice(-this.weatherLimit);
-            if (!this.areEquals(this.weather, newItems)) {
+            if (this.weather !== newItems) {
                 this.weather = newItems;
                 this.render();
             }
@@ -68,27 +68,12 @@ export class View implements IObserver, IView {
     private tryUpdateNews(observable: IObservable) {
         if (observable instanceof NewsState) {
             const newItems = observable.getArticles().slice(-this.newsLimit);
-            if (!this.areEquals(this.news, newItems)) {
+            if (this.news !== newItems) {
                 this.news = newItems;
                 this.render();
             }
             return true;
         }
         return false;
-    }
-
-    private areEquals<T>(a: T[], b: T[]) {
-        return this.firstInSecond(a, b) && this.firstInSecond(b, a);
-    }
-
-    private firstInSecond<T>(a: T[], b: T[]) {
-        let anyNewItem: boolean = false;
-        b.forEach(item => {
-            if (a.indexOf(item) === -1) {
-                anyNewItem = true;
-            }
-        });
-
-        return !anyNewItem;
     }
 }
