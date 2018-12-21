@@ -9,17 +9,17 @@ export interface IView {
 export class View implements IObserver, IView {
     private measurements: IMeasurement[] = [];
     private articles: IArticle[] = [];
-    private articleRightAmount = 0;
-    private measurementsRightAmount = 0;
+    private articleRenderAmount = 0;
+    private measurementRenderAmount = 0;
     private viewName = 'default';
 
     public constructor(
         articleRenderAmount: number,
-        measurementsRenderAmount: number,
+        measurementRenderAmount: number,
         viewName: string
     ) {
-        this.articleRightAmount = articleRenderAmount;
-        this.measurementsRightAmount = articleRenderAmount;
+        this.articleRenderAmount = articleRenderAmount;
+        this.measurementRenderAmount = measurementRenderAmount;
         this.viewName = viewName;
     }
 
@@ -38,10 +38,10 @@ export class View implements IObserver, IView {
     public render() {
         let content = `<div class="${this.viewName}">\n`;
         this.articles
-            .slice(-this.articleRightAmount)
+            .slice(-this.articleRenderAmount)
             .forEach(a => (content += ArticleToString(a) + '\n'));
         this.measurements
-            .slice(-this.measurementsRightAmount)
+            .slice(-this.measurementRenderAmount)
             .forEach(m => (content += MeasurementToString(m) + '\n'));
         content += `</div>`;
 
