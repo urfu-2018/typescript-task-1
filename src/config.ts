@@ -1,1 +1,1 @@
-export const isStar = true;
+export const isStar = false;
