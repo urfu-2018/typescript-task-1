@@ -32,11 +32,11 @@ export class DataViewer {
             }
         }
 
-        if (this.previousContent === content) {
+        if (this.previousContent !== content) {
+            this.previousContent = content;
+        } else {
             this.flag = false;
         }
-
-        this.previousContent = content;
 
         return content;
     }
