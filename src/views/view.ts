@@ -1,4 +1,4 @@
-import { IObservable, IObserver } from '../utils/observable/types';
+﻿import { IObservable, IObserver } from '../utils/observable/types';
 import { IMeasurement } from '../state/weather/types';
 import { IArticle } from '../state/news/types';
 import { WeatherState } from '../state/weather';
@@ -26,10 +26,10 @@ export class View implements IObserver, IView {
     public update(observable: IObservable) {
         for (const i in this.updateMethods) {
             if (this.updateMethods[i](observable)) {
+                this.render();
                 return;
             }
         }
-        throw new Error('Unknown IObservable implementation');
     }
 
     public render() {
@@ -58,9 +58,8 @@ export class View implements IObserver, IView {
             const newItems = observable.getMeasurements().slice(-this.weatherLimit);
             if (this.weather !== newItems) {
                 this.weather = newItems;
-                this.render();
+                return true;
             }
-            return true;
         }
         return false;
     }
@@ -70,9 +69,8 @@ export class View implements IObserver, IView {
             const newItems = observable.getArticles().slice(-this.newsLimit);
             if (this.news !== newItems) {
                 this.news = newItems;
-                this.render();
+                return true;
             }
-            return true;
         }
         return false;
     }
