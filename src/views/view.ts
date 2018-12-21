@@ -69,9 +69,9 @@ export class View implements IObserver, IView {
     }
 
     private updateCheckNew<T>(queue: Queue<T>, items: T[]) {
-        let oldItems: T[] = queue.getAll();
+        const oldItems: T[] = queue.getAll();
         queue.enqueueAll(items);
-        let newItems: T[] = queue.getAll();
+        const newItems: T[] = queue.getAll();
 
         if (oldItems !== newItems) {
             this.render();
