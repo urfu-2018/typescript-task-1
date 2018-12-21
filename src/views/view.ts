@@ -14,8 +14,8 @@ export class View implements IObserver, IView {
     private readonly className: string;
     private readonly newsLimit: number;
     private readonly weatherLimit: number;
-    private news: IArticle[] = new Array();
-    private weather: IMeasurement[] = new Array();
+    private news: string[] = new Array();
+    private weather: string[] = new Array();
 
     constructor(newsCount: number, weatherCount: number, className: string) {
         this.weatherLimit = weatherCount;
@@ -26,19 +26,16 @@ export class View implements IObserver, IView {
     public update(observable: IObservable) {
         for (const i in this.updateMethods) {
             if (this.updateMethods[i](observable)) {
+                this.render();
                 return;
             }
         }
-        throw new Error('Unknown IObservable implementation');
     }
 
     public render() {
-        const news: string[] = this.news.map(this.articleToString);
-        const measures: string[] = this.weather.map(this.measureToString);
-
         const text: string = [`<div class="${this.className}">`]
-            .concat(news)
-            .concat(measures)
+            .concat(this.news)
+            .concat(this.weather)
             .concat(['</div>'])
             .join('\n');
 
@@ -55,39 +52,33 @@ export class View implements IObserver, IView {
 
     private tryUpdateWeather(observable: IObservable) {
         if (observable instanceof WeatherState) {
-            const newItems = observable.getMeasurements().slice(-this.weatherLimit);
+            const newItems = observable
+                .getMeasurements()
+                .slice(-this.weatherLimit)
+                .map(this.measureToString);
             if (!this.areEquals(this.weather, newItems)) {
                 this.weather = newItems;
-                this.render();
+                return true;
             }
-            return true;
         }
         return false;
     }
 
     private tryUpdateNews(observable: IObservable) {
         if (observable instanceof NewsState) {
-            const newItems = observable.getArticles().slice(-this.newsLimit);
+            const newItems = observable
+                .getArticles()
+                .slice(-this.newsLimit)
+                .map(this.articleToString);
             if (!this.areEquals(this.news, newItems)) {
                 this.news = newItems;
-                this.render();
+                return true;
             }
-            return true;
         }
         return false;
     }
 
-    private areEquals<T>(a: T[], b: T[]) {
-        for (const i of a) {
-            if (b.indexOf(i) === -1) {
-                return false;
-            }
-        }
-        for (const i of b) {
-            if (a.indexOf(i) === -1) {
-                return false;
-            }
-        }
-        return true;
+    private areEquals<T>(a: string[], b: string[]) {
+        return a.length === b.length && a.every((_, i) => a[i] === b[i]);
     }
 }
