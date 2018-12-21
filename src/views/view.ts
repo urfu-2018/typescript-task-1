@@ -31,32 +31,26 @@ export abstract class View implements IObserver, IView {
     }
 
     public render() {
-        const rendition = `<div class="${
-            this.viewType
-        }">\n${this.weatherToStr()}${this.newsToStr()}</div>`;
+        const rendition =
+            `<div class="${this.viewType}">\n` +
+            this.weather
+                .slice(-this.countMeasurements)
+                .map(
+                    weather =>
+                        `[${weather.time}] ${weather.temperature} C, ${weather.pressure} P, ${
+                            weather.humidity
+                        } U\n`
+                )
+                .join('') +
+            this.news
+                .slice(-this.countNews)
+                .map(nextNew => `[${nextNew.time}] ${nextNew.category} - ${nextNew.title}\n`)
+                .join('') +
+            `</div>`;
 
         if (rendition !== this.rendition) {
             console.log(rendition);
             this.rendition = rendition;
         }
-    }
-
-    private weatherToStr(): string {
-        return this.weather
-            .slice(-this.countMeasurements)
-            .map(
-                weather =>
-                    `[${weather.time}] ${weather.temperature} C, ${weather.pressure} P, ${
-                        weather.humidity
-                    } U\n`
-            )
-            .join('');
-    }
-
-    private newsToStr(): string {
-        return this.news
-            .slice(-this.countNews)
-            .map(nextNew => `[${nextNew.time}] ${nextNew.category} - ${nextNew.title}\n`)
-            .join('');
     }
 }
