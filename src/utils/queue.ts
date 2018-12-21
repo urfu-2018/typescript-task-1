@@ -22,4 +22,8 @@ export class Queue<T> {
     public dequeue(item: T): T | undefined {
         return this.items.shift();
     }
+
+    public getItems(): T[] {
+        return this.items.slice();
+    }
 }

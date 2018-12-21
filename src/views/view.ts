@@ -1,10 +1,11 @@
 import { IObservable, IObserver } from '../utils/observable/types';
-import { WeatherState } from '../state/weather';
-import { NewsState } from '../state/news';
 import { IMeasurement } from '../state/weather/types';
 import { IArticle } from '../state/news/types';
+import { WeatherState } from '../state/weather';
+import { NewsState } from '../state/news';
 import { Queue } from '../utils/queue';
 import { IView } from './types';
+import { Observable } from '../utils/observable';
 
 export class View implements IObserver, IView {
     private readonly updateMethods: Array<(obserbable: IObservable) => boolean> = [
@@ -33,7 +34,22 @@ export class View implements IObserver, IView {
     }
 
     public render() {
+        let news = this.news.map(this.)
 
+        lines.unshift(`<div class="${this.className}">`);
+        lines.push('</div>');
+
+        console.log(lines.join('\n'));
+    }
+
+    ?8 *
+
+    private itemToString(item: IArticle | IMeasurement): string {
+        if (item instanceof IArticle) {
+            return `[${item.time}] ${item.category} - ${item.title}`;
+        } else {
+            return `[${item.time}] ${item.temperature} C, ${item.pressure} P, ${item.humidity} U`;
+        }
     }
 
     private tryUpdateWeather(obserbable: IObservable): boolean {
