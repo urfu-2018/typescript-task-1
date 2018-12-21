@@ -7,7 +7,9 @@ export class DesktopView extends DataViewer implements IObserver, IView {
         const viewer = new DataViewer();
         this.content += viewer.printContent(observable, 3, 2);
 
-        this.render();
+        if (this.flag) {
+            this.render();
+        }
     }
 
     public render() {
