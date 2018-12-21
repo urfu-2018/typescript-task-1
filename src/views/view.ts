@@ -1,4 +1,4 @@
-import { IObservable, IObserver } from '../utils/observable/types';
+﻿import { IObservable, IObserver } from '../utils/observable/types';
 import { IMeasurement } from '../state/weather/types';
 import { IArticle } from '../state/news/types';
 import { WeatherState } from '../state/weather';
@@ -78,13 +78,16 @@ export class View implements IObserver, IView {
     }
 
     private areEquals<T>(a: T[], b: T[]) {
-        let anyNewItem: boolean = false;
-        b.forEach(item => {
-            if (a.indexOf(item) === -1) {
-                anyNewItem = true;
+        for (const i of a) {
+            if (b.indexOf(i) === -1) {
+                return false;
             }
-        });
-
-        return !anyNewItem;
+        }
+        for (const i of b) {
+            if (a.indexOf(i) === -1) {
+                return false;
+            }
+        }
+        return true;
     }
 }
