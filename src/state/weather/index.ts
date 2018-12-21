@@ -9,6 +9,6 @@ export class WeatherState extends Observable implements IWeatherState {
 
     public setMeasurements(measurements: IMeasurement[]) {
         this.measurments = measurements;
-        this.notifyObservers;
+        this.notifyObservers();
     }
 }
