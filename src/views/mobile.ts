@@ -1,12 +1,7 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
+import { New } from './new';
 
-export class MobileView implements IObserver, IView {
-    public update(observable: IObservable) {
-        throw new Error('Not implemented');
-    }
-
-    public render() {
-        throw new Error('Not implemented');
-    }
+export class MobileView extends New {
+    protected renderArticles: number = 1;
+    protected renderMeasurements: number = 1;
+    protected type: string = 'mobile';
 }
