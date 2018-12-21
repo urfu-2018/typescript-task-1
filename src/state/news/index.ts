@@ -8,7 +8,7 @@ export class NewsState extends Observable implements INewsState {
     }
 
     public setArticles(articles: IArticle[]) {
-        this.articles.push(...articles);
+        this.articles = articles;
         this.notifyObservers();
     }
 }
