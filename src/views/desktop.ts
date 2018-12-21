@@ -5,6 +5,7 @@ import { IArticle } from '../state/news/types';
 import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
 import { Renderer } from '../utils/renderer/renderer';
+import { RepeatChecker } from '../utils/checker/repeatChecker';
 
 export class DesktopView implements IObserver, IView {
     private newsToPrint: IArticle[] = [];
@@ -18,7 +19,9 @@ export class DesktopView implements IObserver, IView {
             this.measurementsToPrint = observable.getMeasurements();
         }
 
-        this.render();
+        if (RepeatChecker.check(this.newsToPrint, this.measurementsToPrint)) {
+            this.render();
+        }
     }
 
     public render() {
