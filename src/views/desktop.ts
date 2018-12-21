@@ -1,12 +1,27 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
+import { IMeasurement } from '../state/weather/types';
+import { IArticle } from '../state/news/types';
+import { NewsState } from '../state/news';
+import { WeatherState } from '../state/weather';
+import { Renderer } from '../utils/renderer/renderer';
 
 export class DesktopView implements IObserver, IView {
+    private newsToPrint: IArticle[] = [];
+    private measurementsToPrint: IMeasurement[] = [];
+
     public update(observable: IObservable) {
-        throw new Error('Not implemented');
+        if (observable instanceof NewsState) {
+            this.newsToPrint = observable.getArticles();
+        }
+        if (observable instanceof WeatherState) {
+            this.measurementsToPrint = observable.getMeasurements();
+        }
+
+        this.render();
     }
 
     public render() {
-        throw new Error('Not implemented');
+        Renderer.render(this.newsToPrint.slice(-3), this.measurementsToPrint.slice(-2), 'desktop');
     }
 }
