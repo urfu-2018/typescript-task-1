@@ -19,8 +19,8 @@ export class Queue<T> {
         items.forEach(item => {
             if (this.items.indexOf(item) === -1) {
                 anyNewItem = true;
-                this.enqueue(item);
             }
+            this.enqueue(item);
         });
 
         return anyNewItem;
