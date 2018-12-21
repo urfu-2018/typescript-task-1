@@ -46,8 +46,8 @@ export class Views implements IObserver, IView {
             .join('');
         const markup = `<div class="${this.deviceName}">\n${renderNews}${renderMeasur}</div>`;
         if (markup !== this.resultMarkup) {
+            console.log(markup);
             this.resultMarkup = markup;
-            console.log(this.resultMarkup);
         }
     }
 }
