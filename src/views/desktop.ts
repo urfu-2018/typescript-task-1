@@ -1,12 +1,7 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
+import { UpdatesRenderer } from './updatesRenderer';
 
-export class DesktopView implements IObserver, IView {
-    public update(observable: IObservable) {
-        throw new Error('Not implemented');
-    }
-
-    public render() {
-        throw new Error('Not implemented');
-    }
+export class DesktopView extends UpdatesRenderer {
+    protected articlesToRender = 3;
+    protected measurementToRender = 2;
+    protected deviceType = 'desktop';
 }
