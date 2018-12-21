@@ -1,5 +1,5 @@
 export class Queue<T> {
-    private readonly items: T[] = new Array();
+    private items: T[] = new Array();
     private readonly capacity: number;
 
     constructor(capacity: number) {
@@ -14,16 +14,7 @@ export class Queue<T> {
     }
 
     public enqueueAll(items: T[]) {
-        let anyNewItem: boolean = false;
-
-        items.forEach(item => {
-            if (this.items.indexOf(item) === -1) {
-                anyNewItem = true;
-            }
-            this.enqueue(item);
-        });
-
-        return anyNewItem;
+        this.items = items.slice(-this.capacity);
     }
 
     public dequeue(item: T): T | undefined {
