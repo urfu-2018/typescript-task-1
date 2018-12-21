@@ -14,16 +14,23 @@ export class Queue<T> {
     }
 
     public enqueueAll(items: T[]) {
+        let anyNewItem: boolean = false;
+
         items.forEach(item => {
-            this.enqueue(item);
+            if (this.items.indexOf(item) === -1) {
+                anyNewItem = true;
+                this.enqueue(item);
+            }
         });
+
+        return anyNewItem;
     }
 
     public dequeue(item: T): T | undefined {
         return this.items.shift();
     }
 
-    public getItems(): T[] {
+    public getAll(): T[] {
         return this.items.slice();
     }
 }

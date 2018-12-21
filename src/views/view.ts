@@ -5,7 +5,6 @@ import { WeatherState } from '../state/weather';
 import { NewsState } from '../state/news';
 import { Queue } from '../utils/queue';
 import { IView } from './types';
-import { Observable } from '../utils/observable';
 
 export class View implements IObserver, IView {
     private readonly updateMethods: Array<(obserbable: IObservable) => boolean> = [
@@ -26,7 +25,6 @@ export class View implements IObserver, IView {
     public update(observable: IObservable) {
         for (const i in this.updateMethods) {
             if (this.updateMethods[i](observable)) {
-                this.render();
                 return;
             }
         }
@@ -34,37 +32,46 @@ export class View implements IObserver, IView {
     }
 
     public render() {
-        let news = this.news.map(this.)
+        const news: string[] = this.news.getAll().map(this.articleToString);
+        const measures: string[] = this.weather.getAll().map(this.measureToString);
 
-        lines.unshift(`<div class="${this.className}">`);
-        lines.push('</div>');
+        const text: string = [`<div class="${this.className}">`]
+            .concat(news)
+            .concat(measures)
+            .concat(['</div>'])
+            .join('\n');
 
-        console.log(lines.join('\n'));
+        console.log(text);
     }
 
-    ?8 *
-
-    private itemToString(item: IArticle | IMeasurement): string {
-        if (item instanceof IArticle) {
-            return `[${item.time}] ${item.category} - ${item.title}`;
-        } else {
-            return `[${item.time}] ${item.temperature} C, ${item.pressure} P, ${item.humidity} U`;
-        }
+    private articleToString(acticle: IArticle): string {
+        return `[${acticle.time}] ${acticle.category} - ${acticle.title}`;
     }
 
-    private tryUpdateWeather(obserbable: IObservable): boolean {
-        if (obserbable instanceof WeatherState) {
-            this.weather.enqueueAll(obserbable.getMeasurements());
+    private measureToString(m: IMeasurement): string {
+        return `[${m.time}] ${m.temperature} C, ${m.pressure} P, ${m.humidity} U`;
+    }
+
+    private tryUpdateWeather(observable: IObservable) {
+        if (observable instanceof WeatherState) {
+            this.updateCheckNew(this.weather, observable.getMeasurements());
             return true;
         }
         return false;
     }
 
-    private tryUpdateNews(obserbable: IObservable): boolean {
-        if (obserbable instanceof NewsState) {
-            this.news.enqueueAll(obserbable.getArticles());
+    private tryUpdateNews(observable: IObservable) {
+        if (observable instanceof NewsState) {
+            this.updateCheckNew(this.news, observable.getArticles());
             return true;
         }
         return false;
+    }
+
+    private updateCheckNew<T>(queue: Queue<T>, items: T[]) {
+        const anyNewItem: boolean = queue.enqueueAll(items);
+        if (anyNewItem) {
+            this.render();
+        }
     }
 }
