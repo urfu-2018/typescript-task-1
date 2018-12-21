@@ -10,7 +10,7 @@ export class Observable implements IObservable {
     public deleteObserver(observer: IObserver) {
         const removingIndex = this.observers.indexOf(observer);
         if (removingIndex !== -1) {
-            this.observers.splice(removingIndex);
+            this.observers.splice(removingIndex, 1);
         }
     }
 
