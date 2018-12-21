@@ -1,15 +1,14 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
-import { NewsState } from '../state/news';
-import { WeatherState } from '../state/weather';
+import { Content } from './content';
 
 export class MobileView implements IObserver, IView {
-    private dates: Set<IObservable> = new Set();
-    private lastContent: string | undefined;
+    private data: Set<IObservable> = new Set();
+    private lastContent?: string;
 
     public update(observable: IObservable) {
-        this.dates.add(observable);
-        const currentContent = this.getContent();
+        this.data.add(observable);
+        const currentContent = new Content(this.data, 'mobile').getString();
         if (currentContent !== this.lastContent) {
             this.lastContent = currentContent;
             this.render();
@@ -18,42 +17,5 @@ export class MobileView implements IObserver, IView {
 
     public render() {
         console.log(this.lastContent);
-    }
-
-    private getContent() {
-        let article: string = '';
-        let weatherMeasurement: string = '';
-        this.dates.forEach(date => {
-            if (date instanceof NewsState) {
-                article = this.getNewsContent(date);
-            }
-            if (date instanceof WeatherState) {
-                weatherMeasurement = this.getWeatherContent(date);
-            }
-        });
-        return `<div class="mobile">\n${article}${weatherMeasurement}</div>`;
-    }
-
-    private getNewsContent(news: NewsState) {
-        let content: string = '';
-        news.getArticles()
-            .slice(-1)
-            .forEach(article => {
-                content = `[${article.time}] ${article.category} - ${article.title}\n`;
-            });
-        return content;
-    }
-
-    private getWeatherContent(weatherState: WeatherState) {
-        let measurement: string = '';
-        weatherState
-            .getMeasurements()
-            .slice(-1)
-            .forEach(weather => {
-                measurement = `[${weather.time}] ${weather.temperature} C, ${weather.pressure} P, ${
-                    weather.humidity
-                } U\n`;
-            });
-        return measurement;
     }
 }
