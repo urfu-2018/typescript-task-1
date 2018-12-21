@@ -5,7 +5,7 @@ import { DataViewer } from './viewer';
 export class MobileView extends DataViewer implements IObserver, IView {
     public update(observable: IObservable) {
         const viewer = new DataViewer();
-        this.content += viewer.printContent(observable, 'mobile', 1, 1);
+        this.content = viewer.printContent(observable, 'mobile', 1, 1);
 
         this.render();
     }

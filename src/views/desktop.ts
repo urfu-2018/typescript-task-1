@@ -5,7 +5,7 @@ import { DataViewer } from './viewer';
 export class DesktopView extends DataViewer implements IObserver, IView {
     public update(observable: IObservable) {
         const viewer = new DataViewer();
-        this.content += viewer.printContent(observable, 'desktop', 3, 2);
+        this.content = viewer.printContent(observable, 'desktop', 3, 2);
 
         this.render();
     }
