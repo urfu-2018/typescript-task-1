@@ -4,8 +4,6 @@ import { WeatherState } from '../state/weather';
 
 export class DataViewer {
     protected content = '';
-    protected flag = true;
-    private previousContent = '';
 
     public printContent(
         observable: IObservable,
@@ -30,12 +28,6 @@ export class DataViewer {
                     measurement.pressure
                 } P, ${measurement.humidity} U\n`;
             }
-        }
-
-        if (this.previousContent !== content) {
-            this.previousContent = content;
-        } else {
-            this.flag = false;
         }
 
         return content;

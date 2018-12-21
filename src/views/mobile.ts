@@ -7,9 +7,7 @@ export class MobileView extends DataViewer implements IObserver, IView {
         const viewer = new DataViewer();
         this.content += viewer.printContent(observable, 1, 1);
 
-        if (this.flag) {
-            this.render();
-        }
+        this.render();
     }
 
     public render() {
