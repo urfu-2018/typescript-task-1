@@ -7,11 +7,10 @@ export class DataViewer {
 
     public printContent(
         observable: IObservable,
-        className: string,
         countOfArticles: number,
         countOfMeasurements: number
     ): string {
-        let content = `<div class="${className}">\n`;
+        let content = '';
 
         if (observable instanceof NewsState) {
             const articles = observable.getArticles().slice(-countOfArticles);
@@ -30,8 +29,6 @@ export class DataViewer {
                 } P, ${measurement.humidity} U\n`;
             }
         }
-
-        content += `</div>`;
 
         return content;
     }
