@@ -13,8 +13,8 @@ export class CommonView implements IObserver, IView {
     private measurements: IMeasurement[] = [];
     public render(): void {
         let resultRender: string = `<div class="${this.className}">\n`;
-        resultRender += this.articles.map(a => this.getArticleRender(a));
-        resultRender += this.measurements.map(w => this.getMeasurementRender(w));
+        resultRender += this.articles.map(a => this.getArticleRender(a)).join('');
+        resultRender += this.measurements.map(w => this.getMeasurementRender(w)).join('');
         resultRender += '</div>';
         console.log(resultRender);
     }
