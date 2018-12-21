@@ -21,11 +21,9 @@ export abstract class View implements IObserver, IView {
 
     public update(observable: IObservable) {
         if (observable instanceof WeatherState) {
-            const weatherState = observable as WeatherState;
-            this.weather = weatherState.getMeasurements();
+            this.weather = (observable as WeatherState).getMeasurements();
         } else if (observable instanceof NewsState) {
-            const newState = observable as NewsState;
-            this.news = newState.getArticles();
+            this.news = (observable as NewsState).getArticles();
         } else {
             throw new TypeError();
         }
@@ -35,6 +33,10 @@ export abstract class View implements IObserver, IView {
     public render() {
         const rendition =
             `<div class="${this.viewType}">\n` +
+            this.news
+                .slice(-this.countNews)
+                .map(nextNew => `[${nextNew.time}] ${nextNew.category} - ${nextNew.title}\n`)
+                .join('') +
             this.weather
                 .slice(-this.countMeasurements)
                 .map(
@@ -43,10 +45,6 @@ export abstract class View implements IObserver, IView {
                             weather.humidity
                         } U\n`
                 )
-                .join('') +
-            this.news
-                .slice(-this.countNews)
-                .map(nextNew => `[${nextNew.time}] ${nextNew.category} - ${nextNew.title}\n`)
                 .join('') +
             `</div>`;
 
