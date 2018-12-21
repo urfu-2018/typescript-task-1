@@ -11,7 +11,7 @@ export abstract class View implements IObserver, IView {
     private news: IArticle[] = [];
     private countNews: number;
     private countMeasurements: number;
-    private rendition: string | undefined;
+    private rendition: string = '';
 
     protected constructor(countNews: number, countMeasurements: number, viewType: string) {
         this.countNews = countNews;
