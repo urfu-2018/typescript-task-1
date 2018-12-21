@@ -3,7 +3,6 @@ import { IMeasurement } from '../state/weather/types';
 import { IArticle } from '../state/news/types';
 import { WeatherState } from '../state/weather';
 import { NewsState } from '../state/news';
-import { Queue } from '../utils/queue';
 import { IView } from './types';
 
 export class View implements IObserver, IView {
@@ -13,12 +12,14 @@ export class View implements IObserver, IView {
     ];
 
     private readonly className: string;
-    private readonly news: Queue<IArticle>;
-    private readonly weather: Queue<IMeasurement>;
+    private readonly newsLimit: number;
+    private readonly weatherLimit: number;
+    private news: IArticle[] = new Array();
+    private weather: IMeasurement[] = new Array();
 
     constructor(newsCount: number, weatherCount: number, className: string) {
-        this.weather = new Queue<IMeasurement>(weatherCount);
-        this.news = new Queue<IArticle>(newsCount);
+        this.weatherLimit = weatherCount;
+        this.newsLimit = newsCount;
         this.className = className;
     }
 
@@ -32,8 +33,8 @@ export class View implements IObserver, IView {
     }
 
     public render() {
-        const news: string[] = this.news.getAll().map(this.articleToString);
-        const measures: string[] = this.weather.getAll().map(this.measureToString);
+        const news: string[] = this.news.map(this.articleToString);
+        const measures: string[] = this.weather.map(this.measureToString);
 
         const text: string = [`<div class="${this.className}">`]
             .concat(news)
@@ -54,7 +55,10 @@ export class View implements IObserver, IView {
 
     private tryUpdateWeather(observable: IObservable) {
         if (observable instanceof WeatherState) {
-            this.updateCheckNew(this.weather, observable.getMeasurements());
+            const newItems = observable.getMeasurements().slice(-this.weatherLimit);
+            if (!this.areEquals(this.weather, newItems)) {
+                this.render();
+            }
             return true;
         }
         return false;
@@ -62,19 +66,23 @@ export class View implements IObserver, IView {
 
     private tryUpdateNews(observable: IObservable) {
         if (observable instanceof NewsState) {
-            this.updateCheckNew(this.news, observable.getArticles());
+            const newItems = observable.getArticles().slice(-this.newsLimit);
+            if (!this.areEquals(this.news, newItems)) {
+                this.render();
+            }
             return true;
         }
         return false;
     }
 
-    private updateCheckNew<T>(queue: Queue<T>, items: T[]) {
-        const oldItems: T[] = queue.getAll();
-        queue.enqueueAll(items);
-        const newItems: T[] = queue.getAll();
+    private areEquals<T>(a: T[], b: T[]) {
+        let anyNewItem: boolean = false;
+        a.forEach(item => {
+            if (b.indexOf(item) === -1) {
+                anyNewItem = true;
+            }
+        });
 
-        if (oldItems !== newItems) {
-            this.render();
-        }
+        return !anyNewItem;
     }
 }
