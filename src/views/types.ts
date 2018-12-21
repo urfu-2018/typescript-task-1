@@ -35,7 +35,7 @@ export abstract class View implements IObserver, IView {
             this.states.news.length - Math.min(newsCount, this.states.news.length)
         );
         this.states.weather = this.states.weather.slice(
-            this.states.news.length - Math.min(weatherCount, this.states.weather.length)
+            this.states.weather.length - Math.min(weatherCount, this.states.weather.length)
         );
     }
 
