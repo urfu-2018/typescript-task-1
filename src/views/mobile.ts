@@ -5,7 +5,7 @@ import { articleToString, measurementToString } from '../utils/formatters';
 import { IMeasurement } from '../state/weather/types';
 import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
-import { articlesChanged, measurementsChanged } from './comparer';
+import { changed } from './comparer';
 
 export class MobileView implements IObserver, IView {
     private static readonly NewsAmount = 1;
@@ -19,7 +19,7 @@ export class MobileView implements IObserver, IView {
             const relevantArticles = incomingArticles.slice(
                 Math.max(incomingArticles.length - MobileView.NewsAmount, 0)
             );
-            if (!articlesChanged(this.articles, relevantArticles)) {
+            if (!changed(this.articles, relevantArticles)) {
                 return;
             }
             this.articles = relevantArticles;
@@ -28,7 +28,7 @@ export class MobileView implements IObserver, IView {
             const relevantMeasurements = incomingMeasurements.slice(
                 Math.max(incomingMeasurements.length - MobileView.MeasurementsAmount, 0)
             );
-            if (!measurementsChanged(this.measurements, relevantMeasurements)) {
+            if (!changed(this.measurements, relevantMeasurements)) {
                 return;
             }
             this.measurements = relevantMeasurements;
