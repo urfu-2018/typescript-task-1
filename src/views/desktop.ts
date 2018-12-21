@@ -1,12 +1,10 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
+import { CommonView } from './common';
 
-export class DesktopView implements IObserver, IView {
-    public update(observable: IObservable) {
-        throw new Error('Not implemented');
-    }
-
-    public render() {
-        throw new Error('Not implemented');
+export class DesktopView extends CommonView {
+    constructor() {
+        super();
+        this.className = 'desktop';
+        this.newsNeedCount = 3;
+        this.weatherNeedCount = 2;
     }
 }
