@@ -1,3 +1,5 @@
+import { AbstractState } from '../types';
+
 export interface IArticle {
     time: string; // e.g. '23:00'
     category: string; // e.g. 'Веб-разработка'
@@ -9,6 +11,7 @@ export interface INewsState {
     setArticles(articles: IArticle[]): void;
 }
 
-export function isINewsState(obj: any): obj is INewsState {
+export function isINewsState(obj: AbstractState): obj is INewsState {
+    obj = obj as INewsState;
     return obj.getArticles !== undefined && obj.setArticles !== undefined;
 }
