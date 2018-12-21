@@ -27,7 +27,7 @@ export abstract class UpdatesRenderer implements IObserver, IView {
                 ...this.toRender,
                 ...observable
                     .getMeasurements()
-                    .slice(-this.articlesToRender)
+                    .slice(-this.measurementToRender)
                     .map(this.measurementToString)
             ];
         }
