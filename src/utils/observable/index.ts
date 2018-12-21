@@ -1,17 +1,14 @@
 import { IObservable, IObserver } from './types';
 
 export class Observable implements IObservable {
-    private readonly observers: IObserver[] = new Array();
+    private readonly observers: Set<IObserver> = new Set<IObserver>();
 
     public addObserver(observer: IObserver) {
-        this.observers.push(observer);
+        this.observers.add(observer);
     }
 
     public deleteObserver(observer: IObserver) {
-        const i = this.observers.indexOf(observer);
-        if (i !== -1) {
-            this.observers.splice(i, 1);
-        }
+        this.observers.delete(observer);
     }
 
     public notifyObservers() {
