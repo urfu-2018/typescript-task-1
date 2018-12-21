@@ -19,12 +19,9 @@ export abstract class View implements IObserver, IView {
 
     public update(observable: IObservable): void {
         if (observable instanceof NewsState) {
-            // typeof
-            const newArticles = (observable as NewsState).getArticles();
-            this.states.news = newArticles;
+            this.states.news = (observable as NewsState).getArticles();
         } else if (observable instanceof WeatherState) {
-            const newMeasurements = (observable as WeatherState).getMeasurements();
-            this.states.weather = newMeasurements;
+            this.states.weather = (observable as WeatherState).getMeasurements();
         } else {
             throw new Error('Not implemented');
         }
@@ -32,4 +29,30 @@ export abstract class View implements IObserver, IView {
     }
 
     public abstract render(): void;
+
+    protected setLastNews(newsCount: number, weatherCount: number): void {
+        this.states.news = this.states.news.slice(
+            this.states.news.length - Math.min(newsCount, this.states.news.length)
+        );
+        this.states.weather = this.states.weather.slice(
+            this.states.news.length - Math.min(weatherCount, this.states.weather.length)
+        );
+    }
+
+    protected renderFormat(className: string, newsCount: number, weatherCount: number): string {
+        this.setLastNews(newsCount, weatherCount);
+        let content = `<div class="${className}">\n`;
+        this.states.news.forEach(
+            news => (content += `[${news.time}] ${news.category} - ${news.title}\n`)
+        );
+        this.states.weather.forEach(
+            weather =>
+                (content += `[${weather.time}] ${weather.temperature} C, ${weather.pressure} P, ${
+                    weather.humidity
+                } U\n`)
+        );
+        content += `</div>`;
+
+        return content;
+    }
 }
