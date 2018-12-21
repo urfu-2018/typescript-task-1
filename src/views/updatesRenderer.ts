@@ -15,15 +15,21 @@ export abstract class UpdatesRenderer implements IObserver, IView {
 
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
-            this.toRender = observable
-                .getArticles()
-                .slice(-this.articlesToRender)
-                .map(this.articleToString);
+            this.toRender = [
+                ...this.toRender,
+                ...observable
+                    .getArticles()
+                    .slice(-this.articlesToRender)
+                    .map(this.articleToString)
+            ];
         } else if (observable instanceof WeatherState) {
-            this.toRender = observable
-                .getMeasurements()
-                .slice(-this.articlesToRender)
-                .map(this.measurementToString);
+            this.toRender = [
+                ...this.toRender,
+                ...observable
+                    .getMeasurements()
+                    .slice(-this.articlesToRender)
+                    .map(this.measurementToString)
+            ];
         }
 
         this.render();
