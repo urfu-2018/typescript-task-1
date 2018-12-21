@@ -7,41 +7,37 @@ import { WeatherState } from '../state/weather/index';
 
 export abstract class UpdatesRenderer implements IObserver, IView {
     protected abstract articlesToRender: number;
-    protected abstract measurementToRender: number;
+    protected abstract measurementsToRender: number;
     protected abstract deviceType: string;
 
-    private toRender: string[] = [];
+    private articles: string[] = [];
+    private measurements: string[] = [];
     private prevRender: string = '';
 
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
-            this.toRender = [
-                ...this.toRender,
-                ...observable
-                    .getArticles()
-                    .slice(-this.articlesToRender)
-                    .map(this.articleToString)
-            ];
+            this.articles = observable
+                .getArticles()
+                .slice(-this.articlesToRender)
+                .map(this.articleToString);
         } else if (observable instanceof WeatherState) {
-            this.toRender = [
-                ...this.toRender,
-                ...observable
-                    .getMeasurements()
-                    .slice(-this.measurementToRender)
-                    .map(this.measurementToString)
-            ];
+            this.measurements = observable
+                .getMeasurements()
+                .slice(-this.measurementsToRender)
+                .map(this.measurementToString);
         }
 
         this.render();
     }
 
     public render() {
-        const result = `<div class="${this.deviceType}">\n${this.toRender.join('\n')}\n</div>`;
+        const result = `<div class="${this.deviceType}">\n${this.articles
+            .concat(this.measurements)
+            .join('\n')}\n</div>`;
         if (result !== this.prevRender) {
             console.log(result);
             this.prevRender = result;
         }
-        this.toRender = [];
     }
 
     private articleToString = (article: IArticle) =>
