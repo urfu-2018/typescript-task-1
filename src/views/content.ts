@@ -44,7 +44,7 @@ export class Content {
                 (article: IArticle) => `[${article.time}] ${article.category} - ${article.title}\n`
             )
             .join('');
-}
+    }
 
     private getWeatherContent(weatherState: WeatherState) {
         return weatherState
