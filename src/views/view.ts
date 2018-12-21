@@ -78,6 +78,10 @@ export class View implements IObserver, IView {
     }
 
     private areEquals<T>(a: T[], b: T[]) {
+        return this.firstInSecond(a, b) && this.firstInSecond(b, a);
+    }
+
+    private firstInSecond<T>(a: T[], b: T[]) {
         let anyNewItem: boolean = false;
         b.forEach(item => {
             if (a.indexOf(item) === -1) {
