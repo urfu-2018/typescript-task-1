@@ -24,6 +24,8 @@ export abstract class View implements IObserver, IView {
             this.weather = (observable as WeatherState).getMeasurements();
         } else if (observable instanceof NewsState) {
             this.news = (observable as NewsState).getArticles();
+        } else {
+            throw new TypeError();
         }
         this.render();
     }
