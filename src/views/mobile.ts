@@ -1,12 +1,7 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
+import { GeneralCode } from './general';
 
-export class MobileView implements IObserver, IView {
-    public update(observable: IObservable) {
-        throw new Error('Not implemented');
-    }
-
-    public render() {
-        throw new Error('Not implemented');
-    }
+export class MobileView extends GeneralCode {
+    protected lastNewsCount: number = 1;
+    protected latestWeatherCount: number = 1;
+    protected typeDevice: string = 'mobile';
 }
