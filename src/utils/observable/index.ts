@@ -1,7 +1,7 @@
 import { IObservable, IObserver } from './types';
 
 export class Observable implements IObservable {
-    constructor(private observers: Set<IObserver> = new Set<IObserver>()) {}
+    private readonly observers: Set<IObserver> = new Set<IObserver>();
 
     public addObserver(observer: IObserver) {
         this.observers.add(observer);

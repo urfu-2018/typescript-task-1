@@ -6,13 +6,14 @@ import { IArticle } from '../state/news/types';
 import { IMeasurement } from '../state/weather/types';
 
 export abstract class AbstractView implements IObserver, IView {
+    private lastArticles: IArticle[] = [];
+    private lastMeasurements: IMeasurement[] = [];
+    private oldMessage?: string;
+
     constructor(
         private readonly className: string,
         private readonly articlesCount: number,
-        private readonly measurementsCount: number,
-        private lastArticles: IArticle[] = [],
-        private lastMeasurements: IMeasurement[] = [],
-        private oldMessage?: string
+        private readonly measurementsCount: number
     ) {
         this.className = className;
         this.articlesCount = articlesCount;
