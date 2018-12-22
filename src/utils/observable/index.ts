@@ -11,8 +11,8 @@ export class Observable implements IObservable {
     }
 
     public notifyObservers() {
-        this.observers.forEach(el => {
-            el.update(this);
+        this.observers.forEach(element => {
+            element.update(this);
         });
     }
 }
