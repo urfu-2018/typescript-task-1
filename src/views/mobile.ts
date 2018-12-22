@@ -1,10 +1,3 @@
-// import { formatArticle, formatMeasurement} from './format';
-// import { IObservable, IObserver } from '../utils/observable/types';
-// import { IView } from './types';
-// import { IArticle } from '../state/news/types';
-// import { IMeasurement } from '../state/weather/types';
-// import { WeatherState } from '../state/weather';
-// import { NewsState } from '../state/news';
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
 import { NewsState } from '../state/news';
