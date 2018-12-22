@@ -55,12 +55,12 @@ export class View implements IView, IObserver {
             Math.max(this.measurements.length - this.measurementsCount, 0)
         );
 
-        const formattedNews = newsToShow.map(article => this.articleToString(article)).join('\n');
-        const formattedWeather = measurementsToShow
-            .map(measurement => this.measurementToString(measurement))
-            .join('\n');
+        const formattedNews = newsToShow.map(article => this.articleToString(article));
+        const formattedWeather = measurementsToShow.map(measurement =>
+            this.measurementToString(measurement)
+        );
 
-        return formattedNews + formattedWeather;
+        return formattedNews.concat(formattedWeather).join('\n');
     }
 
     private articleToString(article: IArticle): string {
