@@ -31,7 +31,7 @@ export class DesktopView implements IObserver, IView {
         if (observable instanceof WeatherState) {
             const pastMeasurments = this.measurements;
             this.measurements = observable.getMeasurements().slice(-2);
-            this.render();
+
             if (!equal(this.measurements, pastMeasurments)) {
                 this.render();
             }
@@ -44,6 +44,6 @@ export class DesktopView implements IObserver, IView {
             ...this.measurements.map(formatMeasurement)
         ];
 
-        console.log(`<div class="mobile">\n${newContent.join('\n')}\n</div>`);
+        console.log(`<div class="desktop">\n${newContent.join('\n')}\n</div>`);
     }
 }

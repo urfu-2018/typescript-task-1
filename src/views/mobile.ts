@@ -20,15 +20,17 @@ export class MobileView implements IObserver, IView {
 
     public update(observable: IObservable) {
         if (observable instanceof WeatherState) {
-            const past = this.measurements;
+            const pastMeasurments = this.measurements;
             this.measurements = observable.getMeasurements().slice(-1);
-            if (!equal(past, this.measurements)) {
+
+            if (!equal(pastMeasurments, this.measurements)) {
                 this.render();
             }
         } else if (observable instanceof NewsState) {
-            const past = this.articles;
+            const pastArticles = this.articles;
             this.articles = observable.getArticles().slice(-1);
-            if (!equal(past, this.articles)) {
+
+            if (!equal(pastArticles, this.articles)) {
                 this.render();
             }
         }
