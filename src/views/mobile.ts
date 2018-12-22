@@ -2,6 +2,7 @@ import { View } from './types';
 
 export class MobileView extends View {
     public render() {
-        console.log(this.renderFormat('mobile', 1, 1));
+        this.cutLatestNews(1, 1);
+        console.log(this.renderFormat('mobile'));
     }
 }
