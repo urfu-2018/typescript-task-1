@@ -7,8 +7,8 @@ import { Content } from './content';
 export class DesktopView implements IObserver, IView {
     private dates: Set<IObservable | NewsState | WeatherState> = new Set();
     private lastContent?: string;
-    private articles: string = '';
-    private weatherMeasurements: string = '';
+    private articles = '';
+    private weatherMeasurements = '';
 
     public update(observable: IObservable) {
         this.dates.add(observable);

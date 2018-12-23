@@ -7,8 +7,8 @@ import { Content } from './content';
 export class MobileView implements IObserver, IView {
     private dates: Set<IObservable | NewsState | WeatherState> = new Set();
     private lastContent?: string;
-    private article: string = '';
-    private weatherMeasurement: string = '';
+    private article = '';
+    private weatherMeasurement = '';
 
     public update(observable: IObservable) {
         this.dates.add(observable);
