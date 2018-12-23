@@ -7,6 +7,7 @@ export interface IView {
 }
 
 type ObservableNewsOrWeather = IObservable | INewsState | IWeatherState;
+type ArticleOrMeasurment = IArticle | IMeasurement;
 
 export class ViewBase implements IView, IObserver {
     protected weatherMeasurments: IMeasurement[] = [];
@@ -62,7 +63,7 @@ export class ViewBase implements IView, IObserver {
     }
 
     private renderItems(
-        items: any[],
+        items: ArticleOrMeasurment[],
         toString: (obj: any) => string,
         elementsCount: number
     ): string {
