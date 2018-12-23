@@ -13,7 +13,7 @@ export class CommonView {
     private newsToRender: IArticle[] = [];
     private weatherToRender: IMeasurement[] = [];
 
-    public constructor(newsCount: number, weatherCount: number) {
+    protected constructor(newsCount: number, weatherCount: number) {
         this.weatherCount = weatherCount;
         this.newsCount = newsCount;
     }

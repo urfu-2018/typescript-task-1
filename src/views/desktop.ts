@@ -4,7 +4,9 @@ import { CommonView } from './common-view';
 
 export class DesktopView extends CommonView implements IObserver, IView {
     constructor() {
-        super(3, 2);
+        const newsCount = 3;
+        const weatherCount = 2;
+        super(newsCount, weatherCount);
     }
 
     public update(observable: IObservable) {
@@ -15,9 +17,6 @@ export class DesktopView extends CommonView implements IObserver, IView {
     }
 
     public render() {
-        let result = '<div class="desktop">\n';
-        result += super.preRender();
-        result += '</div>';
-        console.log(result);
+        console.log(`<div class="desktop">\n${this.preRender()}</div>`);
     }
 }

@@ -4,7 +4,9 @@ import { CommonView } from './common-view';
 
 export class MobileView extends CommonView implements IObserver, IView {
     constructor() {
-        super(1, 1);
+        const newsCount = 1;
+        const weatherCount = 1;
+        super(newsCount, weatherCount);
     }
 
     public update(observable: IObservable) {
@@ -15,9 +17,6 @@ export class MobileView extends CommonView implements IObserver, IView {
     }
 
     public render() {
-        let result = '<div class="mobile">\n';
-        result += this.preRender();
-        result += '</div>';
-        console.log(result);
+        console.log(`<div class="mobile">\n${this.preRender()}</div>`);
     }
 }
