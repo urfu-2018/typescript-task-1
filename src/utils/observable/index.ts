@@ -1,17 +1,19 @@
 import { IObservable, IObserver } from './types';
 
 export class Observable implements IObservable {
-    private _observers: Set<IObserver> = new Set<IObserver>();
+    private observers: Set<IObserver> = new Set<IObserver>();
 
     public addObserver(observer: IObserver) {
-        this._observers.add(observer);
+        this.observers.add(observer);
     }
 
     public deleteObserver(observer: IObserver) {
-        this._observers.delete(observer);
+        this.observers.delete(observer);
     }
 
     public notifyObservers() {
-        this._observers.forEach(observer => observer.update(this));
+        for (const observer of this.observers) {
+            observer.update(this);
+        }
     }
 }
