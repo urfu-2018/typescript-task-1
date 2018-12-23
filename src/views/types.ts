@@ -11,10 +11,16 @@ type ObservableNewsOrWeather = IObservable | INewsState | IWeatherState;
 export class ViewBase implements IView, IObserver {
     protected weatherMeasurments: IMeasurement[] = [];
     protected articles: IArticle[] = [];
-    protected maxWeatherCount: number = 0;
-    protected maxArticleCount: number = 0;
-    protected viewName: string = '';
+    protected readonly maxWeatherCount: number;
+    protected readonly maxArticleCount: number;
+    protected readonly viewName: string;
     protected lastRenderedPage?: string;
+
+    constructor(viewName: string, maxWeatherCount: number, maxArticleCount: number) {
+        this.viewName = viewName;
+        this.maxWeatherCount = maxWeatherCount;
+        this.maxArticleCount = maxArticleCount;
+    }
 
     public update(observable: IObservable): void {
         if (this.isINewsState(observable)) {
