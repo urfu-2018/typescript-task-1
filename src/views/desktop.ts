@@ -1,24 +1,37 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
-import { Content } from './content';
 import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
+import { Content } from './content';
 
 export class DesktopView implements IObserver, IView {
-    private data: Set<IObservable | NewsState | WeatherState> = new Set();
+    private dates: Set<IObservable | NewsState | WeatherState> = new Set();
     private lastContent?: string;
+    private articles: string = '';
+    private weatherMeasurements: string = '';
 
     public update(observable: IObservable) {
-        this.data.add(observable);
-        const currentContent = new Content(this.data, 'desktop').getString();
+        this.dates.add(observable);
+        const currentContent = this.getContent();
         if (currentContent !== this.lastContent) {
             this.lastContent = currentContent;
             this.render();
-
         }
     }
 
     public render() {
         console.log(this.lastContent);
+    }
+
+    private getContent() {
+        this.dates.forEach(date => {
+            if (date instanceof NewsState) {
+                this.articles = Content.getNewsContent(date, 3);
+            }
+            if (date instanceof WeatherState) {
+                this.weatherMeasurements = Content.getWeatherContent(date, 2);
+            }
+        });
+        return `<div class="desktop">\n${this.articles}${this.weatherMeasurements}</div>`;
     }
 }
