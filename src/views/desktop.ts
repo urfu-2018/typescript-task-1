@@ -14,6 +14,7 @@ export class DesktopView implements IObserver, IView {
         if (currentContent !== this.lastContent) {
             this.lastContent = currentContent;
             this.render();
+
         }
     }
 
