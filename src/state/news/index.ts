@@ -4,7 +4,7 @@ import { IArticle, INewsState } from './types';
 export class NewsState extends Observable implements INewsState {
     private news: IArticle[] = [];
     public getArticles() {
-        return [...this.news];
+        return this.news;
     }
 
     public setArticles(articles: IArticle[]) {
