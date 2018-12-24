@@ -14,11 +14,7 @@ export abstract class AbstractView implements IObserver, IView {
         private readonly className: string,
         private readonly articlesCount: number,
         private readonly measurementsCount: number
-    ) {
-        this.className = className;
-        this.articlesCount = articlesCount;
-        this.measurementsCount = measurementsCount;
-    }
+    ) {}
 
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
