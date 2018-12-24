@@ -4,6 +4,7 @@ import { IMeasurement } from '../state/weather/types';
 import { IArticle } from '../state/news/types';
 import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
+import { Render } from '../utils/render';
 
 export abstract class View implements IObserver, IView {
     protected abstract measurementsCount: number;
@@ -29,15 +30,15 @@ export abstract class View implements IObserver, IView {
         let rendering = '';
         rendering += `<div class="${this.viewName}">\n`;
         this.articles.forEach(a => {
-            rendering += `[${a.time}] ${a.category} - ${a.title}\n`;
+            rendering += Render.getRenderedArticle(a);
         });
         this.measurements.forEach(m => {
-            rendering += `[${m.time}] ${m.temperature} C, ${m.pressure} P, ${m.humidity} U\n`;
+            rendering += Render.getRenderedMeasurement(m);
         });
         rendering += '</div>';
         if (rendering !== this.previousRendering) {
             console.log(rendering);
+            this.previousRendering = rendering;
         }
-        this.previousRendering = rendering;
     }
 }
