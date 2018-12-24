@@ -13,7 +13,7 @@ export class Observable implements IObservable {
         const index = this.observers.indexOf(observer);
 
         if (index > -1) {
-            this.observers.slice(index, 1);
+            this.observers.splice(index, 1);
         }
     }
 
