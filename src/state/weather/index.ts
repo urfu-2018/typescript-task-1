@@ -5,7 +5,7 @@ export class WeatherState extends Observable implements IWeatherState {
     private measurements: IMeasurement[] = [];
 
     public getMeasurements() {
-        return JSON.parse(JSON.stringify(this.measurements));
+        return this.measurements;
     }
 
     public setMeasurements(measurements: IMeasurement[]) {
