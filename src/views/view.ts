@@ -17,21 +17,17 @@ export class View {
     }
 
     protected setLastMeasurements(measurements: IMeasurement[], lastMeasurementsCount: number) {
-        measurements.forEach(measurement => {
-            this.lastMeasurements.push(measurement);
-            if (measurements.length > lastMeasurementsCount) {
-                this.lastMeasurements.shift();
-            }
-        });
+        this.lastMeasurements = measurements.slice(
+            Math.max(measurements.length - lastMeasurementsCount, 0),
+            measurements.length
+        );
     }
 
     protected setLastArticles(articles: IArticle[], lastArticlesCount: number) {
-        articles.forEach(article => {
-            this.lastArticles.push(article);
-            if (this.lastArticles.length > lastArticlesCount) {
-                this.lastArticles.shift();
-            }
-        });
+        this.lastArticles = articles.slice(
+            Math.max(articles.length - lastArticlesCount, 0),
+            articles.length
+        );
     }
 
     private getStringArticle(article: IArticle) {
