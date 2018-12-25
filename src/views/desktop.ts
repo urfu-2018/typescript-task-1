@@ -19,7 +19,6 @@ export class DesktopView extends View implements IObserver, IView {
                 this.render();
             }
         }
-
     }
 
     public render() {
