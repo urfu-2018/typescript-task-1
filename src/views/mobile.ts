@@ -10,6 +10,7 @@ import { RepeatChecker } from '../utils/checker/repeatChecker';
 export class MobileView implements IObserver, IView {
     private newsToPrint: IArticle[] = [];
     private measurementsToPrint: IMeasurement[] = [];
+    private checker = new RepeatChecker();
 
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
@@ -19,7 +20,7 @@ export class MobileView implements IObserver, IView {
             this.measurementsToPrint = observable.getMeasurements();
         }
 
-        if (RepeatChecker.check(this.newsToPrint, this.measurementsToPrint)) {
+        if (this.checker.check(this.newsToPrint, this.measurementsToPrint)) {
             this.render();
         }
     }
