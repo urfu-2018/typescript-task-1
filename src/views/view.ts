@@ -8,13 +8,13 @@ import { WeatherState } from '../state/weather';
 export class View implements IObserver, IView {
     private lastMeasurements: IMeasurement[] = [];
     private lastArticles: IArticle[] = [];
-    private lastMeasurementsCount: number;
-    private lastArticlesCount: number;
-    private name: string;
+    private readonly lastMeasurementsCount: number;
+    private readonly lastArticlesCount: number;
+    private readonly name: string;
 
-    public constructor(lastMeasurementsCount: number, lastArticlesCount: number, name: string) {
-        this.lastMeasurementsCount = lastMeasurementsCount;
+    public constructor(lastArticlesCount: number, lastMeasurementsCount: number, name: string) {
         this.lastArticlesCount = lastArticlesCount;
+        this.lastMeasurementsCount = lastMeasurementsCount;
         this.name = name;
     }
 
