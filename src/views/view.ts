@@ -39,21 +39,15 @@ export class View implements IObserver, IView {
     }
 
     protected getRenderedString() {
-        const measurementsString = this.lastMeasurements
-            .map(measurement => this.getStringMeasurement(measurement))
-            .join('\n');
-        const articlesString = this.lastArticles
-            .map(article => this.getStringArticle(article))
-            .join('\n');
+        const measurementsString = this.lastMeasurements.map(this.getStringMeasurement).join('\n');
+        const articlesString = this.lastArticles.map(this.getStringArticle).join('\n');
 
-        return [articlesString, measurementsString].filter(str => str.length > 0).join('\n');
+        return [articlesString, measurementsString].filter(Boolean).join('\n');
     }
 
     protected setLastMeasurements(measurements: IMeasurement[]): boolean {
-        const newMeasurements = measurements.slice(
-            Math.max(measurements.length - this.lastMeasurementsCount, 0),
-            measurements.length
-        );
+        const startArray = Math.max(measurements.length - this.lastMeasurementsCount, 0);
+        const newMeasurements = measurements.slice(startArray, measurements.length);
         if (!this.areArraysEqual(this.lastMeasurements, newMeasurements)) {
             this.lastMeasurements = newMeasurements;
             return true;
@@ -63,10 +57,8 @@ export class View implements IObserver, IView {
     }
 
     protected setLastArticles(articles: IArticle[]): boolean {
-        const newArticles = articles.slice(
-            Math.max(articles.length - this.lastArticlesCount, 0),
-            articles.length
-        );
+        const startArray = Math.max(articles.length - this.lastArticlesCount, 0);
+        const newArticles = articles.slice(startArray, articles.length);
         if (!this.areArraysEqual(this.lastArticles, newArticles)) {
             this.lastArticles = newArticles;
             return true;
@@ -84,12 +76,12 @@ export class View implements IObserver, IView {
     }
 
     private getStringArticle(article: IArticle) {
-        return `[${article.time}] ${article.category} - ${article.title}`;
+        const { time, category, title } = article;
+        return `[${time}] ${category} - ${title}`;
     }
 
     private getStringMeasurement(measurement: IMeasurement) {
-        return `[${measurement.time}] ${measurement.temperature} C, ${measurement.pressure} P, ${
-            measurement.humidity
-        } U`;
+        const { time, temperature, pressure, humidity } = measurement;
+        return `[${time}] ${temperature} C, ${pressure} P, ${humidity} U`;
     }
 }
