@@ -7,11 +7,17 @@ import { IView } from './types';
 export class DesktopView extends View implements IObserver, IView {
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
-            this.setLastArticles(observable.getArticles(), 3);
+            const isUpdated = this.setLastArticles(observable.getArticles(), 3);
+            if (isUpdated) {
+                this.render();
+            }
         }
 
         if (observable instanceof WeatherState) {
-            this.setLastMeasurements(observable.getMeasurements(), 2);
+            const isUpdated = this.setLastMeasurements(observable.getMeasurements(), 2);
+            if (isUpdated) {
+                this.render();
+            }
         }
 
         this.render();
