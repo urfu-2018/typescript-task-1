@@ -33,23 +33,19 @@ export class BaseView {
         if (observable instanceof NewsState) {
             const articles = observable.getArticles();
             this.articlesToRender = articles
-                .slice(articles.length - this.articlesCount)
+                .slice(-this.articlesCount)
                 .map(x => this.formatArticles(x));
         }
         if (observable instanceof WeatherState) {
             const measurments = observable.getMeasurements();
             this.weatherToRender = measurments
-                .slice(measurments.length - this.weatherCount)
+                .slice(-this.weatherCount)
                 .map(x => this.formatWeather(x));
         }
     }
 
     protected getResultString() {
-        let result: string = `<div class="${this.type}">\n`;
-        this.articlesToRender
-            .concat(this.weatherToRender)
-            .forEach(x => (result = `${result}${x}\n`));
-        result += '</div>';
-        return result;
+        const infoPart = this.articlesToRender.concat(this.weatherToRender).join('\n');
+        return [`<div class="${this.type}">`, infoPart, '</div>'].join('\n');
     }
 }
