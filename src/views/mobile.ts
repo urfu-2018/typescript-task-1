@@ -1,12 +1,23 @@
 import { IObservable, IObserver } from '../utils/observable/types';
+import { View } from './view';
+import { NewsState } from '../state/news';
+import { WeatherState } from '../state/weather';
 import { IView } from './types';
 
-export class MobileView implements IObserver, IView {
+export class MobileView extends View implements IObserver, IView {
     public update(observable: IObservable) {
-        throw new Error('Not implemented');
+        if (observable instanceof NewsState) {
+            this.setLastArticles(observable.getArticles(), 1);
+        }
+
+        if (observable instanceof WeatherState) {
+            this.setLastMeasurements(observable.getMeasurements(), 1);
+        }
+
+        this.render();
     }
 
     public render() {
-        throw new Error('Not implemented');
+        console.log(`<div class="mobile">\n${this.getRenderedString()}\n</div>`);
     }
 }
