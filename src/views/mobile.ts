@@ -7,14 +7,18 @@ import { IView } from './types';
 export class MobileView extends View implements IObserver, IView {
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
-            this.setLastArticles(observable.getArticles(), 1);
+            const isUpdated = this.setLastArticles(observable.getArticles(), 1);
+            if (isUpdated) {
+                this.render();
+            }
         }
 
         if (observable instanceof WeatherState) {
-            this.setLastMeasurements(observable.getMeasurements(), 1);
+            const isUpdated = this.setLastMeasurements(observable.getMeasurements(), 1);
+            if (isUpdated) {
+                this.render();
+            }
         }
-
-        this.render();
     }
 
     public render() {
