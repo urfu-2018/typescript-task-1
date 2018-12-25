@@ -1,9 +1,42 @@
 import { IMeasurement } from '../state/weather/types';
 import { IArticle } from '../state/news/types';
+import { IObservable, IObserver } from '../utils/observable/types';
+import { IView } from './types';
+import { NewsState } from '../state/news';
+import { WeatherState } from '../state/weather';
 
-export class View {
+export class View implements IObserver, IView {
     private lastMeasurements: IMeasurement[] = [];
     private lastArticles: IArticle[] = [];
+    private lastMeasurementsCount: number;
+    private lastArticlesCount: number;
+    private name: string;
+
+    public constructor(lastMeasurementsCount: number, lastArticlesCount: number, name: string) {
+        this.lastMeasurementsCount = lastMeasurementsCount;
+        this.lastArticlesCount = lastArticlesCount;
+        this.name = name;
+    }
+
+    public render(): void {
+        console.log(`<div class="${this.name}">\n${this.getRenderedString()}\n</div>`);
+    }
+
+    public update(observable: IObservable): void {
+        if (observable instanceof NewsState) {
+            const isUpdated = this.setLastArticles(observable.getArticles());
+            if (isUpdated) {
+                this.render();
+            }
+        }
+
+        if (observable instanceof WeatherState) {
+            const isUpdated = this.setLastMeasurements(observable.getMeasurements());
+            if (isUpdated) {
+                this.render();
+            }
+        }
+    }
 
     protected getRenderedString() {
         const measurementsString = this.lastMeasurements
@@ -16,12 +49,9 @@ export class View {
         return [articlesString, measurementsString].filter(str => str.length > 0).join('\n');
     }
 
-    protected setLastMeasurements(
-        measurements: IMeasurement[],
-        lastMeasurementsCount: number
-    ): boolean {
+    protected setLastMeasurements(measurements: IMeasurement[]): boolean {
         const newMeasurements = measurements.slice(
-            Math.max(measurements.length - lastMeasurementsCount, 0),
+            Math.max(measurements.length - this.lastMeasurementsCount, 0),
             measurements.length
         );
         if (!this.areArraysEqual(this.lastMeasurements, newMeasurements)) {
@@ -32,9 +62,9 @@ export class View {
         return false;
     }
 
-    protected setLastArticles(articles: IArticle[], lastArticlesCount: number): boolean {
+    protected setLastArticles(articles: IArticle[]): boolean {
         const newArticles = articles.slice(
-            Math.max(articles.length - lastArticlesCount, 0),
+            Math.max(articles.length - this.lastArticlesCount, 0),
             articles.length
         );
         if (!this.areArraysEqual(this.lastArticles, newArticles)) {
