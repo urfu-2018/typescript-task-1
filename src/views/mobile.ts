@@ -6,8 +6,8 @@ import { NewsState } from '../state/news/index';
 import { WeatherState } from '../state/weather/index';
 
 export class MobileView implements IObserver, IView {
-    private _recordNumberNews: number = 3;
-    private _recordNumberWeather: number = 2;
+    private _recordNumberNews: number = 1;
+    private _recordNumberWeather: number = 1;
     private _recordsNews: IArticle[] = [];
     private _recordsWeather: IMeasurement[] = [];
     private _content: string = '';
