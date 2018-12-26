@@ -15,22 +15,10 @@ export class DesktopView implements IObserver, IView {
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
             const news = observable.getArticles();
-            let recordsNumber = this._recordNumberNews;
-
-            if (news.length < this._recordNumberNews) {
-                recordsNumber = news.length;
-            }
-
-            this._recordsNews = news.slice(-recordsNumber);
+            this._recordsNews = news.slice(-this._recordNumberNews);
         } else if (observable instanceof WeatherState) {
             const weather = observable.getMeasurements();
-            let recordsNumber = this._recordNumberWeather;
-
-            if (weather.length < this._recordNumberWeather) {
-                recordsNumber = weather.length;
-            }
-
-            this._recordsWeather = weather.slice(-recordsNumber);
+            this._recordsWeather = weather.slice(-this._recordNumberWeather);
         } else {
             throw TypeError('Объект для обновления не принадлежит классу NewsState и WeatherState');
         }
