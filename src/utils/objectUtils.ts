@@ -53,3 +53,7 @@ function isArticle(arg: IArticle | IMeasurement): arg is IArticle {
 function isMeasurement(arg: IArticle | IMeasurement): arg is IMeasurement {
     return (arg as IMeasurement).temperature !== undefined;
 }
+
+export function deepCopy<T>(array: T[]): T[] {
+    return array.map(x => ({ ...x }));
+}

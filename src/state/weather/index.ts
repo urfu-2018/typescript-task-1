@@ -1,11 +1,12 @@
 import { IMeasurement, IWeatherState } from './types';
 import { Observable } from '../../utils/observable';
+import { deepCopy } from '../../utils/objectUtils';
 
 export class WeatherState extends Observable implements IWeatherState {
     private measurements: IMeasurement[] = [];
 
     public getMeasurements(): IMeasurement[] {
-        return JSON.parse(JSON.stringify(this.measurements)); // Deep copy
+        return deepCopy(this.measurements);
     }
 
     public setMeasurements(measurements: IMeasurement[]) {
