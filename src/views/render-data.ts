@@ -28,15 +28,3 @@ export class RenderDataProvider {
         return result;
     }
 }
-
-export abstract class RenderDataContainer {
-    get renderData(): string {
-        return this._renderData;
-    }
-
-    set renderData(value: string) {
-        this._renderData = value;
-    }
-
-    private _renderData: string = '';
-}

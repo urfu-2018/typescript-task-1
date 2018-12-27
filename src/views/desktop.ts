@@ -1,8 +1,10 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
-import { RenderDataContainer, RenderDataProvider } from './renderData';
+import { RenderDataProvider } from './render-data';
 
-export class DesktopView extends RenderDataContainer implements IObserver, IView {
+export class DesktopView implements IObserver, IView {
+    private _renderData: string = '';
+
     public update(observable: IObservable) {
         this.renderData += RenderDataProvider.provide(observable, 3, 2);
         this.render();
@@ -10,5 +12,13 @@ export class DesktopView extends RenderDataContainer implements IObserver, IView
 
     public render() {
         console.log(`<div class="desktop">\n${this.renderData}</div>`);
+    }
+
+    get renderData(): string {
+        return this._renderData;
+    }
+
+    set renderData(value: string) {
+        this._renderData = value;
     }
 }
