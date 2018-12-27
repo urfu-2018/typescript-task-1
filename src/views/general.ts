@@ -5,7 +5,7 @@ import { IMeasurement } from '../state/weather/types';
 import { WeatherState } from '../state/weather';
 import { NewsState } from '../state/news';
 
-export class GeneralView implements IObserver, IView {
+export abstract class GeneralView implements IObserver, IView {
     protected countArticles: number = 0;
     protected countMeasurements: number = 0;
     protected className: string = '';
@@ -13,15 +13,11 @@ export class GeneralView implements IObserver, IView {
     private articles: IArticle[] = [];
     private lastResult: string = '';
 
-    public update(observable: IObservable): void {
+    public update(observable: IObservable) {
         if (observable instanceof WeatherState) {
-            this.measurements = observable
-                .getMeasurements()
-                .slice(this.measurements.length - this.countMeasurements);
+            this.measurements = observable.getMeasurements().slice(-this.countMeasurements);
         } else if (observable instanceof NewsState) {
-            this.articles = observable
-                .getArticles()
-                .slice(this.articles.length - this.countArticles);
+            this.articles = observable.getArticles().slice(-this.countArticles);
         } else {
             throw new TypeError();
         }
@@ -29,7 +25,7 @@ export class GeneralView implements IObserver, IView {
         this.render();
     }
 
-    public render(): void {
+    public render() {
         const result = this.renderWrapper();
         if (this.lastResult !== result) {
             this.lastResult = result;
@@ -37,20 +33,21 @@ export class GeneralView implements IObserver, IView {
         }
     }
 
-    private renderWrapper(): string {
+    private renderWrapper() {
         const articles = this.articles.map(this.presentArticle);
         const measurements = this.measurements.map(this.presentMeasurement);
         const result = `<div class="${this.className}">\n${articles
             .concat(measurements)
             .join('\n')}\n</div>`;
+
         return result;
     }
 
-    private presentArticle(article: IArticle): string {
+    private presentArticle(article: IArticle) {
         return `[${article.time}] ${article.category} - ${article.title}`;
     }
 
-    private presentMeasurement(value: IMeasurement): string {
+    private presentMeasurement(value: IMeasurement) {
         return `[${value.time}] ${value.temperature} C, ${value.pressure} P, ${value.humidity} U`;
     }
 }
