@@ -1,7 +1,7 @@
-import { View } from './index';
+import { BaseView } from './index';
 
-export class DesktopView extends View {
-    protected measurementsCount: number = 2;
-    protected articlesCount: number = 3;
-    protected deviceType: string = 'desktop';
+export class DesktopView extends BaseView {
+    protected measurementsCount = 2;
+    protected articlesCount = 3;
+    protected deviceType = 'desktop';
 }

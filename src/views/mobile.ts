@@ -1,7 +1,7 @@
-import { View } from './index';
+import { BaseView } from './index';
 
-export class MobileView extends View {
-    protected measurementsCount: number = 1;
-    protected articlesCount: number = 1;
-    protected deviceType: string = 'mobile';
+export class MobileView extends BaseView {
+    protected measurementsCount = 1;
+    protected articlesCount = 1;
+    protected deviceType = 'mobile';
 }

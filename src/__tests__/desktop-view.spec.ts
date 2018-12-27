@@ -64,7 +64,7 @@ describe('DesktopView', () => {
         assert.ok(consoleSpy.calledWith(markup), 'Выведена некорректная разметка');
     });
 
-    it('.render должен писать про изменения WeatherState в console.log один раз для одинаковых данных', () => {
+    it('.render должен писать про изменения WeatherState в console.log один раз для одних и тех же данных', () => {
         const weatherState = new WeatherState();
         const desktopView = new DesktopView();
         const measurements = [
@@ -81,6 +81,35 @@ describe('DesktopView', () => {
 
         weatherState.setMeasurements(measurements);
         weatherState.setMeasurements(measurements);
+
+        assert.ok(consoleSpy.calledOnce, 'render был вызван более 1 раза');
+    });
+
+    it('.render должен писать про изменения WeatherState в console.log один раз для одинаковых данных', () => {
+        const weatherState = new WeatherState();
+        const desktopView = new DesktopView();
+        const measurements = [
+            {
+                time: '08:00',
+                temperature: -16.6,
+                pressure: 771.3,
+                humidity: 79
+            }
+        ];
+        const measurements1 = [
+            {
+                time: '08:00',
+                temperature: -16.6,
+                pressure: 771.3,
+                humidity: 79
+            }
+        ];
+        consoleSpy = sinon.spy(console, 'log');
+
+        weatherState.addObserver(desktopView);
+
+        weatherState.setMeasurements(measurements);
+        weatherState.setMeasurements(measurements1);
 
         assert.ok(consoleSpy.calledOnce, 'render был вызван более 1 раза');
     });
