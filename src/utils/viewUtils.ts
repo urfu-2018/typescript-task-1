@@ -26,8 +26,8 @@ function prepareView(
     return `<div class="${htmlClass}">\n${result}</div>`;
 }
 
-function getLastNElements<T>(array: T[], count: number): T[] {
-    return array.slice(Math.max(array.length - count, 0));
+function getLastNElements<T>(array: T[], size: number): T[] {
+    return array.slice(-size);
 }
 
 export abstract class EffectiveLogView implements IView {
@@ -37,13 +37,13 @@ export abstract class EffectiveLogView implements IView {
     private lastMeasurements: IMeasurement[] = [];
     private lastArticles: IArticle[] = [];
 
-    public update(observable: IObservable) {
+    public update(observable: IObservable): void {
         if (observable instanceof NewsState) {
-            const count = this.getArticlesCount();
-            this.currentArticles = getLastNElements(observable.getArticles(), count);
+            const size = this.getArticlesSize();
+            this.currentArticles = getLastNElements(observable.getArticles(), size);
         } else if (observable instanceof WeatherState) {
-            const count = this.getMeasurementsCount();
-            this.currentMeasurements = getLastNElements(observable.getMeasurements(), count);
+            const size = this.getMeasurementsSize();
+            this.currentMeasurements = getLastNElements(observable.getMeasurements(), size);
         } else {
             return;
         }
@@ -70,6 +70,6 @@ export abstract class EffectiveLogView implements IView {
     }
 
     protected abstract getHtmlClass(): string;
-    protected abstract getArticlesCount(): number;
-    protected abstract getMeasurementsCount(): number;
+    protected abstract getArticlesSize(): number;
+    protected abstract getMeasurementsSize(): number;
 }

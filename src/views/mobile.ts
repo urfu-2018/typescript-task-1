@@ -6,7 +6,7 @@ export class MobileView extends EffectiveLogView implements IObserver {
     private static measurementsSize = 1;
     private static htmlClass = 'mobile';
 
-    protected getArticlesCount(): number {
+    protected getArticlesSize(): number {
         return MobileView.articlesSize;
     }
 
@@ -14,7 +14,7 @@ export class MobileView extends EffectiveLogView implements IObserver {
         return MobileView.htmlClass;
     }
 
-    protected getMeasurementsCount(): number {
+    protected getMeasurementsSize(): number {
         return MobileView.measurementsSize;
     }
 }

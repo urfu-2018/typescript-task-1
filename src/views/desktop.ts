@@ -6,7 +6,7 @@ export class DesktopView extends EffectiveLogView implements IObserver {
     private static measurementsSize = 2;
     private static htmlClass = 'desktop';
 
-    protected getArticlesCount(): number {
+    protected getArticlesSize(): number {
         return DesktopView.articlesSize;
     }
 
@@ -14,7 +14,7 @@ export class DesktopView extends EffectiveLogView implements IObserver {
         return DesktopView.htmlClass;
     }
 
-    protected getMeasurementsCount(): number {
+    protected getMeasurementsSize(): number {
         return DesktopView.measurementsSize;
     }
 }
