@@ -3,9 +3,7 @@ import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
 
 export class DataViewer {
-    protected content = '';
-
-    public printContent(
+    protected static printContent(
         observable: IObservable,
         countOfArticles: number,
         countOfMeasurements: number
@@ -32,4 +30,5 @@ export class DataViewer {
 
         return content;
     }
+    protected data = '';
 }
