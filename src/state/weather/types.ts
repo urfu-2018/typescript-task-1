@@ -3,6 +3,7 @@ export interface IMeasurement {
     pressure: number; // e.g. 767.2
     humidity: number; // e.g. 44
     temperature: number; // e.g. -14.9
+    [key: string]: string | number;
 }
 
 export interface IWeatherState {

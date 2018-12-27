@@ -1,11 +1,15 @@
 import { IMeasurement } from '../state/weather/types';
 import { IArticle } from '../state/news/types';
 import { IView } from '../views/types';
+import { IObservable } from './observable/types';
+import { NewsState } from '../state/news';
+import { WeatherState } from '../state/weather';
+import { isEqual } from './objectUtils';
 
-export function prepareView(
+function prepareView(
     htmlClass: string,
-    measurements: IMeasurement[],
-    articles: IArticle[]
+    articles: IArticle[],
+    measurements: IMeasurement[]
 ): string {
     let result = '';
 
@@ -22,18 +26,51 @@ export function prepareView(
     return `<div class="${htmlClass}">\n${result}</div>`;
 }
 
-export abstract class EffectiveLogView implements IView {
-    private lastMarkup: string | undefined;
+function getLastNElements<T>(array: T[], count: number): T[] {
+    return array.slice(Math.max(array.length - count, 0));
+}
 
-    public effectiveRender(markup: string): void {
-        if (!this.lastMarkup || this.lastMarkup !== markup) {
-            this.lastMarkup = markup;
+export abstract class EffectiveLogView implements IView {
+    private markUp = '';
+    private lastMeasurements: IMeasurement[] = [];
+    private lastArticles: IArticle[] = [];
+
+    public update(observable: IObservable) {
+        let articles: IArticle[] = [];
+        let measurements: IMeasurement[] = [];
+
+        if (observable instanceof NewsState) {
+            const count = this.getArticlesCount();
+            articles = getLastNElements(observable.getArticles(), count);
+        } else if (observable instanceof WeatherState) {
+            const count = this.getMeasurementsCount();
+            measurements = getLastNElements(observable.getMeasurements(), count);
+        } else {
+            return;
+        }
+
+        this.effectiveRender(articles, measurements);
+    }
+
+    public effectiveRender(articles: IArticle[], measurements: IMeasurement[]): void {
+        if (
+            !isEqual(articles, this.lastArticles) ||
+            !isEqual(measurements, this.lastMeasurements)
+        ) {
+            this.markUp = prepareView(this.getHtmlClass(), articles, measurements);
 
             this.render();
+
+            this.lastArticles = articles;
+            this.lastMeasurements = measurements;
         }
     }
 
     public render(): void {
-        console.log(this.lastMarkup);
+        console.log(this.markUp);
     }
+
+    protected abstract getHtmlClass(): string;
+    protected abstract getArticlesCount(): number;
+    protected abstract getMeasurementsCount(): number;
 }
