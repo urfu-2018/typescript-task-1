@@ -31,7 +31,6 @@ function getLastNElements<T>(array: T[], count: number): T[] {
 }
 
 export abstract class EffectiveLogView implements IView {
-    private markUp = '';
     private currentArticles: IArticle[] = [];
     private currentMeasurements: IMeasurement[] = [];
 
@@ -49,25 +48,25 @@ export abstract class EffectiveLogView implements IView {
             return;
         }
 
-        this.effectiveRender(this.currentArticles, this.currentMeasurements);
-    }
-
-    public effectiveRender(articles: IArticle[], measurements: IMeasurement[]): void {
-        if (
-            !isEqual(articles, this.lastArticles) ||
-            !isEqual(measurements, this.lastMeasurements)
-        ) {
-            this.markUp = prepareView(this.getHtmlClass(), articles, measurements);
-
-            this.render();
-
-            this.lastArticles = articles;
-            this.lastMeasurements = measurements;
-        }
+        this.render();
     }
 
     public render(): void {
-        console.log(this.markUp);
+        if (
+            !isEqual(this.currentArticles, this.lastArticles) ||
+            !isEqual(this.currentMeasurements, this.lastMeasurements)
+        ) {
+            const markUp = prepareView(
+                this.getHtmlClass(),
+                this.currentArticles,
+                this.currentMeasurements
+            );
+
+            console.log(markUp);
+
+            this.lastArticles = this.currentArticles;
+            this.lastMeasurements = this.currentMeasurements;
+        }
     }
 
     protected abstract getHtmlClass(): string;
