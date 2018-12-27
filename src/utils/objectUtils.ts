@@ -17,7 +17,13 @@ export function deepCopy<T extends object>(a: T): T {
         const copy = {};
 
         for (const key of keys) {
-            (copy as any)[key] = deepCopy((a as any)[key]);
+            const descr = Object.getOwnPropertyDescriptor(a, key);
+            if (!descr) {
+                // never reaches
+                throw TypeError();
+            }
+            descr.value = deepCopy((a as any)[key]);
+            Object.defineProperty(copy, key, descr);
         }
 
         return copy as T;
