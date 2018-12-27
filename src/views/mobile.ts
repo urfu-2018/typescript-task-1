@@ -6,7 +6,7 @@ export class MobileView implements IObserver, IView {
     private _renderData: string = '';
 
     public update(observable: IObservable) {
-        this.renderData += RenderDataProvider.provide(observable, 1, 1);
+        this.renderData = RenderDataProvider.provide(observable, 1, 1);
         this.render();
     }
 

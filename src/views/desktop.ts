@@ -6,7 +6,7 @@ export class DesktopView implements IObserver, IView {
     private _renderData: string = '';
 
     public update(observable: IObservable) {
-        this.renderData += RenderDataProvider.provide(observable, 3, 2);
+        this.renderData = RenderDataProvider.provide(observable, 3, 2);
         this.render();
     }
 
