@@ -32,24 +32,24 @@ function getLastNElements<T>(array: T[], count: number): T[] {
 
 export abstract class EffectiveLogView implements IView {
     private markUp = '';
+    private currentArticles: IArticle[] = [];
+    private currentMeasurements: IMeasurement[] = [];
+
     private lastMeasurements: IMeasurement[] = [];
     private lastArticles: IArticle[] = [];
 
     public update(observable: IObservable) {
-        let articles: IArticle[] = [];
-        let measurements: IMeasurement[] = [];
-
         if (observable instanceof NewsState) {
             const count = this.getArticlesCount();
-            articles = getLastNElements(observable.getArticles(), count);
+            this.currentArticles = getLastNElements(observable.getArticles(), count);
         } else if (observable instanceof WeatherState) {
             const count = this.getMeasurementsCount();
-            measurements = getLastNElements(observable.getMeasurements(), count);
+            this.currentMeasurements = getLastNElements(observable.getMeasurements(), count);
         } else {
             return;
         }
 
-        this.effectiveRender(articles, measurements);
+        this.effectiveRender(this.currentArticles, this.currentMeasurements);
     }
 
     public effectiveRender(articles: IArticle[], measurements: IMeasurement[]): void {
