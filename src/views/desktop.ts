@@ -1,12 +1,19 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
+import { View, ViewType } from './view';
 
-export class DesktopView implements IObserver, IView {
-    public update(observable: IObservable) {
-        throw new Error('Not implemented');
+export class DesktopView extends View {
+    protected static readonly countNews: number = 3;
+    protected static readonly countMeasurements: number = 2;
+    protected static readonly viewType = ViewType.Desktop;
+
+    protected getCountNews() {
+        return DesktopView.countNews;
     }
 
-    public render() {
-        throw new Error('Not implemented');
+    protected getCountMeasurements() {
+        return DesktopView.countMeasurements;
+    }
+
+    protected getViewType() {
+        return DesktopView.viewType;
     }
 }

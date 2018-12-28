@@ -1,12 +1,19 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
+import { View, ViewType } from './view';
 
-export class MobileView implements IObserver, IView {
-    public update(observable: IObservable) {
-        throw new Error('Not implemented');
+export class MobileView extends View {
+    protected static readonly countNews: number = 1;
+    protected static readonly countMeasurements: number = 1;
+    protected static readonly viewType = ViewType.Mobile;
+
+    protected getCountNews() {
+        return MobileView.countNews;
     }
 
-    public render() {
-        throw new Error('Not implemented');
+    protected getCountMeasurements() {
+        return MobileView.countMeasurements;
+    }
+
+    protected getViewType() {
+        return MobileView.viewType;
     }
 }
