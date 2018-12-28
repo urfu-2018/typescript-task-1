@@ -1,7 +1,19 @@
-import { View } from './view';
+import { View, ViewType } from './view';
 
 export class MobileView extends View {
-    constructor() {
-        super(1, 1, 'mobile');
+    protected static readonly countNews: number = 1;
+    protected static readonly countMeasurements: number = 1;
+    protected static readonly viewType = ViewType.Mobile;
+
+    protected getCountNews() {
+        return MobileView.countNews;
+    }
+
+    protected getCountMeasurements() {
+        return MobileView.countMeasurements;
+    }
+
+    protected getViewType() {
+        return MobileView.viewType;
     }
 }

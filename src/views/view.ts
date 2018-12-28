@@ -1,29 +1,29 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
 import { WeatherState } from '../state/weather';
-import { IMeasurement } from '../state/weather/types';
 import { NewsState } from '../state/news';
-import { IArticle } from '../state/news/types';
+
+export enum ViewType {
+    Desktop = 'desktop',
+    Mobile = 'mobile'
+}
 
 export abstract class View implements IObserver, IView {
-    public readonly viewType: string;
-    private weather: IMeasurement[] = [];
-    private news: IArticle[] = [];
-    private countNews: number;
-    private countMeasurements: number;
+    protected weather: WeatherState | undefined;
+    private news: NewsState | undefined;
     private rendition: string | undefined;
-
-    protected constructor(countNews: number, countMeasurements: number, viewType: string) {
-        this.countNews = countNews;
-        this.countMeasurements = countMeasurements;
-        this.viewType = viewType;
-    }
 
     public update(observable: IObservable) {
         if (observable instanceof WeatherState) {
-            this.weather = (observable as WeatherState).getMeasurements();
+            if (observable.equals(this.weather)) {
+                return;
+            }
+            this.weather = observable;
         } else if (observable instanceof NewsState) {
-            this.news = (observable as NewsState).getArticles();
+            if (observable.equals(this.news)) {
+                return;
+            }
+            this.news = observable;
         } else {
             throw new TypeError();
         }
@@ -31,19 +31,24 @@ export abstract class View implements IObserver, IView {
     }
 
     public render() {
-        const rendition = `<div class="${
-            this.viewType
-        }">\n${this.newsToStr()}${this.weatherToStr()}</div>`;
+        const rendition = `<div class="${this.getViewType()}">\n${this.newsToStr()}${this.weatherToStr()}</div>`;
 
         if (rendition !== this.rendition) {
             console.log(rendition);
             this.rendition = rendition;
         }
     }
+    protected abstract getCountNews(): number;
+    protected abstract getCountMeasurements(): number;
+    protected abstract getViewType(): ViewType;
 
     private weatherToStr(): string {
+        if (this.weather === undefined) {
+            return '';
+        }
         return this.weather
-            .slice(-this.countMeasurements)
+            .getMeasurements()
+            .slice(-this.getCountMeasurements())
             .map(
                 weather =>
                     `[${weather.time}] ${weather.temperature} C, ${weather.pressure} P, ${
@@ -54,8 +59,12 @@ export abstract class View implements IObserver, IView {
     }
 
     private newsToStr(): string {
+        if (this.news === undefined) {
+            return '';
+        }
         return this.news
-            .slice(-this.countNews)
+            .getArticles()
+            .slice(-this.getCountNews())
             .map(nextNew => `[${nextNew.time}] ${nextNew.category} - ${nextNew.title}\n`)
             .join('');
     }
