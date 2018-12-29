@@ -4,7 +4,8 @@ import { NewsState } from '../state/news';
 import { IArticle } from '../state/news/types';
 import { IMeasurement } from '../state/weather/types';
 import { WeatherState } from '../state/weather';
-import { formatArticle, formatMeasurement } from './format';
+import { formatMeasurement } from './formatMeasurements';
+import { formatArticle } from './formatArticle';
 import { equal } from './utility';
 
 export class DesktopView implements IObserver, IView {
