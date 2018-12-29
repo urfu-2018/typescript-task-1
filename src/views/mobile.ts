@@ -1,17 +1,14 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { IView } from './types';
-import { DataViewer } from './viewer';
+import { contentCollection } from './viewer';
 
-export class MobileView extends DataViewer implements IObserver, IView {
+export class MobileView implements IObserver, IView {
     private readonly countOfArticles = 1;
     private readonly countOfMeasurements = 1;
+    private data = '';
 
     public update(observable: IObservable) {
-        this.data += DataViewer.printContent(
-            observable,
-            this.countOfArticles,
-            this.countOfMeasurements
-        );
+        this.data += contentCollection(observable, this.countOfArticles, this.countOfMeasurements);
 
         this.render();
     }
