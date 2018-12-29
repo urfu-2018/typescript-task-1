@@ -3,14 +3,14 @@ import { IView } from './types';
 import { DataViewer } from './viewer';
 
 export class MobileView extends DataViewer implements IObserver, IView {
-    private COUNT_OF_ARTICLES = 1;
-    private COUNT_OF_MEASUREMENTS = 1;
+    private readonly countOfArticles = 1;
+    private readonly countOfMeasurements = 1;
 
     public update(observable: IObservable) {
         this.data += DataViewer.printContent(
             observable,
-            this.COUNT_OF_ARTICLES,
-            this.COUNT_OF_MEASUREMENTS
+            this.countOfArticles,
+            this.countOfMeasurements
         );
 
         this.render();

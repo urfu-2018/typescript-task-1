@@ -3,14 +3,14 @@ import { IView } from './types';
 import { DataViewer } from './viewer';
 
 export class DesktopView extends DataViewer implements IObserver, IView {
-    private COUNT_OF_ARTICLES = 3;
-    private COUNT_OF_MEASUREMENTS = 2;
+    private readonly countOfArticles = 3;
+    private readonly countOfMeasurements = 2;
 
     public update(observable: IObservable) {
         this.data += DataViewer.printContent(
             observable,
-            this.COUNT_OF_ARTICLES,
-            this.COUNT_OF_MEASUREMENTS
+            this.countOfArticles,
+            this.countOfMeasurements
         );
 
         this.render();

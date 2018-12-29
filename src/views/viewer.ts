@@ -30,5 +30,6 @@ export class DataViewer {
 
         return content;
     }
+
     protected data = '';
 }
