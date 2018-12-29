@@ -9,8 +9,8 @@ export class MobileView implements IObserver, IView {
     private weatherData = '';
 
     public update(observable: IObservable) {
-        const ARTICLES_COUNT = 3;
-        const WEATHER_COUNT = 2;
+        const ARTICLES_COUNT = 1;
+        const WEATHER_COUNT = 1;
         if (observable instanceof NewsState) {
             this.newsData = RenderDataProvider.provideArticles(observable, ARTICLES_COUNT);
         }
