@@ -6,6 +6,6 @@ import {
 
 export class MobileView extends ViewObserver {
     constructor() {
-        super('desktop', new NewsLinesExtractor(1), new WeatherMeasurementLinesExtractor(1));
+        super('mobile', new NewsLinesExtractor(1), new WeatherMeasurementLinesExtractor(1));
     }
 }
