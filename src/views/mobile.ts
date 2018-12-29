@@ -5,36 +5,22 @@ import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
 
 export class MobileView implements IObserver, IView {
-    private _newsData: string = '';
-    private _weatherData: string = '';
+    private newsData = '';
+    private weatherData = '';
 
     public update(observable: IObservable) {
+        const ARTICLES_COUNT = 3;
+        const WEATHER_COUNT = 2;
         if (observable instanceof NewsState) {
-            this.newsData = RenderDataProvider.provideArticles(observable, 1);
+            this.newsData = RenderDataProvider.provideArticles(observable, ARTICLES_COUNT);
         }
         if (observable instanceof WeatherState) {
-            this.weatherData = RenderDataProvider.provideMeasurements(observable, 1);
+            this.weatherData = RenderDataProvider.provideMeasurements(observable, WEATHER_COUNT);
         }
         this.render();
     }
 
     public render() {
         console.log(`<div class="mobile">\n${this.newsData}${this.weatherData}</div>`);
-    }
-
-    get newsData(): string {
-        return this._newsData;
-    }
-
-    set newsData(value: string) {
-        this._newsData = value;
-    }
-
-    get weatherData(): string {
-        return this._weatherData;
-    }
-
-    set weatherData(value: string) {
-        this._weatherData = value;
     }
 }
