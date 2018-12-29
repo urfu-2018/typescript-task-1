@@ -1,6 +1,6 @@
 import { IView } from './types';
 import { IObservable, IObserver } from '../utils/observable/types';
-import { LinesExtractor } from '../utils/extractors/lines-extractor';
+import { LinesExtractor } from '../utils/lines-extractor';
 
 export class ViewObserver implements IView, IObserver {
     private readonly outputClass: string;

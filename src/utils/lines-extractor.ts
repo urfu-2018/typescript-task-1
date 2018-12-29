@@ -1,6 +1,6 @@
-import { IObservable } from '../observable/types';
-import { NewsState } from '../../state/news';
-import { WeatherState } from '../../state/weather';
+import { IObservable } from './observable/types';
+import { NewsState } from '../state/news';
+import { WeatherState } from '../state/weather';
 
 export abstract class LinesExtractor {
     private lines: string[] = [];

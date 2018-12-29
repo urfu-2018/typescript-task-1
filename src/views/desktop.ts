@@ -1,8 +1,5 @@
 import { ViewObserver } from './general';
-import {
-    NewsLinesExtractor,
-    WeatherMeasurementLinesExtractor
-} from '../utils/extractors/lines-extractor';
+import { NewsLinesExtractor, WeatherMeasurementLinesExtractor } from '../utils/lines-extractor';
 
 export class DesktopView extends ViewObserver {
     constructor() {
