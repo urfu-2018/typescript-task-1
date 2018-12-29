@@ -17,19 +17,29 @@ export class Device implements IObserver, IView {
         if (observable instanceof NewsState) {
             const lastArticles = this.articles;
             const rawArticles = observable.getArticles();
-            this.articles = rawArticles.slice(rawArticles.length - this.articleCount);
+            if (rawArticles.length - this.articleCount < 0) {
+                this.articles = rawArticles;
+            } else {
+                this.articles = rawArticles.slice(rawArticles.length - this.articleCount);
+            }
             if (this.isNeedRender(lastArticles, this.articles)) {
                 this.render();
             }
         } else if (observable instanceof WeatherState) {
             const lastMeasurements = this.measurements;
             const rawMeasurements = observable.getMeasurements();
-            this.measurements = rawMeasurements.slice(rawMeasurements.length - this.weatherCount);
+            if (rawMeasurements.length - this.weatherCount < 0) {
+                this.measurements = rawMeasurements;
+            } else {
+                this.measurements = rawMeasurements.slice(
+                    rawMeasurements.length - this.weatherCount
+                );
+            }
             if (this.isNeedRender(lastMeasurements, this.measurements)) {
                 this.render();
             }
         } else {
-            throw new TypeError();
+            throw new TypeError('Onservable must instance of NewsState or WeatherState');
         }
     }
 
