@@ -46,21 +46,3 @@ weatherState.setMeasurements([
         humidity: 76
     }
 ]);
-
-newsState.setArticles([
-    {
-        time: '09:00',
-        category: 'AAA',
-        title: 'AAAAA'
-    },
-    {
-        time: '10:00',
-        category: 'BBB',
-        title: 'BBBBB'
-    },
-    {
-        time: '12:00',
-        category: 'CCC',
-        title: 'CCCCC'
-    }
-]);
