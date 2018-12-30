@@ -6,14 +6,21 @@ import { WeatherState } from '../state/weather';
 import { IMeasurement } from '../state/weather/types';
 
 export class CommonView implements IObserver, IView {
-    protected weatherNeedCount: number = 0;
-    protected newsNeedCount: number = 0;
-    protected className: string = '';
+    protected weatherNeedCount = 0;
+    protected newsNeedCount = 0;
+    protected className = '';
     private articles: IArticle[] = [];
     private measurements: IMeasurement[] = [];
-    private oldRender: string = '';
-    public render(): void {
-        let resultRender: string = `<div class="${this.className}">\n`;
+    private oldRender = '';
+
+    constructor(className = '', weatherNeedCount = 0, newsNeedCount = 0) {
+        this.className = className;
+        this.weatherNeedCount = weatherNeedCount;
+        this.newsNeedCount = newsNeedCount;
+    }
+
+    public render() {
+        let resultRender = `<div class="${this.className}">\n`;
         resultRender += this.articles.map(a => this.getArticleRender(a)).join('');
         resultRender += this.measurements.map(w => this.getMeasurementRender(w)).join('');
         resultRender += '</div>';
@@ -23,7 +30,7 @@ export class CommonView implements IObserver, IView {
         this.oldRender = resultRender;
     }
 
-    public update(observable: IObservable): void {
+    public update(observable: IObservable) {
         if (observable instanceof NewsState) {
             this.articles = observable.getArticles().slice(-this.newsNeedCount);
             this.render();

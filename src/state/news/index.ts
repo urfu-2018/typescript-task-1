@@ -3,6 +3,7 @@ import { IArticle, INewsState } from './types';
 
 export class NewsState extends Observable implements INewsState {
     private articles: IArticle[] = [];
+
     public getArticles() {
         return this.articles;
     }

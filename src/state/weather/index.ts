@@ -3,6 +3,7 @@ import { Observable } from '../../utils/observable';
 
 export class WeatherState extends Observable implements IWeatherState {
     private measurements: IMeasurement[] = [];
+
     public getMeasurements() {
         return this.measurements;
     }
