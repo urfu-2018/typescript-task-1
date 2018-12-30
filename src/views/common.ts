@@ -5,19 +5,19 @@ import { IArticle } from '../state/news/types';
 import { WeatherState } from '../state/weather';
 import { IMeasurement } from '../state/weather/types';
 
-export class CommonView implements IObserver, IView {
-    protected weatherNeedCount = 0;
-    protected newsNeedCount = 0;
-    protected className = '';
+export abstract class CommonView implements IObserver, IView {
+    protected abstract weatherNeedCount: number;
+    protected abstract newsNeedCount: number;
+    protected abstract className: string;
     private articles: IArticle[] = [];
     private measurements: IMeasurement[] = [];
     private oldRender = '';
 
-    constructor(className = '', weatherNeedCount = 0, newsNeedCount = 0) {
-        this.className = className;
-        this.weatherNeedCount = weatherNeedCount;
-        this.newsNeedCount = newsNeedCount;
-    }
+    // constructor(className = '', weatherNeedCount = 0, newsNeedCount = 0) {
+    //     this.className = className;
+    //     this.weatherNeedCount = weatherNeedCount;
+    //     this.newsNeedCount = newsNeedCount;
+    // }
 
     public render() {
         let resultRender = `<div class="${this.className}">\n`;

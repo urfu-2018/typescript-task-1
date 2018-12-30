@@ -1,7 +1,11 @@
 import { CommonView } from './common';
 
 export class DesktopView extends CommonView {
-    constructor() {
-        super('desktop', 3, 2);
-    }
+    protected weatherNeedCount = 3;
+    protected newsNeedCount = 2;
+    protected className = 'desktop';
+
+    // constructor() {
+    //     super('desktop', 3, 2);
+    // }
 }

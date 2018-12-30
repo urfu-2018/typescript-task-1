@@ -1,7 +1,10 @@
 import { CommonView } from './common';
 
 export class MobileView extends CommonView {
-    constructor() {
-        super('mobile', 1, 1);
-    }
+    protected weatherNeedCount = 1;
+    protected newsNeedCount = 1;
+    protected className = 'mobile';
+    // constructor() {
+    //     super('mobile', 1, 1);
+    // }
 }
