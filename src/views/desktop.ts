@@ -2,6 +2,6 @@ import { View } from './view';
 
 export class DesktopView extends View {
     constructor() {
-        super('desktop', 3, 2);
+        super({ viewType: 'desktop', articlesLimit: 3, measurementsLimit: 2 });
     }
 }

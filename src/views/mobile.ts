@@ -2,6 +2,6 @@ import { View } from './view';
 
 export class MobileView extends View {
     constructor() {
-        super('mobile', 1, 1);
+        super({ viewType: 'mobile', articlesLimit: 1, measurementsLimit: 1 });
     }
 }
