@@ -2,7 +2,6 @@ import assert from 'assert';
 
 import { afterEach, describe, it } from 'mocha';
 import sinon, { SinonSpy } from 'sinon';
-
 import { NewsState } from '../state/news';
 import { MobileView } from '../views/mobile';
 
