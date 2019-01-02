@@ -29,7 +29,6 @@ export class View implements IObserver, IView {
 
     private lastArticles: IArticle[] = [];
     private lastMeasurements: IMeasurement[] = [];
-    private isChanged: boolean = true;
     private readonly articlesCount: number;
     private readonly measurementsCount: number;
     private readonly tagName: string;
@@ -60,11 +59,8 @@ export class View implements IObserver, IView {
     }
 
     public render(): void {
-        if (this.isChanged) {
-            this.isChanged = false;
-            const currentMessage = this.getMessage();
-            console.log(currentMessage);
-        }
+        const currentMessage = this.getMessage();
+        console.log(currentMessage);
     }
 
     private getMessage(): string {
