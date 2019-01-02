@@ -13,12 +13,6 @@ export abstract class CommonView implements IObserver, IView {
     private measurements: IMeasurement[] = [];
     private oldRender = '';
 
-    // constructor(className = '', weatherNeedCount = 0, newsNeedCount = 0) {
-    //     this.className = className;
-    //     this.weatherNeedCount = weatherNeedCount;
-    //     this.newsNeedCount = newsNeedCount;
-    // }
-
     public render() {
         let resultRender = `<div class="${this.className}">\n`;
         resultRender += this.articles.map(a => this.getArticleRender(a)).join('');
