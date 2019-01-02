@@ -29,26 +29,26 @@ export class View implements IObserver, IView {
 
     private lastArticles: IArticle[] = [];
     private lastMeasurements: IMeasurement[] = [];
-    private readonly articlesCount: number;
-    private readonly measurementsCount: number;
-    private readonly tagName: string;
+    private readonly articlesLimit: number;
+    private readonly measurementsLimit: number;
+    private readonly viewType: string;
 
     constructor(settings: { viewType: string; articlesLimit: number; measurementsLimit: number }) {
-        this.tagName = settings.viewType;
-        this.articlesCount = settings.articlesLimit;
-        this.measurementsCount = settings.measurementsLimit;
+        this.viewType = settings.viewType;
+        this.articlesLimit = settings.articlesLimit;
+        this.measurementsLimit = settings.measurementsLimit;
     }
 
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
             const oldArticles = [...this.lastArticles];
-            this.lastArticles = observable.getArticles().slice(-this.articlesCount);
+            this.lastArticles = observable.getArticles().slice(-this.articlesLimit);
             if (View.isArraysEqual(oldArticles, this.lastArticles)) {
                 return;
             }
         } else if (observable instanceof WeatherState) {
             const oldMeasurements = [...this.lastMeasurements];
-            this.lastMeasurements = observable.getMeasurements().slice(-this.measurementsCount);
+            this.lastMeasurements = observable.getMeasurements().slice(-this.measurementsLimit);
             if (View.isArraysEqual(oldMeasurements, this.lastMeasurements)) {
                 return;
             }
@@ -75,6 +75,6 @@ export class View implements IObserver, IView {
                     } P, ${measurement.humidity} U\n`
             )
             .join('');
-        return `<div class="${this.tagName}">\n${articlesStr + measurementStr}</div>`;
+        return `<div class="${this.viewType}">\n${articlesStr + measurementStr}</div>`;
     }
 }
