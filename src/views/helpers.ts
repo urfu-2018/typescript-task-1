@@ -11,13 +11,6 @@ export abstract class Helpers {
         return `[${m.time}] ${m.temperature} C, ${m.pressure} P, ${m.humidity} U`;
     }
 
-    public static getFewLastElements<T>(array: T[], count: number): T[] {
-        if (array.length <= count) {
-            return array;
-        }
-        return array.slice(array.length - count);
-    }
-
     public static getRenderedView(
         viewType: ViewType,
         articles: IArticle[],

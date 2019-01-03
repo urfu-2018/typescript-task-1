@@ -13,18 +13,26 @@ export class DesktopView implements IObserver, IView {
     public update(observable: IObservable) {
         if (observable instanceof NewsState) {
             const newsState = observable as NewsState;
-            this.articles = newsState.getArticles();
+            const newArticles = newsState.getArticles();
+            if (JSON.stringify(this.articles) === JSON.stringify(newArticles)) {
+                return;
+            }
+            this.articles = newArticles;
         }
         if (observable instanceof WeatherState) {
             const weatherState = observable as WeatherState;
+            const newMeasurements = weatherState.getMeasurements();
+            if (JSON.stringify(this.measurements) === JSON.stringify(newMeasurements)) {
+                return;
+            }
             this.measurements = weatherState.getMeasurements();
         }
         this.render();
     }
 
     public render() {
-        const articles = Helpers.getFewLastElements(this.articles, 3).reverse();
-        const measurements = Helpers.getFewLastElements(this.measurements, 2).reverse();
+        const articles = this.articles.slice(-3);
+        const measurements = this.measurements.slice(-2);
         console.log(Helpers.getRenderedView(ViewType.Desktop, articles, measurements));
     }
 }
