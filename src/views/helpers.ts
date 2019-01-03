@@ -3,31 +3,29 @@ import { IMeasurement } from '../state/weather/types';
 import { ViewType } from './types';
 
 export abstract class Helpers {
-    public static getFormattedArticle(article: IArticle): string {
+    public static getPrettyArticle(article: IArticle): string {
         return `[${article.time}] ${article.category} - ${article.title}`;
     }
 
-    public static getFormattedMeasurement(m: IMeasurement) {
+    public static getPrettyMeasurement(m: IMeasurement) {
         return `[${m.time}] ${m.temperature} C, ${m.pressure} P, ${m.humidity} U`;
     }
 
-    public static getRenderedView(
-        viewType: ViewType,
+    public static renderView(
+        type: ViewType,
         articles: IArticle[],
         measurements: IMeasurement[]
     ): string {
         const result = [];
-        const formattedArticles = articles.map(a => Helpers.getFormattedArticle(a)).join('\n');
-        const formattedMeasurements = measurements
-            .map(m => Helpers.getFormattedMeasurement(m))
-            .join('\n');
+        const prettyArticles = articles.map(a => Helpers.getPrettyArticle(a)).join('\n');
+        const prettyMeasurements = measurements.map(Helpers.getPrettyMeasurement).join('\n');
 
-        result.push(`<div class="${viewType}">`);
-        if (formattedArticles) {
-            result.push(formattedArticles);
+        result.push(`<div class="${type}">`);
+        if (prettyArticles) {
+            result.push(prettyArticles);
         }
-        if (formattedMeasurements) {
-            result.push(formattedMeasurements);
+        if (prettyMeasurements) {
+            result.push(prettyMeasurements);
         }
         result.push('</div>');
         return result.join('\n');
