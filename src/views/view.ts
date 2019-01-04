@@ -15,8 +15,8 @@ export abstract class View implements IView, IObserver {
         return `[${time}] ${temperature} C, ${pressure} P, ${humidity} U`;
     }
 
-    private news: string[] = [];
-    private measurements: string[] = [];
+    private news: IArticle[] = [];
+    private measurements: IMeasurement[] = [];
 
     private readonly newsLimit: number;
     private readonly measurementsLimit: number;
@@ -29,27 +29,25 @@ export abstract class View implements IView, IObserver {
     }
 
     public render(): void {
-        const lastNews = this.getLastNews();
-        const lastMeasurements = this.getLastMeasurements();
+        const lastNews = this.news.map(View.newsToString);
+        const lastMeasurements = this.measurements.map(View.measurementsToString);
         const lines = lastNews.concat(lastMeasurements);
         console.log(`<div class="${this.wrapperClassName}">\n${lines.join('\n')}\n</div>`);
     }
 
     public update(observable: IObservable): void {
         if (observable instanceof NewsState) {
-            const prev = this.getLastNews();
+            const prev = this.news;
             this.updateNews(observable.getArticles());
-            const current = this.getLastNews();
 
-            if (isArraysEqual(prev, current)) {
+            if (isArraysEqual(prev, this.news)) {
                 return;
             }
         } else if (observable instanceof WeatherState) {
-            const prev = this.getLastMeasurements();
+            const prev = this.measurements;
             this.updateMeasurements(observable.getMeasurements());
-            const current = this.getLastMeasurements();
 
-            if (isArraysEqual(prev, current)) {
+            if (isArraysEqual(prev, this.measurements)) {
                 return;
             }
         }
@@ -57,26 +55,38 @@ export abstract class View implements IView, IObserver {
         this.render();
     }
 
-    private getLastNews(): string[] {
-        return this.news.slice(-this.newsLimit, this.news.length);
-    }
-
-    private getLastMeasurements(): string[] {
-        return this.measurements.slice(
-            this.measurements.length - this.measurementsLimit,
-            this.measurements.length
-        );
-    }
-
     private updateNews(news: IArticle[]): void {
-        this.news = news.slice(0, this.newsLimit).map(View.newsToString);
+        this.news = news.slice(-this.newsLimit);
     }
 
     private updateMeasurements(measurements: IMeasurement[]): void {
-        this.measurements = measurements.map(View.measurementsToString);
+        this.measurements = measurements.slice(-this.measurementsLimit);
     }
 }
 
-function isArraysEqual(first: string[], second: string[]): boolean {
-    return first.length === second.length && first.every((_item, i) => first[i] === second[i]);
+function isArraysEqual<T extends IMeasurement | IArticle>(first: T[], second: T[]): boolean {
+    return (
+        first.length === second.length && first.every((_item, i) => isEqual(first[i], second[i]))
+    );
+}
+
+function isEqual<T extends IMeasurement | IArticle>(first: T, second: T) {
+    const firstArticle = first as IArticle;
+    const secondArticle = second as IArticle;
+    if (firstArticle !== undefined && secondArticle !== undefined) {
+        return (
+            firstArticle.title === secondArticle.title &&
+            firstArticle.time === secondArticle.time &&
+            firstArticle.category === secondArticle.category
+        );
+    }
+
+    const firstMeasurement = first as IMeasurement;
+    const secondMeasurement = second as IMeasurement;
+    return (
+        firstMeasurement.time === secondMeasurement.time &&
+        firstMeasurement.humidity === secondMeasurement.humidity &&
+        firstMeasurement.pressure === secondMeasurement.pressure &&
+        firstMeasurement.temperature === secondMeasurement.temperature
+    );
 }
