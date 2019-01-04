@@ -14,7 +14,7 @@ export class Observable implements IObservable {
     }
 
     public deleteObserver(observer: IObserver) {
-        this.observers = this.observers.filter(o => o !== observer);
+        this.observers = this.observers.filter(other => other !== observer);
     }
 
     public notifyObservers() {
