@@ -40,14 +40,14 @@ export abstract class View implements IView, IObserver {
             const prev = this.news;
             this.updateNews(observable.getArticles());
 
-            if (isArraysEqual(prev, this.news)) {
+            if (isArraysEqual<IArticle>(prev, this.news)) {
                 return;
             }
         } else if (observable instanceof WeatherState) {
             const prev = this.measurements;
             this.updateMeasurements(observable.getMeasurements());
 
-            if (isArraysEqual(prev, this.measurements)) {
+            if (isArraysEqual<IMeasurement>(prev, this.measurements)) {
                 return;
             }
         }
@@ -64,29 +64,29 @@ export abstract class View implements IView, IObserver {
     }
 }
 
-function isArraysEqual<T extends IMeasurement | IArticle>(first: T[], second: T[]): boolean {
+function isArraysEqual<T>(first: T[], second: T[]): boolean {
     return (
         first.length === second.length && first.every((_item, i) => isEqual(first[i], second[i]))
     );
 }
 
-function isEqual<T extends IMeasurement | IArticle>(first: T, second: T) {
-    const firstArticle = first as IArticle;
-    const secondArticle = second as IArticle;
-    if (firstArticle !== undefined && secondArticle !== undefined) {
-        return (
-            firstArticle.title === secondArticle.title &&
-            firstArticle.time === secondArticle.time &&
-            firstArticle.category === secondArticle.category
-        );
+function isEqual<T extends any>(first: T, second: T) {
+    if (first === second) {
+        return true;
     }
 
-    const firstMeasurement = first as IMeasurement;
-    const secondMeasurement = second as IMeasurement;
-    return (
-        firstMeasurement.time === secondMeasurement.time &&
-        firstMeasurement.humidity === secondMeasurement.humidity &&
-        firstMeasurement.pressure === secondMeasurement.pressure &&
-        firstMeasurement.temperature === secondMeasurement.temperature
-    );
+    const keysA = Object.keys(first);
+    const keysB = Object.keys(second);
+
+    if (keysA.length !== keysB.length) {
+        return false;
+    }
+
+    for (let i = 0; i < keysA.length; i++) {
+        if (!Object.hasOwnProperty.call(second, keysA[i]) || first[keysA[i]] === second[keysB[i]]) {
+            return false;
+        }
+    }
+
+    return true;
 }
