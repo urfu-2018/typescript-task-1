@@ -55,21 +55,17 @@ export class View implements IView, IObserver {
             Math.max(this.measurements.length - this.measurementsCount, 0)
         );
 
-        const formattedNews = newsToShow.map(article => this.articleToString(article));
-        const formattedWeather = measurementsToShow.map(measurement =>
-            this.measurementToString(measurement)
-        );
+        const formattedNews = newsToShow.map(this.articleToString);
+        const formattedWeather = measurementsToShow.map(this.measurementToString);
 
         return formattedNews.concat(formattedWeather).join('\n');
     }
 
-    private articleToString(article: IArticle): string {
-        return `[${article.time}] ${article.category} - ${article.title}`;
+    private articleToString({ time, category, title }: IArticle): string {
+        return `[${time}] ${category} - ${title}`;
     }
 
-    private measurementToString(measurement: IMeasurement): string {
-        return `[${measurement.time}] ${measurement.temperature} C, ${measurement.pressure} P, ${
-            measurement.humidity
-        } U`;
+    private measurementToString({ time, temperature, pressure, humidity }: IMeasurement): string {
+        return `[${time}] ${temperature} C, ${pressure} P, ${humidity} U`;
     }
 }
