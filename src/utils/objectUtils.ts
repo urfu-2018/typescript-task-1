@@ -1,6 +1,8 @@
 export function isEqual<T>(a: T, b: T): boolean {
     if (typeof a !== 'object' || (!a || !b)) {
         return a === b;
+    } else if (a.constructor !== b.constructor) {
+        return false;
     } else if (a instanceof Array && b instanceof Array) {
         if (a.length !== b.length) {
             return false;
