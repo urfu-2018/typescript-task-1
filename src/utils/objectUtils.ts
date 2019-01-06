@@ -1,11 +1,10 @@
 export function isEqual<T>(a: T[], b: T[]): boolean {
     if (a.length !== b.length) {
         return false;
-    } else {
-        for (let i = 0; i < a.length; i++) {
-            if (!areObjectsEqual(a[i], b[i])) {
-                return false;
-            }
+    }
+    for (let i = 0; i < a.length; i++) {
+        if (!areObjectsEqual(a[i], b[i])) {
+            return false;
         }
     }
 
@@ -18,11 +17,7 @@ function areObjectsEqual<T>(a: T, b: T): boolean {
     } else {
         const keys = Object.getOwnPropertyNames(a);
         for (const key of keys) {
-            if (b.hasOwnProperty(key)) {
-                if ((a as any)[key] !== (b as any)[key]) {
-                    return false;
-                }
-            } else {
+            if (!b.hasOwnProperty(key) || (a as any)[key] !== (b as any)[key]) {
                 return false;
             }
         }
@@ -31,6 +26,7 @@ function areObjectsEqual<T>(a: T, b: T): boolean {
     return true;
 }
 
+// оставим дженерик, чтобы сохранить информацию о типе на выходе
 export function deepCopy<T>(a: T): T {
     if (typeof a !== 'object' || !a) {
         return a;
