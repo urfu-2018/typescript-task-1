@@ -1,5 +1,5 @@
 import { IObservable, IObserver } from '../utils/observable/types';
-import { Updatable } from './updatable';
+import Updatable from './updatable';
 import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
 

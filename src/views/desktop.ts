@@ -1,7 +1,7 @@
 import { IObservable, IObserver } from '../utils/observable/types';
 import { NewsState } from '../state/news/index';
 import { WeatherState } from '../state/weather/index';
-import { Updatable } from './updatable';
+import Updatable from './updatable';
 
 export class DesktopView extends Updatable implements IObserver {
     protected view: string = 'desktop';

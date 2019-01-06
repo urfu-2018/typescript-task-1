@@ -9,7 +9,7 @@ export class Observable implements IObservable {
 
     public deleteObserver(observer: IObserver) {
         const index = this.observers.indexOf(observer);
-        if (index !== -1) {
+        if (this.observers.includes(observer)) {
             this.observers.splice(index, 1);
         }
     }
