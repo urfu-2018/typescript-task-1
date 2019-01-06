@@ -9,9 +9,13 @@ export default abstract class Updatable implements IView {
 
     public render() {
         console.log(
-            `<div class="${this.view}">\n${this.lastNews
+            // tslint:disable-next-line:prettier
+            `<div class="${this.view}">\n${
+            this.lastNews
                 .concat(this.lastMeasurments)
-                .join('\n')}\n</div>`
+                // tslint:disable-next-line:prettier
+                .join('\n')
+            }\n</div>`
         );
     }
 
