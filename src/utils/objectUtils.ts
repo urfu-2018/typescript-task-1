@@ -1,4 +1,8 @@
-export function isEqual<T>(a: T[], b: T[]): boolean {
+interface ViewElements {
+    [key: string]: string | number;
+}
+
+export function isEqual<T extends ViewElements>(a: T[], b: T[]): boolean {
     if (a.length !== b.length) {
         return false;
     }
@@ -11,13 +15,13 @@ export function isEqual<T>(a: T[], b: T[]): boolean {
     return true;
 }
 
-function areObjectsEqual<T>(a: T, b: T): boolean {
+function areObjectsEqual<T extends ViewElements>(a: T, b: T): boolean {
     if (!a || !b) {
         return a === b;
     } else {
         const keys = Object.getOwnPropertyNames(a);
         for (const key of keys) {
-            if (!b.hasOwnProperty(key) || (a as any)[key] !== (b as any)[key]) {
+            if (!b.hasOwnProperty(key) || a[key] !== b[key]) {
                 return false;
             }
         }
