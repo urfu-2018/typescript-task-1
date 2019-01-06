@@ -1,9 +1,5 @@
 export function isEqual<T>(a: T, b: T): boolean {
-    if (!a || !b) {
-        return a === b;
-    }
-
-    if (typeof a !== 'object') {
+    if (typeof a !== 'object' || (!a || !b)) {
         return a === b;
     } else if (a instanceof Array && b instanceof Array) {
         if (a.length !== b.length) {
