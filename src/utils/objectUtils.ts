@@ -1,6 +1,4 @@
-interface ViewElements {
-    [key: string]: string | number;
-}
+import { ViewElements } from '../state/types';
 
 export function isEqual<T extends ViewElements>(a: T[], b: T[]): boolean {
     if (a.length !== b.length) {

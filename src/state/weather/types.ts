@@ -1,4 +1,6 @@
-export interface IMeasurement {
+import { ViewElements } from '../types';
+
+export interface IMeasurement extends ViewElements {
     time: string; // e.g. '12:00'
     pressure: number; // e.g. 767.2
     humidity: number; // e.g. 44
