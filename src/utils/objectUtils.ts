@@ -1,22 +1,25 @@
-export function isEqual<T>(a: T, b: T): boolean {
-    if (typeof a !== 'object' || (!a || !b)) {
-        return a === b;
-    } else if (a.constructor !== b.constructor) {
+export function isEqual<T>(a: T[], b: T[]): boolean {
+    if (a.length !== b.length) {
         return false;
-    } else if (a instanceof Array && b instanceof Array) {
-        if (a.length !== b.length) {
-            return false;
-        }
+    } else {
         for (let i = 0; i < a.length; i++) {
-            if (!isEqual(a[i], b[i])) {
+            if (!areObjectsEqual(a[i], b[i])) {
                 return false;
             }
         }
+    }
+
+    return true;
+}
+
+function areObjectsEqual<T>(a: T, b: T): boolean {
+    if (!a || !b) {
+        return a === b;
     } else {
         const keys = Object.getOwnPropertyNames(a);
         for (const key of keys) {
             if (b.hasOwnProperty(key)) {
-                if (!isEqual((a as any)[key], (b as any)[key])) {
+                if ((a as any)[key] !== (b as any)[key]) {
                     return false;
                 }
             } else {
