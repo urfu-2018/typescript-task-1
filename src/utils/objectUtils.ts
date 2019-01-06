@@ -1,4 +1,8 @@
-export function isEqual<T extends object>(a: T, b: T): boolean {
+export function isEqual<T>(a: T, b: T): boolean {
+    if (!a || !b) {
+        return a === b;
+    }
+
     if (typeof a !== 'object') {
         return a === b;
     } else if (a instanceof Array && b instanceof Array) {
@@ -11,7 +15,7 @@ export function isEqual<T extends object>(a: T, b: T): boolean {
             }
         }
     } else {
-        const keys = Reflect.ownKeys(a);
+        const keys = Object.getOwnPropertyNames(a);
         for (const key of keys) {
             if (b.hasOwnProperty(key)) {
                 if (!isEqual((a as any)[key], (b as any)[key])) {
@@ -26,8 +30,8 @@ export function isEqual<T extends object>(a: T, b: T): boolean {
     return true;
 }
 
-export function deepCopy<T extends object>(a: T): T {
-    if (typeof a !== 'object') {
+export function deepCopy<T>(a: T): T {
+    if (typeof a !== 'object' || !a) {
         return a;
     } else if (a instanceof Array) {
         const arrayCopy = [];
@@ -35,16 +39,16 @@ export function deepCopy<T extends object>(a: T): T {
             arrayCopy[i] = deepCopy(a[i]);
         }
 
-        return arrayCopy as T;
+        return (arrayCopy as unknown) as T;
     } else {
-        const keys = Reflect.ownKeys(a);
+        const keys = Object.getOwnPropertyNames(a);
         const copy = {};
 
         for (const key of keys) {
             const descr = Object.getOwnPropertyDescriptor(a, key);
             if (!descr) {
                 // never reaches
-                throw TypeError();
+                throw TypeError(`Object has no key named ${key}`);
             }
             descr.value = deepCopy((a as any)[key]);
             Object.defineProperty(copy, key, descr);
