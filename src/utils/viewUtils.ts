@@ -5,7 +5,6 @@ import { IObservable } from './observable/types';
 import { NewsState } from '../state/news';
 import { WeatherState } from '../state/weather';
 import { isEqual } from './objectUtils';
-import { ViewElements } from '../state/types';
 
 function prepareViewToRender(htmlClass: string, articles: string, measurements: string): string {
     return `<div class="${htmlClass}">\n${articles}${measurements}</div>`;
@@ -15,30 +14,16 @@ function getLastNElements<T>(array: T[], size: number): T[] {
     return array.slice(-size);
 }
 
-function prepareViewElements(viewElements: ViewElements[]): string {
-    if (viewElements.length === 0) {
-        return '';
-    }
-
-    if (instanceOfArticle(viewElements)) {
-        return viewElements.reduce((prevValue, { time, category, title }) => {
-            return prevValue + `[${time}] ${category} - ${title}\n`;
-        }, '');
-    } else if (instanceOfMeasurement(viewElements)) {
-        return viewElements.reduce((prevValue, { time, pressure, humidity, temperature }) => {
-            return prevValue + `[${time}] ${temperature} C, ${pressure} P, ${humidity} U\n`;
-        }, '');
-    } else {
-        throw TypeError('Unknown type');
-    }
+function prepareArticles(articles: IArticle[]): string {
+    return articles.reduce((prevValue, { time, category, title }) => {
+        return prevValue + `[${time}] ${category} - ${title}\n`;
+    }, '');
 }
 
-function instanceOfArticle(object: any): object is IArticle[] {
-    return (object as IArticle[])[0].category !== undefined;
-}
-
-function instanceOfMeasurement(object: any): object is IMeasurement[] {
-    return (object as IMeasurement[])[0].temperature !== undefined;
+function prepareMeasurements(measurements: IMeasurement[]): string {
+    return measurements.reduce((prevValue, { time, pressure, humidity, temperature }) => {
+        return prevValue + `[${time}] ${temperature} C, ${pressure} P, ${humidity} U\n`;
+    }, '');
 }
 
 export abstract class EffectiveLogView implements IView {
@@ -69,14 +54,14 @@ export abstract class EffectiveLogView implements IView {
 
     public render(): void {
         if (!isEqual(this.currentArticles, this.lastArticles)) {
-            this.articlesView = prepareViewElements(this.currentArticles);
+            this.articlesView = prepareArticles(this.currentArticles);
             this.lastArticles = this.currentArticles;
 
             this.changed = true;
         }
 
         if (!isEqual(this.currentMeasurements, this.lastMeasurements)) {
-            this.measurementsView = prepareViewElements(this.currentMeasurements);
+            this.measurementsView = prepareMeasurements(this.currentMeasurements);
             this.lastMeasurements = this.currentMeasurements;
 
             this.changed = true;
