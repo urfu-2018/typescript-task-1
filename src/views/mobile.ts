@@ -21,11 +21,16 @@ export class MobileView implements IObserver, IView {
     public render() {
         let answer = '<div class="mobile">\n';
         this.articles.forEach(element => {
-            answer = `${answer}[${element.time}] ${element.category} - ${element.title}\n`;
+            if (element !== undefined) {
+                answer = `${answer}[${element.time}] ${element.category} - ${element.title}\n`;
+            }
         });
         this.weathers.forEach(element => {
-            answer = `${answer}[${element.time}] ${element.temperature} C, ${element.pressure} P,
-            ${element.humidity} U\n`;
+            if (element !== undefined) {
+                answer = `${answer}[${element.time}] ${element.temperature} C, ${
+                    element.pressure
+                } P, ${element.humidity} U\n`;
+            }
         });
         console.log(`${answer}</div>`);
     }
