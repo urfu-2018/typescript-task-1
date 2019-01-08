@@ -4,11 +4,9 @@ export interface IMeasurement {
     humidity: number; // e.g. 44
     temperature: number; // e.g. -14.9
 }
-export function MeasurementToString(measurement: IMeasurement): string {
-    return (
-        `[${measurement.time}] ${measurement.temperature} C, ` +
-        `${measurement.pressure} P, ${measurement.humidity} U`
-    );
+
+export function measurementToString({ time, pressure, humidity, temperature }: IMeasurement) {
+    return `[${time}] ${temperature} C, ` + `${pressure} P, ${humidity} U`;
 }
 
 export interface IWeatherState {

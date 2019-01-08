@@ -1,6 +1,6 @@
 import { IObservable, IObserver } from '../utils/observable/types';
-import { IMeasurement, IWeatherState, MeasurementToString } from '../state/weather/types';
-import { ArticleToString, IArticle, INewsState } from '../state/news/types';
+import { IMeasurement, IWeatherState, measurementToString } from '../state/weather/types';
+import { articleToString, IArticle, INewsState } from '../state/news/types';
 
 export interface IView {
     render(): void;
@@ -39,10 +39,10 @@ export class View implements IObserver, IView {
         let content = `<div class="${this.viewName}">\n`;
         this.articles
             .slice(-this.articleRightAmount)
-            .forEach(a => (content += ArticleToString(a) + '\n'));
+            .forEach(a => (content += articleToString(a) + '\n'));
         this.measurements
             .slice(-this.measurementsRightAmount)
-            .forEach(m => (content += MeasurementToString(m) + '\n'));
+            .forEach(m => (content += measurementToString(m) + '\n'));
         content += `</div>`;
 
         console.log(content);
