@@ -30,7 +30,7 @@ export abstract class GeneralView implements IView, IObserver {
     }
 
     protected getContent(deviceClass: string): string {
-        let content = `<div class='${deviceClass}'>\n`;
+        let content = `<div class="${deviceClass}">\n`;
 
         content = this.articles.reduce((acc: string, currentValue: IArticle): string => {
             return (
