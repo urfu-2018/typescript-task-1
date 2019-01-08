@@ -1,12 +1,12 @@
-import { IObservable, IObserver } from '../utils/observable/types';
-import { IView } from './types';
+import { GeneralView } from './types';
 
-export class DesktopView implements IObserver, IView {
-    public update(observable: IObservable) {
-        throw new Error('Not implemented');
-    }
-
+export class DesktopView extends GeneralView {
+    private articleCount: number = 3;
+    private measurementCount: number = 2;
+    private deviceClass: string = 'desktop';
     public render() {
-        throw new Error('Not implemented');
+        this.prepareContent(this.articleCount, this.measurementCount);
+        const content = this.getContent(this.deviceClass);
+        console.log(content);
     }
 }
