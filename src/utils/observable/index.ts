@@ -7,7 +7,7 @@ export class Observable implements IObservable {
     }
 
     public deleteObserver(observer: IObserver) {
-        this.observers.splice(this.observers.indexOf(observer), 1);
+        this.observers = this.observers.filter(element => element !== observer);
     }
 
     public notifyObservers() {
